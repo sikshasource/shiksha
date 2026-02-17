@@ -59,7 +59,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/Homepage" element={<Homepage />} />
+        <Route path="/" element={<Homepage />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/by-domain" element={<ByDomain />} />
