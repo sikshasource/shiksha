@@ -141,14 +141,6 @@ const testimonials = [
   </span>
 </h2>
 
-
-              {/* <p className="mt-4 text-gray-700 leading-relaxed">
-                We help students develop high-quality academic projects with
-                real-world standards, professional guidance, documentation
-                support and deployment assistance. Perfect for engineering &
-                degree students.
-              </p> */}
-
               <p className="mt-4 text-gray-700 leading-relaxed typewriter max-w-xl">
   We build industry-ready college projects with expert guidance,<br/>
   clear documentation, and deployment support.
@@ -158,7 +150,7 @@ const testimonials = [
 
             <div className="flex justify-center md:justify-end">
               <img
-                src="./Images/Hero Image.png"
+                src="./Images/Hero_Image.png"
                 className="w-[320px] md:w-[450px] rounded-2xl object-contain"
                 alt="Hero"
               />
@@ -282,16 +274,16 @@ const testimonials = [
             <div className="overflow-hidden relative">
               <div className="flex gap-16 animate-scroll whitespace-nowrap">
                 {[
-                  "./college Logos/image 314.png",
-                  "./college Logos/image 315.png",
-                  "./college Logos/image 316.png",
-                  "./college Logos/image 317.png",
-                  "./college Logos/image 318.png",
-                  "./college Logos/image 325.png",
-                  "./college Logos/image 314.png",
-                  "./college Logos/image 315.png",
-                  "./college Logos/image 316.png",
-                  "./college Logos/image 317.png",
+                  "./college_Logos/image 314.png",
+                  "./college_Logos/image 315.png",
+                  "./college_Logos/image 316.png",
+                  "./college_Logos/image 317.png",
+                  "./college_Logos/image 318.png",
+                  "./college_Logos/image 325.png",
+                  "./college_Logos/image 314.png",
+                  "./college_Logos/image 315.png",
+                  "./college_Logos/image 316.png",
+                  "./college_Logos/image 317.png",
                 ].map((img, i) => (
                   <img
                     key={i}
@@ -418,6 +410,113 @@ const testimonials = [
         </div>
       </div>
     </section>
+
+
+
+            {/* ================= CUSTOM PROJECT REQUEST ================= */}
+<section className="py-20 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-pink-600/10">
+  <div className="max-w-6xl mx-auto px-6">
+
+    <div className="text-center mb-12">
+      <h2 className="text-4xl font-bold">
+        Need a Custom Project?
+      </h2>
+      <p className="text-gray-600 mt-3 max-w-2xl mx-auto">
+        Tell us your idea or requirements. Our experts will design a
+        professional academic project tailored exactly for you.
+      </p>
+    </div>
+
+    <div className="bg-white/70 backdrop-blur-lg shadow-xl rounded-3xl p-10 grid md:grid-cols-2 gap-10">
+
+      {/* LEFT SIDE INFO */}
+      <div className="flex flex-col justify-center space-y-6">
+        <div>
+          <h3 className="text-2xl font-semibold mb-2">
+            Why Choose Custom?
+          </h3>
+          <ul className="space-y-3 text-gray-600">
+            <li>✔ Unique project tailored to your syllabus</li>
+            <li>✔ IEEE paper & documentation included</li>
+            <li>✔ Full explanation & viva support</li>
+            <li>✔ Deployment & hosting guidance</li>
+          </ul>
+        </div>
+
+        <div className="bg-blue-600 text-white rounded-xl p-6">
+          <h4 className="font-semibold text-lg">
+            Fast Response Guaranteed
+          </h4>
+          <p className="text-sm opacity-90 mt-2">
+            We usually respond within 24 hours with project roadmap & quotation.
+          </p>
+        </div>
+      </div>
+
+      {/* RIGHT SIDE FORM */}
+      <form className="space-y-5">
+
+        <div>
+          <label className="block text-sm font-medium mb-2">
+            Your Name
+          </label>
+          <input
+            type="text"
+            placeholder="Enter your name"
+            className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-blue-500 outline-none"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-2">
+            Project Domain
+          </label>
+          <select className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-blue-500 outline-none">
+            <option>Select Domain</option>
+            <option>Artificial Intelligence</option>
+            <option>Web Development</option>
+            <option>Cyber Security</option>
+            <option>Mobile Application</option>
+            <option>Cloud Computing</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-2">
+            Budget Range
+          </label>
+          <select className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-blue-500 outline-none">
+            <option>Select Budget</option>
+            <option>₹2,000 - ₹4,000</option>
+            <option>₹4,000 - ₹6,000</option>
+            <option>₹6,000 - ₹10,000</option>
+            <option>₹10,000+</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-2">
+            Describe Your Requirement
+          </label>
+          <textarea
+            rows="4"
+            placeholder="Explain your project idea, features, technologies..."
+            className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-blue-500 outline-none"
+          />
+        </div>
+
+        <button
+          type="button"
+          className="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition duration-300 shadow-lg"
+        >
+          Request Custom Project
+        </button>
+
+      </form>
+
+    </div>
+  </div>
+</section>
 
      </div>
 

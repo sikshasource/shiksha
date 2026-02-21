@@ -1,138 +1,3 @@
-// import React, { useState } from "react";
-// import { useNavigate, Link } from "react-router-dom";
-// import { useAuth } from "../context/AuthContext";
-
-// export default function SignIn() {
-//   const navigate = useNavigate();
-//   const { login } = useAuth(); // ✅ THIS WAS MISSING
-
-//   const [formData, setFormData] = useState({
-//     email: "",
-//     password: "",
-//   });
-
-//   const [loading, setLoading] = useState(false);
-//   const [error, setError] = useState("");
-
-//   const handleChange = (e) => {
-//     setFormData({
-//       ...formData,
-//       [e.target.name]: e.target.value,
-//     });
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setError("");
-
-//     if (!formData.email || !formData.password) {
-//       setError("Please enter email and password");
-//       return;
-//     }
-
-//     try {
-//       setLoading(true);
-
-//       const res = await fetch("http://localhost:8000/api/auth/login", {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify(formData),
-//       });
-
-//       const data = await res.json();
-
-//       if (!res.ok) {
-//         throw new Error(data.message);
-//       }
-
-//       login(data.token); // ✅ NOW WORKS
-
-//       navigate("/Homepage");
-
-//     } catch (err) {
-//       setError(err.message || "Login failed");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <div>
-//       {/* Your UI here */}
-//        {/* Left Panel */}
-//        <div className="hidden md:flex w-1/2 bg-black items-center justify-center">
-//         <h1 className="text-5xl font-serif text-white">
-//            Shiksha <span className="text-blue-600">Source</span>
-//          </h1>
-//       </div>
-
-//       {/* Right Panel */}
-//       <div className="w-full md:w-1/2 flex items-center justify-center bg-white">
-//         <form onSubmit={handleSubmit} className="w-full max-w-md px-6">
-//            <h2 className="text-3xl font-serif text-center mb-10">
-//             Sign In
-//           </h2>
-
-//           {error && (
-//             <p className="text-red-500 text-sm text-center mb-4">
-//               {error}
-//             </p>
-//           )}
-
-//           <div className="mb-5">
-//             <label className="block text-sm font-medium mb-2">
-//               E-mail
-//             </label>
-//             <input
-//               type="email"
-//               name="email"
-//               value={formData.email}
-//               onChange={handleChange}
-//               placeholder="enter registered email"
-//               className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
-//             />
-//           </div>
-
-//           <div className="mb-6">
-//             <label className="block text-sm font-medium mb-2">
-//               Password
-//             </label>
-//             <input
-//               type="password"
-//               name="password"
-//               value={formData.password}
-//               onChange={handleChange}
-//               placeholder="enter password"
-//               className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
-//             />
-//           </div>
-
-//           <button
-//             type="submit"
-//             disabled={loading}
-//             className="w-full bg-blue-600 text-white py-2 rounded-md font-semibold hover:bg-blue-700 transition disabled:opacity-50"
-//           >
-//             {loading ? "SignIng in..." : "Sign In"}
-//           </button>
-
-//           <p className="text-center mt-4">
-//             <Link
-//               to="/signup"
-//               className="text-blue-600 hover:underline text-sm"
-//             >
-//               Create Shiksha Source Account
-//             </Link>
-//           </p>
-//         </form>
-//       </div>
-//     </div>
-//   );
-// }
-
-
-
-
-
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -182,7 +47,7 @@ export default function SignIn() {
       if (!res.ok) throw new Error(data.message);
 
       login(data.token);
-      navigate("/Homepage");
+      navigate("/");
 
     } catch (err) {
       setError(err.message || "Login failed");
@@ -198,7 +63,7 @@ export default function SignIn() {
       const token = await result.user.getIdToken();
 
       login(token);
-      navigate("/Homepage");
+      navigate("/");
     } catch (error) {
       setError("Google login failed");
     }
