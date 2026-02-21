@@ -12,7 +12,7 @@ const NavBar = () => {
 
       {/* Logo */}
       <h1
-        onClick={() => navigate("/Homepage")}
+        onClick={() => navigate("/")}
         className="text-2xl font-bold cursor-pointer"
       >
         <span className="text-blue-600">Shiksha</span> Source
