@@ -15,7 +15,7 @@ const NavBar = () => {
         onClick={() => navigate("/")}
         className="text-2xl font-bold cursor-pointer"
       >
-       <img src="/Images/Header Logo.png" class="w-44 h-xs " alt="" />
+       <img src="/Images/Header_Logo.png" class="w-44 h-xs " alt="" />
       </h1>
 
       <div className="flex gap-6 items-center">

@@ -274,16 +274,16 @@ const testimonials = [
             <div className="overflow-hidden relative">
               <div className="flex gap-16 animate-scroll whitespace-nowrap">
                 {[
-                  "./college_Logos/image 314.png",
-                  "./college_Logos/image 315.png",
-                  "./college_Logos/image 316.png",
-                  "./college_Logos/image 317.png",
-                  "./college_Logos/image 318.png",
-                  "./college_Logos/image 325.png",
-                  "./college_Logos/image 314.png",
-                  "./college_Logos/image 315.png",
-                  "./college_Logos/image 316.png",
-                  "./college_Logos/image 317.png",
+                  "./college_Logos/image_314.png",
+                  "./college_Logos/image_315.png",
+                  "./college_Logos/image_316.png",
+                  "./college_Logos/image_317.png",
+                  "./college_Logos/image_318.png",
+                  "./college_Logos/image_325.png",
+                  "./college_Logos/image_314.png",
+                  "./college_Logos/image_315.png",
+                  "./college_Logos/image_316.png",
+                  "./college_Logos/image_317.png",
                 ].map((img, i) => (
                   <img
                     key={i}

@@ -14,7 +14,7 @@ const Footer = () => {
         {/* Brand */}
         <div>
           <h2 className="text-2xl font-bold text-white">
-            <img src="/Images/Footer Logo.png"  class="w-34" alt="" />
+            <img src="/Images/Footer_logo.png"  class="w-34" alt="" />
           </h2>
           <p className="mt-4 text-sm leading-relaxed">
             We help students build high-quality academic projects with
