@@ -73,11 +73,13 @@ export default function SignIn() {
     <div className="min-h-screen flex">
 
       {/* LEFT PANEL */}
-      <div className="hidden md:flex w-1/2 bg-black items-center justify-center">
-        <h1 className="text-6xl font-serif text-white">
-          Shiksha <span className="text-blue-600">Source</span>
-        </h1>
-      </div>
+      <div className="hidden md:flex md:w-1/2 bg-black items-center justify-center p-8">
+  <img
+    src="/Images/Left _ogo.png"
+    alt="Brand Logo"
+    className="max-w-xs md:max-w-md w-1/2 h-auto object-contain"
+  />
+</div>
 
       {/* RIGHT PANEL */}
       <div className="w-full md:w-1/2 flex items-center justify-center bg-gray-100">

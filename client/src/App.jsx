@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Homepage from "./pages/Homepage";
+import AboutUs from "./pages/AboutUs";
 import ByDomain from "./pages/ByDomain";
 import ByDegree from "./pages/ByDegree";
 import ByTechnology from "./pages/ByTechnology";
@@ -13,6 +14,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Homepage />} />
+        <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/by-domain" element={<ByDomain />} />

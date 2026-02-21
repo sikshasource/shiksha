@@ -14,7 +14,7 @@ const Footer = () => {
         {/* Brand */}
         <div>
           <h2 className="text-2xl font-bold text-white">
-            <span className="text-blue-500">Shiksha</span>Source
+            <img src="/Images/Footer Logo.png"  class="w-34" alt="" />
           </h2>
           <p className="mt-4 text-sm leading-relaxed">
             We help students build high-quality academic projects with

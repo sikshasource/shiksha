@@ -165,7 +165,7 @@ const testimonials = [
             Trusted By Students & Institutions
           </h2>
 
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 py-10 text-white mt-6">
+        <div className="bg-gradient-to-r from-blue-900 via-blue-800 to-indigo-900 py-12 text-white mt-8 shadow-lg">
             <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 text-center gap-6">
               {[
                 ["20+", "Projects Delivered"],
@@ -414,64 +414,79 @@ const testimonials = [
 
 
             {/* ================= CUSTOM PROJECT REQUEST ================= */}
-<section className="py-20 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-pink-600/10">
+<section className="py-24 bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100">
   <div className="max-w-6xl mx-auto px-6">
 
-    <div className="text-center mb-12">
-      <h2 className="text-4xl font-bold">
+    <div className="text-center mb-16">
+      <h2 className="text-4xl tracking-tight">
         Need a Custom Project?
       </h2>
-      <p className="text-gray-600 mt-3 max-w-2xl mx-auto">
+      <p className="text-gray-600 mt-4 max-w-2xl mx-auto leading-relaxed">
         Tell us your idea or requirements. Our experts will design a
         professional academic project tailored exactly for you.
       </p>
     </div>
 
-    <div className="bg-white/70 backdrop-blur-lg shadow-xl rounded-3xl p-10 grid md:grid-cols-2 gap-10">
+    <div className="bg-white shadow-2xl rounded-3xl p-12 grid md:grid-cols-2 gap-12 border border-gray-100">
 
       {/* LEFT SIDE INFO */}
-      <div className="flex flex-col justify-center space-y-6">
+      <div className="flex flex-col justify-center space-y-8">
+
         <div>
-          <h3 className="text-2xl font-semibold mb-2">
+          <h3 className="text-2xl mb-4">
             Why Choose Custom?
           </h3>
-          <ul className="space-y-3 text-gray-600">
-            <li>✔ Unique project tailored to your syllabus</li>
-            <li>✔ IEEE paper & documentation included</li>
-            <li>✔ Full explanation & viva support</li>
-            <li>✔ Deployment & hosting guidance</li>
+
+          <ul className="space-y-4 text-gray-600">
+            <li className="flex items-center gap-3">
+              <span className="text-green-500">✔</span>
+              Unique project tailored to your syllabus
+            </li>
+            <li className="flex items-center gap-3">
+              <span className="text-green-500">✔</span>
+              IEEE paper & documentation included
+            </li>
+            <li className="flex items-center gap-3">
+              <span className="text-green-500">✔</span>
+              Full explanation & viva support
+            </li>
+            <li className="flex items-center gap-3">
+              <span className="text-green-500">✔</span>
+              Deployment & hosting guidance
+            </li>
           </ul>
         </div>
 
-        <div className="bg-blue-600 text-white rounded-xl p-6">
-          <h4 className="font-semibold text-lg">
+        <div className="bg-indigo-600 text-white rounded-2xl p-6 shadow-lg">
+          <h4 className="text-lg">
             Fast Response Guaranteed
           </h4>
-          <p className="text-sm opacity-90 mt-2">
+          <p className="text-sm opacity-90 mt-2 leading-relaxed">
             We usually respond within 24 hours with project roadmap & quotation.
           </p>
         </div>
+
       </div>
 
       {/* RIGHT SIDE FORM */}
-      <form className="space-y-5">
+      <form className="space-y-6">
 
         <div>
-          <label className="block text-sm font-medium mb-2">
+          <label className="block text-sm mb-2">
             Your Name
           </label>
           <input
             type="text"
             placeholder="Enter your name"
-            className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-blue-500 outline-none"
+            className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2">
+          <label className="block text-sm mb-2">
             Project Domain
           </label>
-          <select className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-blue-500 outline-none">
+          <select className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
             <option>Select Domain</option>
             <option>Artificial Intelligence</option>
             <option>Web Development</option>
@@ -482,10 +497,10 @@ const testimonials = [
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2">
+          <label className="block text-sm mb-2">
             Budget Range
           </label>
-          <select className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-blue-500 outline-none">
+          <select className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
             <option>Select Budget</option>
             <option>₹2,000 - ₹4,000</option>
             <option>₹4,000 - ₹6,000</option>
@@ -495,20 +510,20 @@ const testimonials = [
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2">
+          <label className="block text-sm mb-2">
             Describe Your Requirement
           </label>
           <textarea
             rows="4"
             placeholder="Explain your project idea, features, technologies..."
-            className="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-blue-500 outline-none"
+            className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition resize-none"
           />
         </div>
 
-        <button
-          type="button"
-          className="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition duration-300 shadow-lg"
-        >
+      <button
+  type="button"
+  className="w-full bg-slate-900 text-white py-3 rounded-xl hover:bg-slate-800 transition-all duration-300 shadow-lg hover:shadow-2xl"
+>
           Request Custom Project
         </button>
 
