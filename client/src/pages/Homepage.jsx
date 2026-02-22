@@ -287,7 +287,7 @@ const testimonials = [
                 ].map((img, i) => (
                   <img
                     key={i}
-                    src={`/images/${img}`}
+                    src={`/Images/${img}`}
                     className="w-28 inline-block object-contain"
                     alt="College"
                   />
