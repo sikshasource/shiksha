@@ -21,7 +21,7 @@ const NavBar = () => {
       <div className="flex gap-6 items-center">
 
         <Link to="/" className="text-sm hover:text-blue-600">
-          Home.
+          Home
         </Link>
 
         {/* Dropdown */}
