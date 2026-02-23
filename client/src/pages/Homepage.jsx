@@ -52,6 +52,55 @@ const testimonials = [
 
   const { name, role, review, avatar } = testimonials[index];
 
+const [formData, setFormData] = useState({
+  name: "",
+  domain: "",
+  budget: "",
+  description: "",
+});
+
+const [loading, setLoading] = useState(false);
+
+const handleChange = (e) => {
+  setFormData({
+    ...formData,
+    [e.target.name]: e.target.value,
+  });
+};
+
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+
+  try {
+    const response = await fetch("https://your-backend-url.com/api/custom-project", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      alert("Request submitted successfully!");
+      setFormData({
+        name: "",
+        domain: "",
+        budget: "",
+        description: "",
+      });
+    } else {
+      alert(data.message || "Something went wrong");
+    }
+  } catch (error) {
+    alert("Server error");
+  }
+
+  setLoading(false);
+};
 
   return (
     <>
@@ -115,19 +164,19 @@ const testimonials = [
 
       `}</style>
 
-      <div className="bg-gray-50 text-gray-800">
+      <div className="bg-gray-50 text-gray-800 overflow-x-hidden">
 
       <NavBar/>
         {/* ================= HERO ================= */}
-        <section className="bg-gradient-to-r from-blue-600/10 to-purple-600/10">
-          <div className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-10 items-center">
+       <section className="bg-gradient-to-r from-blue-600/10 to-purple-600/10">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
 
             <div>
               <p className="text-sm text-blue-600 font-semibold tracking-wide">
                 AFFORDABLE • RELIABLE • STUDENT FRIENDLY
               </p>
 
-            <h2 className="text-4xl md:text-5xl font-extrabold leading-tight mt-2">
+           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
   <span className="block animate-line delay-1">
     We Build College Projects
   </span>
@@ -469,24 +518,32 @@ const testimonials = [
       </div>
 
       {/* RIGHT SIDE FORM */}
-      <form className="space-y-6">
+   <form onSubmit={handleSubmit} className="space-y-6">
 
         <div>
           <label className="block text-sm mb-2">
             Your Name
           </label>
           <input
-            type="text"
-            placeholder="Enter your name"
-            className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
-          />
+  type="text"
+  name="name"
+  value={formData.name}
+  onChange={handleChange}
+  placeholder="Enter your name"
+  className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+/>
         </div>
 
         <div>
           <label className="block text-sm mb-2">
             Project Domain
           </label>
-          <select className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+       <select
+  name="domain"
+  value={formData.domain}
+  onChange={handleChange}
+  className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+>
             <option>Select Domain</option>
             <option>Artificial Intelligence</option>
             <option>Web Development</option>
@@ -500,7 +557,12 @@ const testimonials = [
           <label className="block text-sm mb-2">
             Budget Range
           </label>
-          <select className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+        <select
+  name="budget"
+  value={formData.budget}
+  onChange={handleChange}
+  className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+>
             <option>Select Budget</option>
             <option>₹2,000 - ₹4,000</option>
             <option>₹4,000 - ₹6,000</option>
@@ -513,19 +575,24 @@ const testimonials = [
           <label className="block text-sm mb-2">
             Describe Your Requirement
           </label>
-          <textarea
-            rows="4"
-            placeholder="Explain your project idea, features, technologies..."
-            className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition resize-none"
-          />
+       <textarea
+  name="description"
+  value={formData.description}
+  onChange={handleChange}
+  rows="4"
+  placeholder="Explain your project idea..."
+  className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition resize-none"
+/>
         </div>
 
-      <button
-  type="button"
+   <button
+  type="submit"
+  disabled={loading}
   className="w-full bg-slate-900 text-white py-3 rounded-xl hover:bg-slate-800 transition-all duration-300 shadow-lg hover:shadow-2xl"
 >
-          Request Custom Project
-        </button>
+  {loading ? "Submitting..." : "Request Custom Project"}
+</button>
+        
 
       </form>
 

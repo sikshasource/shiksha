@@ -75,7 +75,7 @@ export default function SignIn() {
       {/* LEFT PANEL */}
       <div className="hidden md:flex md:w-1/2 bg-black items-center justify-center p-8">
   <img
-    src="/Images/Left _ogo.png"
+    src="/Images/Left_logo.png"
     alt="Brand Logo"
     className="max-w-xs md:max-w-md w-1/2 h-auto object-contain"
   />

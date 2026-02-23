@@ -4,6 +4,9 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 
+import customProjectRoute from "./routes/customProject.js";
+
+
 dotenv.config();
 connectDB();
 
@@ -25,6 +28,16 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
+
+app.use("/api/custom-project", customProjectRoute);
+
+
+app.use(cors({
+  origin: process.env.CLIENT_URL,
+  credentials: true
+}));
+
+
 
 app.get("/", (req, res) => {
   res.send("API Running");
