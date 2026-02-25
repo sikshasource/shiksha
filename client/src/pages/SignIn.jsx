@@ -46,7 +46,7 @@ export default function SignIn() {
 
       if (!res.ok) throw new Error(data.message);
 
-      login(data.token);
+  login(data.token, data.user);
       navigate("/");
 
     } catch (err) {
@@ -57,17 +57,33 @@ export default function SignIn() {
   };
 
   // Google Login
-  const handleGoogleLogin = async () => {
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const token = await result.user.getIdToken();
+const handleGoogleLogin = async () => {
+  try {
+    const result = await signInWithPopup(auth, provider);
 
-      login(token);
-      navigate("/");
-    } catch (error) {
-      setError("Google login failed");
-    }
-  };
+    const token = await result.user.getIdToken();
+
+    // 🔥 Extract Google User Data
+    const googleUser = {
+      id: result.user.uid,
+      firstName: result.user.displayName
+        ? result.user.displayName.split(" ")[0]
+        : "",
+      lastName: result.user.displayName
+        ? result.user.displayName.split(" ")[1] || ""
+        : "",
+      email: result.user.email,
+      role: "user",
+    };
+
+    // 🔥 Store token + user
+    login(token, googleUser);
+
+    navigate("/");
+  } catch (error) {
+    setError("Google login failed");
+  }
+};
 
   return (
     <div className="min-h-screen flex">

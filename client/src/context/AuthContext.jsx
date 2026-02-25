@@ -1,5 +1,6 @@
 // import React, { createContext, useContext, useEffect, useState } from "react";
 // import { jwtDecode } from "jwt-decode";
+
 // const AuthContext = createContext();
 
 // export const AuthProvider = ({ children }) => {
@@ -42,7 +43,6 @@
 
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
 
 const AuthContext = createContext();
 
@@ -52,22 +52,26 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
+    const storedUser = localStorage.getItem("user");
+
+    if (token && storedUser) {
       setUserToken(token);
-      const decoded = jwtDecode(token);
-      setUser(decoded);
+      setUser(JSON.parse(storedUser));
     }
   }, []);
 
-  const login = (token) => {
+  const login = (token, userData) => {
     localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(userData));
+
     setUserToken(token);
-    const decoded = jwtDecode(token);
-    setUser(decoded);
+    setUser(userData);
   };
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
     setUserToken(null);
     setUser(null);
   };

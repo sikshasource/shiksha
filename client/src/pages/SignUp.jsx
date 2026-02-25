@@ -55,7 +55,7 @@ export default function SignUp() {
 
       if (!res.ok) throw new Error(data.message);
 
-      login(data.token);
+ login(data.token, data.user);
       navigate("/Homepage");
 
     } catch (err) {
