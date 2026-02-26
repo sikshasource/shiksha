@@ -55,9 +55,8 @@ export default function SignUp() {
 
       if (!res.ok) throw new Error(data.message);
 
- login(data.token, data.user);
+      login(data.token, data.user);
       navigate("/Homepage");
-
     } catch (err) {
       setError(err.message || "Something went wrong");
     } finally {
@@ -67,30 +66,25 @@ export default function SignUp() {
 
   return (
     <div className="min-h-screen flex">
-
       {/* LEFT PANEL */}
       <div className="hidden md:flex w-1/2 bg-black items-center justify-center">
-        <h1 className="text-6xl font-serif text-white">
-          Shiksha <span className="text-blue-600">Source</span>
-        </h1>
+        <img
+          src="/Images/Left_logo.png"
+          alt="Brand Logo"
+          className="max-w-xs md:max-w-md w-1/4 h-auto object-contain"
+        />
       </div>
 
       {/* RIGHT PANEL */}
       <div className="w-full md:w-1/2 flex items-center justify-center bg-gray-100">
         <div className="w-full max-w-md px-8">
-
-          <h2 className="text-3xl font-serif text-center mb-8">
-            Sign Up
-          </h2>
+          <h2 className="text-3xl font-serif text-center mb-8">Sign Up</h2>
 
           {error && (
-            <p className="text-red-500 text-sm text-center mb-4">
-              {error}
-            </p>
+            <p className="text-red-500 text-sm text-center mb-4">{error}</p>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
-
             {/* First Name */}
             <div>
               <label className="block text-sm mb-2">First Name</label>
@@ -144,9 +138,8 @@ export default function SignUp() {
                   type="date"
                   name="dob"
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border rounded-md pr-10 focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-3 border rounded-md pr-4 focus:ring-2 focus:ring-blue-500 outline-none"
                 />
-                <Calendar className="absolute right-3 top-3.5 w-5 h-5 text-black" />
               </div>
             </div>
 
@@ -188,9 +181,7 @@ export default function SignUp() {
             >
               {loading ? "Creating..." : "Continue"}
             </button>
-
           </form>
-
         </div>
       </div>
     </div>
