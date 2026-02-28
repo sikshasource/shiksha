@@ -416,66 +416,69 @@ export default function Homepage() {
 
         {/* ================= WHAT WE DO ================= */}
         <section className="py-20 bg-slate-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            {/* Section Label */}
-            <p className="text-xs uppercase tracking-widest text-blue-700 mb-3">
-              Our Services
-            </p>
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    
+    {/* Section Label */}
+    <p className="text-xs uppercase tracking-widest text-blue-700 mb-3">
+      Our Services
+    </p>
 
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
-              Comprehensive Academic Project Solutions
-            </h2>
+    <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
+      Comprehensive Academic Project Solutions
+    </h2>
 
-            <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
-              End-to-end support covering development, documentation,
-              mentorship, and deployment — aligned with academic standards.
-            </p>
+    <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+      End-to-end support covering development, documentation,
+      mentorship, and deployment — aligned with academic standards.
+    </p>
 
-            {/* Services Grid */}
-            <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 group">
-              {services.map((service, index) => {
-                const Icon = service.icon;
+    {/* Services Grid */}
+    <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 group">
+      {services.map((service, index) => {
+        const Icon = service.icon;
 
-                return (
-                  <div
-                    key={service.title}
-                    className={`
-                  bg-white border border-gray-100 rounded-xl p-8 text-left
-                  transform translate-y-8 opacity-0
-                  group-hover:translate-y-0 group-hover:opacity-100
-                  transition-all duration-400 ease-out
-                  hover:shadow-lg
-                `}
-                    style={{
-                      transitionDelay: `${index * 150}ms`,
-                    }}
-                  >
-                    {/* Icon */}
-                    <div className="w-10 h-10 flex items-center justify-center rounded-md bg-blue-50 mb-4">
-                      <Icon className="w-5 h-5 text-blue-600" />
-                    </div>
-
-                    <h3 className="text-lg font-semibold text-slate-900">
-                      {service.title}
-                    </h3>
-
-                    <p className="mt-3 text-sm text-gray-600 leading-relaxed">
-                      {service.desc}
-                    </p>
-                  </div>
-                );
-              })}
+        return (
+          <div
+            key={service.title}
+            className={`
+              bg-white border border-gray-100 rounded-xl p-8 text-left
+              transform md:translate-y-8 md:opacity-0
+              md:group-hover:translate-y-0 md:group-hover:opacity-100
+              opacity-100
+              transition-all duration-500 ease-out
+              hover:shadow-lg
+            `}
+            style={{
+              transitionDelay: `${index * 150}ms`,
+            }}
+          >
+            {/* Icon */}
+            <div className="w-10 h-10 flex items-center justify-center rounded-md bg-blue-50 mb-4">
+              <Icon className="w-5 h-5 text-blue-600" />
             </div>
 
-            {/* Disclaimer */}
-            <p className="mt-12 text-xs text-gray-500 max-w-4xl mx-auto leading-relaxed">
-              <span className="font-medium text-gray-600">Note:</span> Service
-              scope, timelines, and pricing vary based on academic requirements,
-              complexity, and customization level. Each project is evaluated
-              individually to ensure appropriate guidance and delivery.
+            <h3 className="text-lg font-semibold text-slate-900">
+              {service.title}
+            </h3>
+
+            <p className="mt-3 text-sm text-gray-600 leading-relaxed">
+              {service.desc}
             </p>
           </div>
-        </section>
+        );
+      })}
+    </div>
+
+    {/* Disclaimer */}
+    <p className="mt-12 text-xs text-gray-500 max-w-4xl mx-auto leading-relaxed">
+      <span className="font-medium text-gray-600">Note:</span> Service
+      scope, timelines, and pricing vary based on academic requirements,
+      complexity, and customization level. Each project is evaluated
+      individually to ensure appropriate guidance and delivery.
+    </p>
+
+  </div>
+</section>
 
         {/* ================= WHY CHOOSE US ================= */}
         <section ref={sectionRef} className="py-20 bg-white">
