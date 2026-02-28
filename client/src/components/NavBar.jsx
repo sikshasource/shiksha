@@ -250,14 +250,18 @@ const NavBar = () => {
   const normalClass = "text-gray-700 hover:text-blue-600 transition";
 
   /* ---------- Display Name ---------- */
-  const formatName = (name) => name.charAt(0).toUpperCase() + name.slice(1);
+  const formatName = (name) =>
+    name.charAt(0).toUpperCase() + name.slice(1);
 
   const displayName =
     user?.firstName ||
     user?.name ||
     (user?.email
       ? formatName(
-          user.email.split("@")[0].replace(/[0-9]/g, "").replace(/[._]/g, ""),
+          user.email
+            .split("@")[0]
+            .replace(/[0-9]/g, "")
+            .replace(/[._]/g, "")
         )
       : "User");
 
@@ -272,7 +276,7 @@ const NavBar = () => {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
           ? "bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-100"
-          : "bg-transparent"
+          : "bg-white/60 backdrop-blur-md"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -286,7 +290,7 @@ const NavBar = () => {
         </div>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-8 text-sm ">
+        <div className="hidden md:flex items-center gap-8 text-sm">
           <Link to="/" className={isActive("/") ? activeClass : normalClass}>
             Home
           </Link>
@@ -309,7 +313,7 @@ const NavBar = () => {
             </button>
 
             {open && (
-              <div className="absolute right-0 mt-4 w-56 bg-white border border-gray-200 rounded-xl shadow-lg py-2 transition-all">
+              <div className="absolute right-0 mt-4 w-56 bg-white border border-gray-200 rounded-xl shadow-lg py-2">
                 <button
                   onClick={() => handleNavigate("/by-domain")}
                   className="w-full text-left px-5 py-2 hover:bg-gray-50"
@@ -386,8 +390,7 @@ const NavBar = () => {
       {/* Mobile Menu */}
       {mobileMenu && (
         <div className="md:hidden fixed inset-0 top-16 z-40 bg-white/95 backdrop-blur-md transition-all duration-300">
-          <div className="px-6 py-8 space-y-6 text-sm ">
-            {/* Main Navigation */}
+          <div className="px-6 py-8 space-y-6 text-sm">
             <div className="space-y-4">
               <button
                 onClick={() => handleNavigate("/")}
@@ -433,7 +436,6 @@ const NavBar = () => {
               </button>
             </div>
 
-            {/* Divider */}
             <div className="border-t border-gray-200 pt-6 space-y-4">
               {!userToken ? (
                 <>
@@ -446,7 +448,7 @@ const NavBar = () => {
 
                   <button
                     onClick={() => handleNavigate("/signup")}
-                    className="w-full bg-slate-900 text-white px-4 py-3 rounded-lg text-center hover:bg-slate-800 transition"
+                    className="w-full bg-slate-900 text-white px-4 py-3 rounded-lg hover:bg-slate-800 transition"
                   >
                     Get Started
                   </button>
