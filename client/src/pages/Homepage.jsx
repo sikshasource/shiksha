@@ -19,8 +19,7 @@ import {
   Clock,
   Trophy,
 } from "lucide-react";
-import { ChevronLeft, ChevronRight, Quote } 
-from "lucide-react";
+import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 
 import { useEffect, useRef } from "react";
 
@@ -55,7 +54,7 @@ export default function Homepage() {
           setVisible(true);
         }
       },
-      { threshold: 0.01 }
+      { threshold: 0.01 },
     );
 
     if (sectionRef.current) {
@@ -64,7 +63,6 @@ export default function Homepage() {
 
     return () => observer.disconnect();
   }, []);
-
 
   const services = [
     {
@@ -156,7 +154,6 @@ export default function Homepage() {
     },
   ];
 
-
   const categories = [
     {
       name: "Frontend",
@@ -185,18 +182,16 @@ export default function Homepage() {
         ["firebase", "Firebase", "Realtime DB"],
       ],
     },
-   {
-  name: "AI / ML",
-  items: [
-    ["tensorflow", "TensorFlow", "Prediction Models"],
-    ["pytorch", "PyTorch", "Deep Learning"],
-    ["python", "Python", "ML & AI Backend"],
-    ["anaconda", "Anaconda", "Data Environment"],
-  ],
-}
+    {
+      name: "AI / ML",
+      items: [
+        ["tensorflow", "TensorFlow", "Prediction Models"],
+        ["pytorch", "PyTorch", "Deep Learning"],
+        ["python", "Python", "ML & AI Backend"],
+        ["anaconda", "Anaconda", "Data Environment"],
+      ],
+    },
   ];
-
-  
 
   const changeCategory = (i) => {
     setFade(false);
@@ -206,13 +201,17 @@ export default function Homepage() {
     }, 200);
   };
 
-  const current = categories[index];
-
-
+  const current = categories[index] || categories[0];
 
   const [fade, setFade] = useState(true);
 
-  const nextTestimonial = () => {
+ 
+  const safeTestimonial = testimonials[index] || testimonials[0];
+
+  const { review, name, role, avatar } = safeTestimonial;
+
+
+   const nextTestimonial = () => {
     setFade(false);
     setTimeout(() => {
       setIndex((prev) => (prev + 1) % testimonials.length);
@@ -227,8 +226,6 @@ export default function Homepage() {
       setFade(true);
     }, 200);
   };
-
-  const { review, name, role, avatar } = testimonials[index];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -446,7 +443,7 @@ export default function Homepage() {
                   bg-white border border-gray-100 rounded-xl p-8 text-left
                   transform translate-y-8 opacity-0
                   group-hover:translate-y-0 group-hover:opacity-100
-                  transition-all duration-700 ease-out
+                  transition-all duration-400 ease-out
                   hover:shadow-lg
                 `}
                     style={{
@@ -482,74 +479,75 @@ export default function Homepage() {
 
         {/* ================= WHY CHOOSE US ================= */}
         <section ref={sectionRef} className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p className="text-xs uppercase tracking-widest text-blue-700 mb-3">
+              Our Advantage
+            </p>
 
-        <p className="text-xs uppercase tracking-widest text-blue-700 mb-3">
-          Our Advantage
-        </p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
+              Why Students Trust Shiksha Source
+            </h2>
 
-        <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
-          Why Students Trust Shiksha Source
-        </h2>
+            <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+              We combine technical expertise, structured mentorship, and
+              reliable execution to ensure academic success with confidence.
+            </p>
 
-        <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
-          We combine technical expertise, structured mentorship, and
-          reliable execution to ensure academic success with confidence.
-        </p>
+            {/* Feature Grid */}
+            <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {features.map((feature, index) => {
+                const Icon = feature.icon;
 
-        {/* Feature Grid */}
-        <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((feature, index) => {
-            const Icon = feature.icon;
-
-            return (
-              <div
-                key={feature.title}
-                className={`
+                return (
+                  <div
+                    key={feature.title}
+                    className={`
                   group bg-slate-50 border border-gray-100 rounded-xl p-8 text-left
                   transition-all duration-700 ease-out
                   hover:shadow-xl hover:-translate-y-2
-                  ${visible 
-                    ? "opacity-100 translate-y-0" 
-                    : "opacity-0 translate-y-10"}
+                  ${
+                    visible
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 translate-y-10"
+                  }
                 `}
-                style={{
-                  transitionDelay: `${index * 150}ms`,
-                }}
-              >
-                {/* Icon */}
-                <div
-                  className="
+                    style={{
+                      transitionDelay: `${index * 150}ms`,
+                    }}
+                  >
+                    {/* Icon */}
+                    <div
+                      className="
                     w-12 h-12 flex items-center justify-center rounded-lg 
                     bg-blue-50 mb-5
                     transition-all duration-300
                     group-hover:bg-blue-600
                   "
-                >
-                  <Icon
-                    strokeWidth={1.8}
-                    className="
+                    >
+                      <Icon
+                        strokeWidth={1.8}
+                        className="
                       w-6 h-6 text-blue-600
                       transition-all duration-300
                       group-hover:text-white
                       group-hover:scale-110
                     "
-                  />
-                </div>
+                      />
+                    </div>
 
-                <h3 className="text-lg font-semibold text-slate-900">
-                  {feature.title}
-                </h3>
+                    <h3 className="text-lg font-semibold text-slate-900">
+                      {feature.title}
+                    </h3>
 
-                <p className="mt-3 text-sm text-gray-600 leading-relaxed">
-                  {feature.desc}
-                </p>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
+                    <p className="mt-3 text-sm text-gray-600 leading-relaxed">
+                      {feature.desc}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
 
         {/* ================= COLLEGES SCROLL ================= */}
         <section className="py-14 bg-white">
@@ -585,81 +583,78 @@ export default function Homepage() {
         </section>
 
         {/* ================= TECHNOLOGIES ================= */}
-      <section className="py-20 bg-slate-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <section className="py-20 bg-slate-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            {/* Label */}
+            <p className="text-xs uppercase tracking-widest text-blue-700 mb-3">
+              Technology Stack
+            </p>
 
-        {/* Label */}
-        <p className="text-xs uppercase tracking-widest text-blue-700 mb-3">
-          Technology Stack
-        </p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
+              Technologies & Domains We Work With
+            </h2>
 
-        <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
-          Technologies & Domains We Work With
-        </h2>
+            <p className="mt-4 text-gray-600 max-w-3xl mx-auto">
+              Industry-relevant tools and frameworks used to build scalable,
+              modern, and academically aligned solutions.
+            </p>
 
-        <p className="mt-4 text-gray-600 max-w-3xl mx-auto">
-          Industry-relevant tools and frameworks used to build scalable,
-          modern, and academically aligned solutions.
-        </p>
+            {/* Category Title */}
+            <h3 className="mt-14 text-xl font-semibold text-slate-900">
+              {current.name} Technologies
+            </h3>
 
-        {/* Category Title */}
-        <h3 className="mt-14 text-xl font-semibold text-slate-900">
-          {current.name} Technologies
-        </h3>
-
-        {/* Grid */}
-        <div
-          className={`mt-10 grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 transition-all duration-500 ${
-            fade ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          }`}
-        >
-          {current.items.map(([icon, title, desc]) => (
+            {/* Grid */}
             <div
-              key={title}
-              className="bg-white border border-gray-100 rounded-xl p-8 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
-            >
-              <div className="w-14 h-14 mx-auto mb-4 flex items-center justify-center rounded-lg bg-slate-100">
-                <img
-  src={`https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${icon}/${icon}-original.svg`}
-  alt={title}
-  className="w-8 h-8"
-  onError={(e) => {
-    e.target.onerror = null;
-    e.target.src = "/Images/default-tech.svg"; // add fallback icon
-  }}
-/>
-              </div>
-
-              <h3 className="text-lg font-semibold text-slate-900">
-                {title}
-              </h3>
-
-              <p className="mt-2 text-sm text-gray-600">{desc}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Dots Navigation */}
-        <div className="flex justify-center gap-3 mt-12">
-          {categories.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => changeCategory(i)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                i === index
-                  ? "bg-blue-600 scale-125"
-                  : "bg-gray-300"
+              className={`mt-10 grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 transition-all duration-500 ${
+                fade ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
               }`}
-            />
-          ))}
-        </div>
+            >
+              {current.items?.map(([icon, title, desc]) => (
+                <div
+                  key={title}
+                  className="bg-white border border-gray-100 rounded-xl p-8 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                >
+                  <div className="w-14 h-14 mx-auto mb-4 flex items-center justify-center rounded-lg bg-slate-100">
+                    <img
+                      src={`https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${icon}/${icon}-original.svg`}
+                      alt={title}
+                      className="w-8 h-8"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = "/Images/default-tech.svg";
+                      }}
+                    />
+                  </div>
 
-        <p className="mt-10 text-sm text-gray-500">
-          Additional technologies are supported based on project scope and
-          academic requirements.
-        </p>
-      </div>
-    </section>
+                  <h3 className="text-lg font-semibold text-slate-900">
+                    {title}
+                  </h3>
+
+                  <p className="mt-2 text-sm text-gray-600">{desc}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Dots Navigation */}
+            <div className="flex justify-center gap-3 mt-12">
+              {categories.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => changeCategory(i)}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    i === index ? "bg-blue-600 scale-125" : "bg-gray-300"
+                  }`}
+                />
+              ))}
+            </div>
+
+            <p className="mt-10 text-sm text-gray-500">
+              Additional technologies are supported based on project scope and
+              academic requirements.
+            </p>
+          </div>
+        </section>
 
         {/* {Student Testimonial} */}
         <section className="py-24 bg-slate-50">

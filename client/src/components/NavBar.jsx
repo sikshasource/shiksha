@@ -207,10 +207,6 @@
 
 // export default NavBar;
 
-
-
-
-
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -254,18 +250,14 @@ const NavBar = () => {
   const normalClass = "text-gray-700 hover:text-blue-600 transition";
 
   /* ---------- Display Name ---------- */
-  const formatName = (name) =>
-    name.charAt(0).toUpperCase() + name.slice(1);
+  const formatName = (name) => name.charAt(0).toUpperCase() + name.slice(1);
 
   const displayName =
     user?.firstName ||
     user?.name ||
     (user?.email
       ? formatName(
-          user.email
-            .split("@")[0]
-            .replace(/[0-9]/g, "")
-            .replace(/[._]/g, "")
+          user.email.split("@")[0].replace(/[0-9]/g, "").replace(/[._]/g, ""),
         )
       : "User");
 
@@ -284,12 +276,8 @@ const NavBar = () => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-
         {/* Logo */}
-        <div
-          onClick={() => handleNavigate("/")}
-          className="cursor-pointer"
-        >
+        <div onClick={() => handleNavigate("/")} className="cursor-pointer">
           <img
             src="/Images/Header_Logo.png"
             alt="Shiksha Source Logo"
@@ -299,11 +287,7 @@ const NavBar = () => {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-8 text-sm ">
-
-          <Link
-            to="/"
-            className={isActive("/") ? activeClass : normalClass}
-          >
+          <Link to="/" className={isActive("/") ? activeClass : normalClass}>
             Home
           </Link>
 
@@ -401,52 +385,93 @@ const NavBar = () => {
 
       {/* Mobile Menu */}
       {mobileMenu && (
-        <div className="md:hidden bg-white/95 backdrop-blur-md border-t border-gray-100">
-          <div className="px-6 py-6 space-y-4 text-sm font-medium">
+        <div className="md:hidden fixed inset-0 top-16 z-40 bg-white/95 backdrop-blur-md transition-all duration-300">
+          <div className="px-6 py-8 space-y-6 text-sm ">
+            {/* Main Navigation */}
+            <div className="space-y-4">
+              <button
+                onClick={() => handleNavigate("/")}
+                className={`block w-full text-left ${
+                  location.pathname === "/"
+                    ? "text-blue-600 font-semibold"
+                    : "text-gray-700"
+                }`}
+              >
+                Home
+              </button>
 
-            <button onClick={() => handleNavigate("/")}>Home</button>
-            <button onClick={() => handleNavigate("/by-domain")}>
-              By Domain
-            </button>
-            <button onClick={() => handleNavigate("/by-degree")}>
-              By Degree
-            </button>
-            <button onClick={() => handleNavigate("/by-technology")}>
-              By Technology
-            </button>
-            <button onClick={() => handleNavigate("/aboutus")}>
-              About
-            </button>
+              <button
+                onClick={() => handleNavigate("/by-domain")}
+                className="block w-full text-left text-gray-700"
+              >
+                Browse by Domain
+              </button>
 
-            {!userToken ? (
-              <>
-                <button onClick={() => handleNavigate("/signin")}>
-                  Sign In
-                </button>
-                <button
-                  onClick={() => handleNavigate("/signup")}
-                  className="bg-slate-900 text-white px-4 py-2 rounded-md w-full"
-                >
-                  Get Started
-                </button>
-              </>
-            ) : (
-              <>
-                <div>
-                  Hi,{" "}
-                  <span className="font-semibold">{displayName}</span>
-                </div>
-                <button
-                  onClick={() => {
-                    logout();
-                    setMobileMenu(false);
-                  }}
-                  className="text-red-600"
-                >
-                  Logout
-                </button>
-              </>
-            )}
+              <button
+                onClick={() => handleNavigate("/by-degree")}
+                className="block w-full text-left text-gray-700"
+              >
+                Browse by Degree
+              </button>
+
+              <button
+                onClick={() => handleNavigate("/by-technology")}
+                className="block w-full text-left text-gray-700"
+              >
+                Browse by Technology
+              </button>
+
+              <button
+                onClick={() => handleNavigate("/aboutus")}
+                className={`block w-full text-left ${
+                  location.pathname === "/aboutus"
+                    ? "text-blue-600 font-semibold"
+                    : "text-gray-700"
+                }`}
+              >
+                About
+              </button>
+            </div>
+
+            {/* Divider */}
+            <div className="border-t border-gray-200 pt-6 space-y-4">
+              {!userToken ? (
+                <>
+                  <button
+                    onClick={() => handleNavigate("/signin")}
+                    className="block w-full text-left text-gray-700"
+                  >
+                    Sign In
+                  </button>
+
+                  <button
+                    onClick={() => handleNavigate("/signup")}
+                    className="w-full bg-slate-900 text-white px-4 py-3 rounded-lg text-center hover:bg-slate-800 transition"
+                  >
+                    Get Started
+                  </button>
+                </>
+              ) : (
+                <>
+                  <div className="text-gray-600">
+                    Signed in as{" "}
+                    <span className="font-semibold text-slate-900">
+                      {displayName}
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      logout();
+                      setMobileMenu(false);
+                    }}
+                    className="block w-full text-left text-red-600"
+                  >
+                    Logout
+                  </button>
+                </>
+              )}
+            </div>
           </div>
         </div>
       )}
