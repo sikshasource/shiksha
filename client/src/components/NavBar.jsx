@@ -122,8 +122,8 @@ const NavBar = () => {
           {!userToken ? (
             <>
               <Link
-                to="/signin"
-                className={isActive("/signin") ? activeClass : normalClass}
+                to="/LogIn"
+                className={isActive("/LogIn") ? activeClass : normalClass}
               >
                 Sign In
               </Link>
@@ -217,7 +217,7 @@ const NavBar = () => {
               {!userToken ? (
                 <>
                   <button
-                    onClick={() => handleNavigate("/signin")}
+                    onClick={() => handleNavigate("/LogIn")}
                     className="block w-full text-left text-gray-700"
                   >
                     Sign In

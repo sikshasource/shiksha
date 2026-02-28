@@ -6,7 +6,7 @@ import AboutUs from "./pages/AboutUs";
 import ByDomain from "./pages/ByDomain";
 import ByDegree from "./pages/ByDegree";
 import ByTechnology from "./pages/ByTechnology";
-import SignIn from "./pages/SignIn";
+import LogIn from "./pages/LogIn";
 import SignUp from "./pages/SignUp";
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/aboutus" element={<AboutUs />} />
-        <Route path="/signin" element={<SignIn />} />
+        <Route path="/LogIn" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/by-domain" element={<ByDomain />} />
         <Route path="/by-degree" element={<ByDegree />} />

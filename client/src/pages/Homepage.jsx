@@ -1,4 +1,4 @@
-import SignIn from "./SignIn";
+import LogIn from "./LogIn";
 import SignUp from "./SignUp";
 import AboutUs from "./AboutUs";
 import NavBar from "../components/NavBar";

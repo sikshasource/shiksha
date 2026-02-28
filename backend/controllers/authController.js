@@ -50,8 +50,8 @@ export const signup = async (req, res) => {
   }
 };
 
-/* Login */
-export const login = async (req, res) => {
+/* LogIn */
+export const LogIn = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -68,7 +68,7 @@ export const login = async (req, res) => {
     }
 
   res.json({
-  message: "Login successful",
+  message: "LogIn successful",
   token: generateToken(user._id),
   user: {
     id: user._id,

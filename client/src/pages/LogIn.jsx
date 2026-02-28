@@ -4,9 +4,9 @@ import { useAuth } from "../context/AuthContext";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../firebase";
 
-export default function SignIn() {
+export default function LogIn() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { LogIn } = useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -23,7 +23,7 @@ export default function SignIn() {
     });
   };
 
-  // Normal Login
+  // Normal LogIn
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -36,7 +36,7 @@ export default function SignIn() {
     try {
       setLoading(true);
 
-      const res = await fetch("http://localhost:8000/api/auth/login", {
+      const res = await fetch("http://localhost:8000/api/auth/LogIn", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -46,20 +46,20 @@ export default function SignIn() {
 
       if (!res.ok) throw new Error(data.message);
 
-  login(data.token, data.user);
+  LogIn(data.token, data.user);
       navigate("/");
 
     } catch (err) {
-      setError(err.message || "Login failed");
+      setError(err.message || "LogIn failed");
     } finally {
       setLoading(false);
     }
   };
 
-  // Google Login
-const handleGoogleLogin = async () => {
+  // Google LogIn
+const handleGoogleLogIn = async () => {
   try {
-    const result = await signInWithPopup(auth, provider);
+    const result = await LogInWithPopup(auth, provider);
 
     const token = await result.user.getIdToken();
 
@@ -77,11 +77,11 @@ const handleGoogleLogin = async () => {
     };
 
     // 🔥 Store token + user
-    login(token, googleUser);
+    LogIn(token, googleUser);
 
     navigate("/");
   } catch (error) {
-    setError("Google login failed");
+    setError("Google LogIn failed");
   }
 };
 
@@ -146,7 +146,7 @@ const handleGoogleLogin = async () => {
               disabled={loading}
               className="w-full bg-blue-600 text-white py-3 rounded-md font-semibold hover:bg-blue-700 transition"
             >
-              {loading ? "Signing in..." : "Sign In"}
+              {loading ? "LogIng in..." : "Sign In"}
             </button>
           </form>
 
@@ -168,7 +168,7 @@ const handleGoogleLogin = async () => {
 
           {/* Google Button */}
           <button
-            onClick={handleGoogleLogin}
+            onClick={handleGoogleLogIn}
             className="w-full border py-3 rounded-md flex items-center justify-center gap-3 hover:bg-gray-50 transition"
           >
             <img

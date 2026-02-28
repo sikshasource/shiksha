@@ -5,7 +5,7 @@ import { useAuth } from "../context/AuthContext";
 
 export default function SignUp() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { LogIn } = useAuth();
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -14,6 +14,7 @@ export default function SignUp() {
     dob: "",
     mobile: "",
     password: "",
+
   });
 
   const [error, setError] = useState("");
@@ -55,7 +56,7 @@ export default function SignUp() {
 
       if (!res.ok) throw new Error(data.message);
 
-      login(data.token, data.user);
+      LogIn(data.token, data.user);
       navigate("/Homepage");
     } catch (err) {
       setError(err.message || "Something went wrong");
