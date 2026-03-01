@@ -59,32 +59,32 @@ export default function LogIn() {
   // Google LogIn
 const handleGoogleLogIn = async () => {
   try {
-    const result = await LogInWithPopup(auth, provider);
+    setError("");
+
+    const result = await signInWithPopup(auth, provider);
 
     const token = await result.user.getIdToken();
 
-    // 🔥 Extract Google User Data
     const googleUser = {
       id: result.user.uid,
       firstName: result.user.displayName
         ? result.user.displayName.split(" ")[0]
         : "",
       lastName: result.user.displayName
-        ? result.user.displayName.split(" ")[1] || ""
+        ? result.user.displayName.split(" ").slice(1).join(" ")
         : "",
       email: result.user.email,
       role: "user",
     };
 
-    // 🔥 Store token + user
     LogIn(token, googleUser);
 
     navigate("/");
   } catch (error) {
-    setError("Google LogIn failed");
+    console.error(error);
+    setError(error.message || "Google Login failed");
   }
 };
-
   return (
     <div className="min-h-screen flex">
 

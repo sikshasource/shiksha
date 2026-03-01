@@ -1,20 +1,22 @@
-
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
-
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import customProjectRoute from "./routes/customProject.js";
 
+// ================= LOAD ENV =================
 dotenv.config();
+
+// ================= CONNECT DATABASE =================
 connectDB();
 
+// ================= INITIALIZE APP =================
 const app = express();
 
-/* ================= SECURITY ================= */
+// ================= SECURITY MIDDLEWARE =================
 
 // Security headers
 app.use(helmet());
@@ -26,7 +28,7 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// CORS (Production safe)
+// CORS configuration
 const allowedOrigins =
   process.env.NODE_ENV === "production"
     ? [process.env.CLIENT_URL]
@@ -45,26 +47,24 @@ app.use(
     credentials: true,
   })
 );
-// Body parser
+
+// ================= BODY PARSER =================
 app.use(express.json());
 
-/* ================= ROUTES ================= */
-
+// ================= ROUTES =================
 app.use("/api/auth", authRoutes);
 app.use("/api/custom-project", customProjectRoute);
 
 app.get("/", (req, res) => {
-  res.send("API Running");
+  res.send("API Running 🚀");
 });
 
-/* ================= ERROR HANDLER ================= */
-
-app.use((req, res, next) => {
+// ================= 404 HANDLER =================
+app.use((req, res) => {
   res.status(404).json({ message: "Route Not Found" });
 });
 
-/* ================= SERVER ================= */
-
+// ================= START SERVER =================
 const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => {

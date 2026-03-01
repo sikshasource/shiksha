@@ -57,7 +57,7 @@ export default function SignUp() {
       if (!res.ok) throw new Error(data.message);
 
       LogIn(data.token, data.user);
-      navigate("/Homepage");
+      navigate("/");
     } catch (err) {
       setError(err.message || "Something went wrong");
     } finally {
