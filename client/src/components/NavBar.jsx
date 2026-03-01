@@ -112,6 +112,11 @@ const NavBar = () => {
             )}
           </div>
 
+
+         <button>Courses Are Coming Soon</button>
+
+
+
           <Link
             to="/aboutus"
             className={isActive("/aboutus") ? activeClass : normalClass}

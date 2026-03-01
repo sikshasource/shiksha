@@ -3,6 +3,8 @@ import SignUp from "./SignUp";
 import AboutUs from "./AboutUs";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
+import Stats from "../components/Stats";
+import WhatweDo from "../components/WhatweDo";
 import {
   Code2,
   FileText,
@@ -20,20 +22,13 @@ import {
   Trophy,
 } from "lucide-react";
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
-
+import CustomProject from "../components/CustomProject";
 import { useEffect, useRef } from "react";
 
 import React, { useState } from "react";
 
 export default function Homepage() {
   const [index, setIndex] = useState(0);
-
-  const [formData, setFormData] = useState({
-    name: "",
-    domain: "",
-    budget: "",
-    description: "",
-  });
 
   const [loading, setLoading] = useState(false);
 
@@ -205,13 +200,11 @@ export default function Homepage() {
 
   const [fade, setFade] = useState(true);
 
- 
   const safeTestimonial = testimonials[index] || testimonials[0];
 
   const { review, name, role, avatar } = safeTestimonial;
 
-
-   const nextTestimonial = () => {
+  const nextTestimonial = () => {
     setFade(false);
     setTimeout(() => {
       setIndex((prev) => (prev + 1) % testimonials.length);
@@ -225,39 +218,6 @@ export default function Homepage() {
       setIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
       setFade(true);
     }, 200);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      const response = await fetch("http://localhost:8000/api/custom-project", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        alert("Request submitted successfully!");
-        setFormData({
-          name: "",
-          domain: "",
-          budget: "",
-          description: "",
-        });
-      } else {
-        alert(data.message || "Something went wrong");
-      }
-    } catch (error) {
-      alert("Server error");
-    }
-
-    setLoading(false);
   };
 
   return (
@@ -329,156 +289,110 @@ export default function Homepage() {
         <NavBar />
 
         {/* ================= HERO ================= */}
-        <section className="relative bg-gradient-to-br from-slate-50 via-white to-blue-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-28 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            {/* LEFT CONTENT */}
-            <div className="space-y-6">
-              <p className="text-xs sm:text-sm tracking-widest text-blue-700 uppercase">
-                Affordable • Reliable • Student Focused
-              </p>
+       <section className="relative bg-gradient-to-br from-slate-50 via-white to-blue-50 overflow-hidden">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-28 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
 
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                Industry-Ready College Projects
-                <span className="block text-blue-700 mt-2">
-                  Built Professionally. Delivered Affordably.
-                </span>
-              </h1>
+    {/* LEFT CONTENT */}
+    <div className="space-y-6 animate-fadeUp">
+      <p className="text-xs sm:text-sm tracking-widest text-blue-700 uppercase animate-slideUp delay-100">
+        Affordable • Reliable • Student Focused
+      </p>
 
-              <p className="text-gray-600 text-base sm:text-lg leading-relaxed max-w-xl">
-                We design and develop academic projects that meet real-world
-                standards — complete with documentation, explanation support,
-                and deployment guidance.
-              </p>
+      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight animate-slideUp delay-200">
+        Industry-Ready College Projects
+        <span className="block text-blue-700 mt-2">
+          Built Professionally. Delivered Affordably.
+        </span>
+      </h1>
 
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <button className="bg-slate-900 text-white px-6 py-3 rounded-md hover:bg-slate-800 transition">
-                  Explore Projects
-                </button>
+      <p className="text-gray-600 text-base sm:text-lg leading-relaxed max-w-xl animate-slideUp delay-300">
+        We design and develop academic projects that meet real-world
+        standards — complete with documentation, explanation support,
+        and deployment guidance.
+      </p>
 
-                <button
-                  onClick={() => {
-                    document
-                      .getElementById("custom-project")
-                      ?.scrollIntoView({ behaviour: "smooth" });
-                  }}
-                  className="border border-slate-900 px-6 py-3 rounded-md hover:bg-slate-100 transition"
-                >
-                  Request Custom Project
-                </button>
-              </div>
-            </div>
+      {/* CTA Buttons */}
+      <div className="flex flex-col sm:flex-row gap-4 pt-4 animate-slideUp delay-500">
+        <button className="bg-slate-900 text-white px-6 py-3 rounded-md hover:bg-slate-800 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+          Explore Projects
+        </button>
 
-            {/* RIGHT IMAGE PLACEHOLDER */}
-            <div className="flex justify-center md:justify-end">
-              <img
-                src="/Images/Hero_Image.png"
-                alt="Hero Illustration"
-                className="w-72 sm:w-80 md:w-[420px] lg:w-[480px] object-contain"
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* ================= STATS ================= */}
-        <section className="py-20 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            {/* Section Heading */}
-            <p className="text-xs uppercase tracking-widest text-blue-700 mb-3">
-              Trust & Credibility
-            </p>
-
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
-              Trusted by Students Across Multiple Institutions
-            </h2>
-
-            <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
-              We’ve successfully delivered high-quality academic solutions with
-              consistent guidance, professional standards, and reliable support.
-            </p>
-
-            {/* Stats Grid */}
-            <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-10">
-              {[
-                ["20+", "Projects Delivered"],
-                ["50+", "Students Guided"],
-                ["6+", "Colleges Served"],
-                ["100%", "Client Satisfaction"],
-              ].map(([value, label]) => (
-                <div key={label} className="space-y-2">
-                  <h3 className="text-4xl font-bold text-slate-900">{value}</h3>
-                  <p className="text-sm text-gray-600 tracking-wide">{label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ================= WHAT WE DO ================= */}
-        <section className="py-20 bg-slate-50">
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-    
-    {/* Section Label */}
-    <p className="text-xs uppercase tracking-widest text-blue-700 mb-3">
-      Our Services
-    </p>
-
-    <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
-      Comprehensive Academic Project Solutions
-    </h2>
-
-    <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
-      End-to-end support covering development, documentation,
-      mentorship, and deployment — aligned with academic standards.
-    </p>
-
-    {/* Services Grid */}
-    <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 group">
-      {services.map((service, index) => {
-        const Icon = service.icon;
-
-        return (
-          <div
-            key={service.title}
-            className={`
-              bg-white border border-gray-100 rounded-xl p-8 text-left
-              transform md:translate-y-8 md:opacity-0
-              md:group-hover:translate-y-0 md:group-hover:opacity-100
-              opacity-100
-              transition-all duration-500 ease-out
-              hover:shadow-lg
-            `}
-            style={{
-              transitionDelay: `${index * 150}ms`,
-            }}
-          >
-            {/* Icon */}
-            <div className="w-10 h-10 flex items-center justify-center rounded-md bg-blue-50 mb-4">
-              <Icon className="w-5 h-5 text-blue-600" />
-            </div>
-
-            <h3 className="text-lg font-semibold text-slate-900">
-              {service.title}
-            </h3>
-
-            <p className="mt-3 text-sm text-gray-600 leading-relaxed">
-              {service.desc}
-            </p>
-          </div>
-        );
-      })}
+        <button
+          onClick={() => {
+            document
+              .getElementById("custom-project")
+              ?.scrollIntoView({ behavior: "smooth" });
+          }}
+          className="border border-slate-900 px-6 py-3 rounded-md hover:bg-slate-100 transition-all duration-300 hover:-translate-y-1"
+        >
+          Request Custom Project
+        </button>
+      </div>
     </div>
 
-    {/* Disclaimer */}
-    <p className="mt-12 text-xs text-gray-500 max-w-4xl mx-auto leading-relaxed">
-      <span className="font-medium text-gray-600">Note:</span> Service
-      scope, timelines, and pricing vary based on academic requirements,
-      complexity, and customization level. Each project is evaluated
-      individually to ensure appropriate guidance and delivery.
-    </p>
-
+    {/* RIGHT IMAGE */}
+    <div className="flex justify-center md:justify-end animate-fadeIn delay-300">
+      <img
+        src="/Images/Hero_Image.png"
+        alt="Hero Illustration"
+        className="w-72 sm:w-80 md:w-[420px] lg:w-[480px] object-contain animate-float"
+      />
+    </div>
   </div>
+
+  {/* Custom Animations */}
+  <style>
+    {`
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(40px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      @keyframes slideUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+
+      @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-12px); }
+        100% { transform: translateY(0px); }
+      }
+
+      .animate-fadeUp {
+        animation: fadeUp 1s ease-out forwards;
+      }
+
+      .animate-slideUp {
+        animation: slideUp 0.9s ease-out forwards;
+      }
+
+      .animate-fadeIn {
+        animation: fadeIn 1.2s ease-out forwards;
+      }
+
+      .animate-float {
+        animation: float 5s ease-in-out infinite;
+      }
+
+      .delay-100 { animation-delay: 0.1s; }
+      .delay-200 { animation-delay: 0.2s; }
+      .delay-300 { animation-delay: 0.3s; }
+      .delay-500 { animation-delay: 0.5s; }
+    `}
+  </style>
 </section>
+
+        {/* This is the stats section */}
+        <Stats />
+
+        {/* ================= WHAT WE DO ================= */}
+       <WhatweDo/>
 
         {/* ================= WHY CHOOSE US ================= */}
         <section ref={sectionRef} className="py-20 bg-white">
@@ -738,146 +652,7 @@ export default function Homepage() {
           </div>
         </section>
 
-        {/* ================= CUSTOM PROJECT REQUEST ================= */}
-        <section id="custom-project" className="py-24 bg-slate-50">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Heading */}
-            <div className="text-center mb-16">
-              <p className="text-xs uppercase tracking-widest text-blue-700 mb-3">
-                Custom Solutions
-              </p>
-
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
-                Need a Custom Academic Project?
-              </h2>
-
-              <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
-                Share your requirements and our team will design a structured,
-                industry-aligned academic solution tailored to your syllabus.
-              </p>
-            </div>
-
-            {/* Content Grid */}
-            <div className="bg-white border border-gray-100 rounded-2xl shadow-sm p-10 md:p-14 grid md:grid-cols-2 gap-14">
-              {/* LEFT SIDE */}
-              <div className="flex flex-col justify-center space-y-8">
-                <div>
-                  <h3 className="text-xl font-semibold text-slate-900 mb-6">
-                    Why Choose a Custom Project?
-                  </h3>
-
-                  <ul className="space-y-4 text-gray-600 text-sm leading-relaxed">
-                    <li className="flex items-start gap-3">
-                      <span className="mt-1 w-2 h-2 rounded-full bg-slate-900"></span>
-                      Fully tailored solution aligned with your academic
-                      syllabus
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="mt-1 w-2 h-2 rounded-full bg-slate-900"></span>
-                      Complete documentation including IEEE paper and
-                      presentation
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="mt-1 w-2 h-2 rounded-full bg-slate-900"></span>
-                      Structured explanation and viva preparation support
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="mt-1 w-2 h-2 rounded-full bg-slate-900"></span>
-                      Deployment and live demonstration assistance
-                    </li>
-                  </ul>
-                </div>
-
-                {/* Subtle Response Note */}
-                <div className="border border-gray-200 rounded-xl p-6 bg-slate-50">
-                  <h4 className="font-bold text-slate-900">
-                    Quick Response Commitment
-                  </h4>
-                  <p className="text-sm text-gray-600 mt-2">
-                    Our team typically responds within 24 hours with a roadmap,
-                    technical scope, and pricing estimate.
-                  </p>
-                </div>
-              </div>
-
-              {/* RIGHT SIDE FORM */}
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label className="block text-sm  mb-2 text-gray-700 font-bold ">
-                    Your Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder="Enter your full name"
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm  mb-2 text-gray-700 font-bold">
-                    Project Domain
-                  </label>
-                  <select
-                    name="domain"
-                    value={formData.domain}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition"
-                  >
-                    <option>Select Domain</option>
-                    <option>Artificial Intelligence</option>
-                    <option>Web Development</option>
-                    <option>Cyber Security</option>
-                    <option>Mobile Application</option>
-                    <option>Cloud Computing</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm  mb-2 text-gray-700 font-bold">
-                    Budget Range
-                  </label>
-                  <select
-                    name="budget"
-                    value={formData.budget}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition"
-                  >
-                    <option>Select Budget</option>
-                    <option>₹2,000 - ₹4,000</option>
-                    <option>₹4,000 - ₹6,000</option>
-                    <option>₹6,000 - ₹10,000</option>
-                    <option>₹10,000+</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm  mb-2 text-gray-700 font-bold">
-                    Project Description
-                  </label>
-                  <textarea
-                    name="description"
-                    value={formData.description}
-                    onChange={handleChange}
-                    rows="4"
-                    placeholder="Describe your project idea and requirements"
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition resize-none"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full bg-slate-900 text-white py-3 rounded-lg hover:bg-slate-800 transition duration-300"
-                >
-                  {loading ? "Submitting..." : "Request Custom Project"}
-                </button>
-              </form>
-            </div>
-          </div>
-        </section>
+        <CustomProject />
       </div>
 
       <Footer />
