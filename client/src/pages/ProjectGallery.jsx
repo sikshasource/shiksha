@@ -166,7 +166,7 @@ export default function ProjectGallerySlider() {
     {
       id: 1,
       title: "AI Based Disease Prediction System",
-      student: "Rahul S",
+      student: "Shravani",
       description:
         "Machine learning based health prediction system with real-time diagnosis interface and evaluation metrics.",
       images: [
@@ -178,9 +178,9 @@ export default function ProjectGallerySlider() {
     {
       id: 2,
       title: "MERN Stack Mock-Interview Preparation",
-      student: "Ananya M",
+      student: "Nachiketa NR",
       description:
-        "Full-stack e-commerce application with admin dashboard, cart system and secure authentication.",
+        "Making the People ready for the actual Interview",
       images: [
         "/Images/project_images/Mock-Interview/Screenshot_26-9-2025_1993_localhost 1.png",
         "/Images/project_images/Mock-Interview/Screenshot_26-9-2025_19135_localhost 1.png",
@@ -189,10 +189,10 @@ export default function ProjectGallerySlider() {
     },
     {
       id: 3,
-      title: "Android Smart Attendance App",
-      student: "Kishore MB",
+      title: "Ad Conversion Analytics ",
+      student: "Srinivas",
       description:
-        "Mobile attendance tracking system with admin panel and centralized database.",
+        "Collect the realtime data from social media campaign and anlyze it",
       images: [
         "/Images/project_images/Ad Analytics/image 349.png",
         "/Images/project_images/Ad Analytics/image 351.png",
