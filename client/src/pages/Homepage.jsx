@@ -198,6 +198,40 @@ export default function Homepage() {
     },
   ];
 
+
+const startX = useRef(0);
+const isDragging = useRef(false);
+
+const handleDragStart = (e) => {
+  isDragging.current = true;
+  startX.current = e.touches ? e.touches[0].clientX : e.clientX;
+};
+
+const handleDragMove = (e) => {
+  if (!isDragging.current) return;
+};
+
+const handleDragEnd = (e) => {
+  if (!isDragging.current) return;
+
+  const endX = e.changedTouches
+    ? e.changedTouches[0].clientX
+    : e.clientX;
+
+  const diff = startX.current - endX;
+
+  // swipe threshold
+  if (diff > 60 && index < categories.length - 1) {
+    changeCategory(index + 1);
+  } else if (diff < -60 && index > 0) {
+    changeCategory(index - 1);
+  }
+
+  isDragging.current = false;
+};
+
+
+
   const changeCategory = (i) => {
     setFade(false);
     setTimeout(() => {
@@ -509,166 +543,175 @@ export default function Homepage() {
         </section>
 
         {/* ================= TECHNOLOGIES ================= */}
-    <section className="py-20 bg-slate-50">
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-    <p className="text-xs uppercase tracking-widest text-blue-700 mb-3">
-      Technology Stack
-    </p>
+        <section className="py-20 bg-slate-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p className="text-xs uppercase tracking-widest text-blue-700 mb-3">
+              Technology Stack
+            </p>
 
-    <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
-      Technologies & Domains We Work With
-    </h2>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
+              Technologies & Domains We Work With
+            </h2>
 
-    <p className="mt-4 text-gray-600 max-w-3xl mx-auto">
-      Industry-relevant tools and frameworks used to build scalable,
-      modern, and academically aligned solutions.
-    </p>
+            <p className="mt-4 text-gray-600 max-w-3xl mx-auto">
+              Industry-relevant tools and frameworks used to build scalable,
+              modern, and academically aligned solutions.
+            </p>
 
-    <h3 className="mt-14 text-xl font-semibold text-slate-900">
-      {current.name} Technologies
-    </h3>
+            <h3 className="mt-14 text-xl font-semibold text-slate-900">
+              {current.name} Technologies
+            </h3>
 
-    {/* Sliding Container */}
-    <div className="relative mt-10 overflow-hidden">
-      <div
-        className="flex transition-transform duration-700 ease-in-out"
-        style={{ transform: `translateX(-${index * 100}%)` }}
-      >
-        {categories.map((cat, i) => (
-          <div key={i} className="w-full flex-shrink-0 px-1">
-            <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-              {cat.items?.map(([icon, title, desc]) => (
-                <div
-                  key={title}
-                  className="bg-white border border-gray-100 rounded-xl p-8 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
-                >
-                  <div className="w-14 h-14 mx-auto mb-4 flex items-center justify-center rounded-lg bg-slate-100">
-                    <img
-                      src={`https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${icon}/${icon}-original.svg`}
-                      alt={title}
-                      className="w-8 h-8"
-                      onError={(e) => {
-                        e.currentTarget.onerror = null;
-                        e.currentTarget.src = "/Images/default-tech.svg";
-                      }}
-                    />
+            {/* Swipe / Drag Slider */}
+            <div
+              className="relative mt-10 overflow-hidden touch-pan-y"
+              onMouseDown={handleDragStart}
+              onMouseMove={handleDragMove}
+              onMouseUp={handleDragEnd}
+              onMouseLeave={handleDragEnd}
+              onTouchStart={handleDragStart}
+              onTouchMove={handleDragMove}
+              onTouchEnd={handleDragEnd}
+            >
+              <div
+                className="flex transition-transform duration-500 ease-out"
+                style={{ transform: `translateX(-${index * 100}%)` }}
+              >
+                {categories.map((cat, catIndex) => (
+                  <div
+                    key={catIndex}
+                    className="w-full flex-shrink-0 grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 px-1"
+                  >
+                    {cat.items?.map(([icon, title, desc]) => (
+                      <div
+                        key={title}
+                        className="bg-white border border-gray-100 rounded-xl p-8 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                      >
+                        <div className="w-14 h-14 mx-auto mb-4 flex items-center justify-center rounded-lg bg-slate-100">
+                          <img
+                            src={`https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${icon}/${icon}-original.svg`}
+                            alt={title}
+                            className="w-8 h-8"
+                            onError={(e) => {
+                              e.currentTarget.onerror = null;
+                              e.currentTarget.src = "/Images/default-tech.svg";
+                            }}
+                          />
+                        </div>
+
+                        <h3 className="text-lg font-semibold text-slate-900">
+                          {title}
+                        </h3>
+
+                        <p className="mt-2 text-sm text-gray-600">{desc}</p>
+                      </div>
+                    ))}
                   </div>
+                ))}
+              </div>
+            </div>
 
-                  <h3 className="text-lg font-semibold text-slate-900">
-                    {title}
-                  </h3>
-
-                  <p className="mt-2 text-sm text-gray-600">{desc}</p>
-                </div>
+            {/* Dots Navigation */}
+            <div className="flex justify-center gap-3 mt-12">
+              {categories.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => changeCategory(i)}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    i === index ? "bg-blue-600 scale-125" : "bg-gray-300"
+                  }`}
+                />
               ))}
             </div>
+
+            <p className="mt-10 text-sm text-gray-500">
+              Additional technologies are supported based on project scope and
+              academic requirements.
+            </p>
           </div>
-        ))}
-      </div>
-    </div>
-
-    {/* Dots Navigation */}
-    <div className="flex justify-center gap-3 mt-12">
-      {categories.map((_, i) => (
-        <button
-          key={i}
-          onClick={() => changeCategory(i)}
-          className={`w-3 h-3 rounded-full transition-all duration-300 ${
-            i === index ? "bg-blue-600 scale-125" : "bg-gray-300"
-          }`}
-        />
-      ))}
-    </div>
-
-    <p className="mt-10 text-sm text-gray-500">
-      Additional technologies are supported based on project scope and
-      academic requirements.
-    </p>
-  </div>
-</section>
+        </section>
 
         {/* {Student Testimonial} */}
         <section className="py-24 bg-slate-50">
-  <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-    <p className="text-xs uppercase tracking-widest text-blue-700 mb-3">
-      Testimonials
-    </p>
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p className="text-xs uppercase tracking-widest text-blue-700 mb-3">
+              Testimonials
+            </p>
 
-    <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
-      Student Success Stories
-    </h2>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
+              Student Success Stories
+            </h2>
 
-    <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
-      Real feedback from students who successfully completed their academic
-      projects with our structured guidance.
-    </p>
+            <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+              Real feedback from students who successfully completed their
+              academic projects with our structured guidance.
+            </p>
 
-    {/* Fixed-size Sliding Card */}
-    <div className="relative mt-16 max-w-3xl mx-auto">
-      <div className="overflow-hidden">
-        <div
-          className="flex transition-transform duration-700 ease-in-out"
-          style={{ transform: `translateX(-${index * 100}%)` }}
-        >
-          {testimonials.map((t, i) => (
-            <div
-              key={i}
-              className="w-full flex-shrink-0 px-6"
-            >
-              <div className="bg-white border border-gray-100 rounded-2xl p-12 h-[360px] shadow-md flex flex-col justify-between">
-                <Quote className="w-8 h-8 text-blue-600 mx-auto opacity-80" />
+            {/* Fixed-size Sliding Card */}
+            <div className="relative mt-16 max-w-3xl mx-auto">
+              <div className="overflow-hidden">
+                <div
+                  className="flex transition-transform duration-700 ease-in-out"
+                  style={{ transform: `translateX(-${index * 100}%)` }}
+                >
+                  {testimonials.map((t, i) => (
+                    <div key={i} className="w-full flex-shrink-0 px-6">
+                      <div className="bg-white border border-gray-100 rounded-2xl p-12 h-[360px] shadow-md flex flex-col justify-between">
+                        <Quote className="w-8 h-8 text-blue-600 mx-auto opacity-80" />
 
-                <p className="text-gray-700 text-lg leading-relaxed mt-6">
-                  {t.review}
-                </p>
+                        <p className="text-gray-700 text-lg leading-relaxed mt-6">
+                          {t.review}
+                        </p>
 
-                <div className="flex items-center justify-center gap-4 mt-10">
-                  <img
-                    src={t.avatar}
-                    alt={t.name}
-                    className="w-14 h-14 rounded-full object-cover border border-gray-200"
-                  />
-                  <div className="text-left">
-                    <h4 className="font-semibold text-slate-900">{t.name}</h4>
-                    <p className="text-sm text-gray-500">{t.role}</p>
-                  </div>
+                        <div className="flex items-center justify-center gap-4 mt-10">
+                          <img
+                            src={t.avatar}
+                            alt={t.name}
+                            className="w-14 h-14 rounded-full object-cover border border-gray-200"
+                          />
+                          <div className="text-left">
+                            <h4 className="font-semibold text-slate-900">
+                              {t.name}
+                            </h4>
+                            <p className="text-sm text-gray-500">{t.role}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
+
+              {/* Arrows */}
+              <button
+                onClick={prevTestimonial}
+                className="absolute -left-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full border border-gray-200 bg-white shadow-sm hover:bg-blue-600 hover:text-white transition flex items-center justify-center"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+
+              <button
+                onClick={nextTestimonial}
+                className="absolute -right-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full border border-gray-200 bg-white shadow-sm hover:bg-blue-600 hover:text-white transition flex items-center justify-center"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+
+              {/* Dots */}
+              <div className="flex justify-center gap-3 mt-12">
+                {testimonials.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setIndex(i)}
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                      i === index ? "bg-blue-600 scale-125" : "bg-gray-300"
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Arrows */}
-      <button
-        onClick={prevTestimonial}
-        className="absolute -left-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full border border-gray-200 bg-white shadow-sm hover:bg-blue-600 hover:text-white transition flex items-center justify-center"
-      >
-        <ChevronLeft className="w-5 h-5" />
-      </button>
-
-      <button
-        onClick={nextTestimonial}
-        className="absolute -right-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full border border-gray-200 bg-white shadow-sm hover:bg-blue-600 hover:text-white transition flex items-center justify-center"
-      >
-        <ChevronRight className="w-5 h-5" />
-      </button>
-
-      {/* Dots */}
-      <div className="flex justify-center gap-3 mt-12">
-        {testimonials.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setIndex(i)}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              i === index ? "bg-blue-600 scale-125" : "bg-gray-300"
-            }`}
-          />
-        ))}
-      </div>
-    </div>
-  </div>
-</section>
+          </div>
+        </section>
         <ProjectGallery />
         <CustomProject />
       </div>

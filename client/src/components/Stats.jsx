@@ -5,8 +5,8 @@ const StatsSection = () => {
   const [startCount, setStartCount] = useState(false);
 
   const stats = [
-    { value: 20, suffix: "+", label: "Projects Delivered" },
-    { value: 50, suffix: "+", label: "Students Guided" },
+    { value: 30, suffix: "+", label: "Projects Delivered" },
+    { value: 60, suffix: "+", label: "Students Guided" },
     { value: 6, suffix: "+", label: "Colleges Served" },
     { value: 100, suffix: "%", label: "Client Satisfaction" },
   ];
