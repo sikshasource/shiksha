@@ -129,24 +129,33 @@ export default function Homepage() {
   const testimonials = [
     {
       review:
-        "The project explanation was extremely clear. I was able to confidently present during my viva and scored excellent grades.",
-      name: "Rahul Sharma",
-      role: "Final Year CSE Student",
-      avatar: "https://i.pravatar.cc/100?img=3",
+        "“Students receive well-structured, high-quality projects with complete explanations, strong documentation, and continuous support, helping them confidently meet academic requirements.”",
+      name: "Bharath Kumar K",
+      role: "Final Year MCA Student",
+      avatar:
+        "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
       review:
-        "Structured documentation and real-world architecture made my project stand out among others in my class.",
-      name: "Priya Reddy",
-      role: "Information Science Student",
+        "“High-quality academic projects with clear explanations, complete documentation, and dedicated support ensuring students understand their work and submit with confidence.'",
+      name: "Santosh",
+      role: "Final Year MCA Student",
       avatar: "https://i.pravatar.cc/100?img=5",
     },
     {
       review:
-        "Support was continuous until submission. I truly understood the implementation instead of just submitting a project.",
-      name: "Arjun Verma",
-      role: "ECE Student",
-      avatar: "https://i.pravatar.cc/100?img=8",
+        "“Thank you for the opportunity to share my feedback. The project was completed on time with good quality, clear documentation, and helpful guidance for viva presentation.”",
+      name: "Pavan Kalyan",
+      role: "Final Year MCA Student",
+      avatar:
+        "https://images.unsplash.com/photo-1623184663110-89ba5b565eb6?q=80&w=1624&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+      review: "“They are providing the satisfting Results.”",
+      name: "Shwetha Mam",
+      role: "JSS College Professor",
+      avatar:
+        "https://images.unsplash.com/photo-1735331467260-0153c5fbd31d?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
   ];
 
@@ -290,60 +299,59 @@ export default function Homepage() {
         <NavBar />
 
         {/* ================= HERO ================= */}
-       <section className="relative bg-gradient-to-br from-slate-50 via-white to-blue-50 overflow-hidden">
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-28 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <section className="relative bg-gradient-to-br from-slate-50 via-white to-blue-50 overflow-hidden">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-28 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            {/* LEFT CONTENT */}
+            <div className="space-y-6 animate-fadeUp">
+              <p className="text-xs sm:text-sm tracking-widest text-blue-700 uppercase animate-slideUp delay-100">
+                Affordable • Reliable • Student Focused
+              </p>
 
-    {/* LEFT CONTENT */}
-    <div className="space-y-6 animate-fadeUp">
-      <p className="text-xs sm:text-sm tracking-widest text-blue-700 uppercase animate-slideUp delay-100">
-        Affordable • Reliable • Student Focused
-      </p>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight animate-slideUp delay-200">
+                Industry-Ready College Projects
+                <span className="block text-blue-700 mt-2">
+                  Built Professionally. Delivered Affordably.
+                </span>
+              </h1>
 
-      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight animate-slideUp delay-200">
-        Industry-Ready College Projects
-        <span className="block text-blue-700 mt-2">
-          Built Professionally. Delivered Affordably.
-        </span>
-      </h1>
+              <p className="text-gray-600 text-base sm:text-lg leading-relaxed max-w-xl animate-slideUp delay-300">
+                We design and develop academic projects that meet real-world
+                standards — complete with documentation, explanation support,
+                and deployment guidance.
+              </p>
 
-      <p className="text-gray-600 text-base sm:text-lg leading-relaxed max-w-xl animate-slideUp delay-300">
-        We design and develop academic projects that meet real-world
-        standards — complete with documentation, explanation support,
-        and deployment guidance.
-      </p>
-
-      {/* CTA Buttons */}
-      <div className="flex flex-col sm:flex-row gap-4 pt-4 animate-slideUp delay-500">
-        {/* <button className="bg-slate-900 text-white px-6 py-3 rounded-md hover:bg-slate-800 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 pt-4 animate-slideUp delay-500">
+                {/* <button className="bg-slate-900 text-white px-6 py-3 rounded-md hover:bg-slate-800 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
           Explore Projects
         </button> */}
 
-        <button
-          onClick={() => {
-            document
-              .getElementById("custom-project")
-              ?.scrollIntoView({ behavior: "smooth" });
-          }}
-          className="border border-slate-900 px-6 py-3 rounded-md hover:bg-slate-100 transition-all duration-300 hover:-translate-y-1"
-        >
-          Request Custom Project
-        </button>
-      </div>
-    </div>
+                <button
+                  onClick={() => {
+                    document
+                      .getElementById("custom-project")
+                      ?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className="border border-slate-900 px-6 py-3 rounded-md hover:bg-slate-100 transition-all duration-300 hover:-translate-y-1"
+                >
+                  Request Custom Project
+                </button>
+              </div>
+            </div>
 
-    {/* RIGHT IMAGE */}
-    <div className="flex justify-center md:justify-end animate-fadeIn delay-300">
-      <img
-        src="/Images/Hero_Image.png"
-        alt="Hero Illustration"
-        className="w-72 sm:w-80 md:w-[420px] lg:w-[480px] object-contain animate-float"
-      />
-    </div>
-  </div>
+            {/* RIGHT IMAGE */}
+            <div className="flex justify-center md:justify-end animate-fadeIn delay-300">
+              <img
+                src="/Images/Hero_Image.png"
+                alt="Hero Illustration"
+                className="w-72 sm:w-80 md:w-[420px] lg:w-[480px] object-contain animate-float"
+              />
+            </div>
+          </div>
 
-  {/* Custom Animations */}
-  <style>
-    {`
+          {/* Custom Animations */}
+          <style>
+            {`
       @keyframes fadeUp {
         from { opacity: 0; transform: translateY(40px); }
         to { opacity: 1; transform: translateY(0); }
@@ -386,14 +394,14 @@ export default function Homepage() {
       .delay-300 { animation-delay: 0.3s; }
       .delay-500 { animation-delay: 0.5s; }
     `}
-  </style>
-</section>
+          </style>
+        </section>
 
         {/* This is the stats section */}
         <Stats />
 
         {/* ================= WHAT WE DO ================= */}
-       <WhatweDo/>
+        <WhatweDo />
 
         {/* ================= WHY CHOOSE US ================= */}
         <section ref={sectionRef} className="py-20 bg-white">
@@ -501,34 +509,35 @@ export default function Homepage() {
         </section>
 
         {/* ================= TECHNOLOGIES ================= */}
-        <section className="py-20 bg-slate-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            {/* Label */}
-            <p className="text-xs uppercase tracking-widest text-blue-700 mb-3">
-              Technology Stack
-            </p>
+    <section className="py-20 bg-slate-50">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <p className="text-xs uppercase tracking-widest text-blue-700 mb-3">
+      Technology Stack
+    </p>
 
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
-              Technologies & Domains We Work With
-            </h2>
+    <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
+      Technologies & Domains We Work With
+    </h2>
 
-            <p className="mt-4 text-gray-600 max-w-3xl mx-auto">
-              Industry-relevant tools and frameworks used to build scalable,
-              modern, and academically aligned solutions.
-            </p>
+    <p className="mt-4 text-gray-600 max-w-3xl mx-auto">
+      Industry-relevant tools and frameworks used to build scalable,
+      modern, and academically aligned solutions.
+    </p>
 
-            {/* Category Title */}
-            <h3 className="mt-14 text-xl font-semibold text-slate-900">
-              {current.name} Technologies
-            </h3>
+    <h3 className="mt-14 text-xl font-semibold text-slate-900">
+      {current.name} Technologies
+    </h3>
 
-            {/* Grid */}
-            <div
-              className={`mt-10 grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 transition-all duration-500 ${
-                fade ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-              }`}
-            >
-              {current.items?.map(([icon, title, desc]) => (
+    {/* Sliding Container */}
+    <div className="relative mt-10 overflow-hidden">
+      <div
+        className="flex transition-transform duration-700 ease-in-out"
+        style={{ transform: `translateX(-${index * 100}%)` }}
+      >
+        {categories.map((cat, i) => (
+          <div key={i} className="w-full flex-shrink-0 px-1">
+            <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              {cat.items?.map(([icon, title, desc]) => (
                 <div
                   key={title}
                   className="bg-white border border-gray-100 rounded-xl p-8 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
@@ -553,106 +562,114 @@ export default function Homepage() {
                 </div>
               ))}
             </div>
-
-            {/* Dots Navigation */}
-            <div className="flex justify-center gap-3 mt-12">
-              {categories.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => changeCategory(i)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    i === index ? "bg-blue-600 scale-125" : "bg-gray-300"
-                  }`}
-                />
-              ))}
-            </div>
-
-            <p className="mt-10 text-sm text-gray-500">
-              Additional technologies are supported based on project scope and
-              academic requirements.
-            </p>
           </div>
-        </section>
+        ))}
+      </div>
+    </div>
+
+    {/* Dots Navigation */}
+    <div className="flex justify-center gap-3 mt-12">
+      {categories.map((_, i) => (
+        <button
+          key={i}
+          onClick={() => changeCategory(i)}
+          className={`w-3 h-3 rounded-full transition-all duration-300 ${
+            i === index ? "bg-blue-600 scale-125" : "bg-gray-300"
+          }`}
+        />
+      ))}
+    </div>
+
+    <p className="mt-10 text-sm text-gray-500">
+      Additional technologies are supported based on project scope and
+      academic requirements.
+    </p>
+  </div>
+</section>
 
         {/* {Student Testimonial} */}
         <section className="py-24 bg-slate-50">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            {/* Label */}
-            <p className="text-xs uppercase tracking-widest text-blue-700 mb-3">
-              Testimonials
-            </p>
+  <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <p className="text-xs uppercase tracking-widest text-blue-700 mb-3">
+      Testimonials
+    </p>
 
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
-              Student Success Stories
-            </h2>
+    <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
+      Student Success Stories
+    </h2>
 
-            <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
-              Real feedback from students who successfully completed their
-              academic projects with our structured guidance.
-            </p>
+    <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+      Real feedback from students who successfully completed their academic
+      projects with our structured guidance.
+    </p>
 
-            {/* Card */}
-            <div className="relative mt-16 bg-white border border-gray-100 rounded-2xl p-12 max-w-3xl mx-auto shadow-md transition-all duration-500">
-              {/* Quote Icon */}
-              <Quote className="w-8 h-8 text-blue-600 mx-auto mb-6 opacity-80" />
+    {/* Fixed-size Sliding Card */}
+    <div className="relative mt-16 max-w-3xl mx-auto">
+      <div className="overflow-hidden">
+        <div
+          className="flex transition-transform duration-700 ease-in-out"
+          style={{ transform: `translateX(-${index * 100}%)` }}
+        >
+          {testimonials.map((t, i) => (
+            <div
+              key={i}
+              className="w-full flex-shrink-0 px-6"
+            >
+              <div className="bg-white border border-gray-100 rounded-2xl p-12 h-[360px] shadow-md flex flex-col justify-between">
+                <Quote className="w-8 h-8 text-blue-600 mx-auto opacity-80" />
 
-              {/* Review */}
-              <p
-                className={`text-gray-700 text-lg leading-relaxed transition-all duration-500 ${
-                  fade ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                }`}
-              >
-                {review}
-              </p>
+                <p className="text-gray-700 text-lg leading-relaxed mt-6">
+                  {t.review}
+                </p>
 
-              {/* User Info */}
-              <div
-                className={`flex items-center justify-center mt-10 gap-4 transition-all duration-500 ${
-                  fade ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                }`}
-              >
-                <img
-                  src={avatar}
-                  alt={name}
-                  className="w-14 h-14 rounded-full object-cover border border-gray-200"
-                />
-                <div className="text-left">
-                  <h4 className="font-semibold text-slate-900">{name}</h4>
-                  <p className="text-sm text-gray-500">{role}</p>
+                <div className="flex items-center justify-center gap-4 mt-10">
+                  <img
+                    src={t.avatar}
+                    alt={t.name}
+                    className="w-14 h-14 rounded-full object-cover border border-gray-200"
+                  />
+                  <div className="text-left">
+                    <h4 className="font-semibold text-slate-900">{t.name}</h4>
+                    <p className="text-sm text-gray-500">{t.role}</p>
+                  </div>
                 </div>
               </div>
-
-              {/* Arrows */}
-              <button
-                onClick={prevTestimonial}
-                className="absolute -left-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full border border-gray-200 bg-white shadow-sm hover:bg-blue-600 hover:text-white transition flex items-center justify-center"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-
-              <button
-                onClick={nextTestimonial}
-                className="absolute -right-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full border border-gray-200 bg-white shadow-sm hover:bg-blue-600 hover:text-white transition flex items-center justify-center"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-
-              {/* Dots */}
-              <div className="flex justify-center gap-3 mt-12">
-                {testimonials.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setIndex(i)}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                      i === index ? "bg-blue-600 scale-125" : "bg-gray-300"
-                    }`}
-                  />
-                ))}
-              </div>
             </div>
-          </div>
-        </section>
-                <ProjectGallery/>
+          ))}
+        </div>
+      </div>
+
+      {/* Arrows */}
+      <button
+        onClick={prevTestimonial}
+        className="absolute -left-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full border border-gray-200 bg-white shadow-sm hover:bg-blue-600 hover:text-white transition flex items-center justify-center"
+      >
+        <ChevronLeft className="w-5 h-5" />
+      </button>
+
+      <button
+        onClick={nextTestimonial}
+        className="absolute -right-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full border border-gray-200 bg-white shadow-sm hover:bg-blue-600 hover:text-white transition flex items-center justify-center"
+      >
+        <ChevronRight className="w-5 h-5" />
+      </button>
+
+      {/* Dots */}
+      <div className="flex justify-center gap-3 mt-12">
+        {testimonials.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setIndex(i)}
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              i === index ? "bg-blue-600 scale-125" : "bg-gray-300"
+            }`}
+          />
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+        <ProjectGallery />
         <CustomProject />
       </div>
 
