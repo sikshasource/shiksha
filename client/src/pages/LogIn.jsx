@@ -93,7 +93,7 @@ const handleGoogleLogIn = async () => {
   <img
     src="/Images/Left_logo.png"
     alt="Brand Logo"
-    className="max-w-xs md:max-w-md w-1/2 h-auto object-contain"
+    className="max-w-xs md:max-w-md w-1/4 h-auto object-contain"
   />
 </div>
 

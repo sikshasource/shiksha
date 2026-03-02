@@ -5,6 +5,7 @@ import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import Stats from "../components/Stats";
 import WhatweDo from "../components/WhatweDo";
+import ProjectGallery from "../pages/ProjectGallery";
 import {
   Code2,
   FileText,
@@ -313,9 +314,9 @@ export default function Homepage() {
 
       {/* CTA Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 pt-4 animate-slideUp delay-500">
-        <button className="bg-slate-900 text-white px-6 py-3 rounded-md hover:bg-slate-800 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+        {/* <button className="bg-slate-900 text-white px-6 py-3 rounded-md hover:bg-slate-800 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
           Explore Projects
-        </button>
+        </button> */}
 
         <button
           onClick={() => {
@@ -651,7 +652,7 @@ export default function Homepage() {
             </div>
           </div>
         </section>
-
+                <ProjectGallery/>
         <CustomProject />
       </div>
 
