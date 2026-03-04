@@ -357,8 +357,9 @@
 
 // client/src/ChatWidget.jsx
 
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
+
 
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
@@ -367,35 +368,58 @@ export default function ChatWidget() {
   const [loading, setLoading] = useState(false);
   const [position, setPosition] = useState({ x: 20, y: 20 });
 
-  const dragRef = useRef(null);
+  const messagesEndRef = useRef(null);
+
+  // Auto‑scroll to bottom
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const sendMessage = async () => {
     if (!input.trim() || loading) return;
 
-    const userMsg = { role: "user", text: input };
+    const userMsg = {
+      role: "user",
+      text: input,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
     setMessages((m) => [...m, userMsg]);
     setInput("");
     setLoading(true);
 
     try {
-      // ✅ Fixed: POST to /chat, not /health
-      const res = await axios.post("https://shiksha-chatbot.onrender.com/chat", {
-        message: userMsg.text,
-      });
+      const res = await axios.post(
+        "https://shiksha-chatbot.onrender.com/chat",
+        { message: userMsg.text }, //  ❤️ this matches backend
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
+      // ✅ Your backend returns { "reply": "..." }
+      const replyText = res.data.reply || "No reply from server.";
       setMessages((m) => [
         ...m,
-        { role: "assistant", text: res.data.reply }, // ✅ this matches backend
+        {
+          role: "assistant",
+          text: replyText,
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        }
       ]);
     } catch (err) {
+      // ✅ Even if backend returns 500 body, show it in chat
+      const errorReply =
+        err.response?.data?.reply ||
+        "Server error. Please try again or contact +91 94823 084644.";
       setMessages((m) => [
         ...m,
-        { role: "assistant", text: "Server error. Please try again." },
+        { role: "assistant", text: errorReply }
       ]);
     }
 
     setLoading(false);
   };
+
 
   const handleDrag = (e) => {
     setPosition({
@@ -404,6 +428,21 @@ export default function ChatWidget() {
     });
   };
 
+
+  // Auto‑start welcome message
+  useEffect(() => {
+    if (open && messages.length === 0) {
+      setMessages([
+        {
+          role: "assistant",
+          text: "Hi! I'm Shiksha AI. Ask me about projects, services, or contact info.",
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        }
+      ]);
+    }
+  }, [open, messages.length]);
+
+
   return (
     <>
       {/* Floating Button */}
@@ -411,7 +450,7 @@ export default function ChatWidget() {
         <div
           draggable
           onDragEnd={handleDrag}
-          className="fixed z-50"
+          className="fixed z-50 cursor-move"
           style={{ bottom: position.y, right: position.x }}
         >
           <button
@@ -429,42 +468,65 @@ export default function ChatWidget() {
           className="fixed z-50 w-80 h-[450px] bg-white shadow-2xl rounded-xl flex flex-col"
           style={{ bottom: "20px", right: "20px" }}
         >
-          <div className="bg-black text-white p-3 rounded-t-xl flex justify-between">
+          {/* Header */}
+          <div className="bg-black text-white p-3 rounded-t-xl flex justify-between items-center">
             <span>Shiksha AI</span>
-            <button onClick={() => setOpen(false)}>✕</button>
+            <button
+              onClick={() => setOpen(false)}
+              className="text-white hover:bg-white/10 p-1 rounded"
+            >
+              ✕
+            </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-3 space-y-2 bg-gray-50">
+          {/* Messages */}
+          <div className="flex-1 overflow-y-auto p-3 space-y-1">
             {messages.map((m, i) => (
               <div
                 key={i}
-                className={`p-2 rounded-lg text-sm ${
-                  m.role === "user"
-                    ? "bg-blue-600 text-white ml-auto"
-                    : "bg-white shadow"
+                className={`max-w-[80%] ${
+                  m.role === "user" ? "ml-auto" : "ml-1"
                 }`}
               >
-                {m.text}
+                <div
+                  className={`p-2 text-sm rounded-lg ${
+                    m.role === "user"
+                      ? "bg-blue-600 text-white"
+                      : "bg-white shadow"
+                  }`}
+                >
+                  {m.text}
+                </div>
+                {m.time && (
+                  <p className="text-xs text-gray-500 text-right mt-1">
+                    {m.time}
+                  </p>
+                )}
               </div>
             ))}
             {loading && (
-              <div className="text-xs text-gray-500">AI typing...</div>
+              <p className="text-xs text-gray-500">AI typing...</p>
             )}
           </div>
 
+          {/* Input */}
           <div className="p-2 border-t flex gap-2">
             <input
-              className="flex-1 border rounded px-2 py-1 text-sm"
+              className="flex-1 border rounded px-2 py-1 text-sm focus:outline-none focus:border-blue-400"
               value={input}
               placeholder="Ask about projects..."
               onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+              onKeyDown={(e) =>
+                e.key === "Enter" && !e.shiftKey && sendMessage()
+              }
+              disabled={loading}
             />
             <button
               onClick={sendMessage}
-              className="bg-blue-600 text-white px-3 rounded text-sm"
+              disabled={loading || !input.trim()}
+              className="bg-blue-600 text-white px-3 rounded text-sm hover:bg-blue-700 disabled:opacity-50"
             >
-              Send
+              {loading ? "…" : "Send"}
             </button>
           </div>
         </div>

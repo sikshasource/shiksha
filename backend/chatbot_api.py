@@ -217,18 +217,104 @@
 
 
 
+# import os
+# import logging
+# from fastapi import FastAPI
+# from fastapi.middleware.cors import CORSMiddleware
+# from pydantic import BaseModel
+# #from backend.chatbot import ShikshaSourceChatbot
+# from chatbot import ShikshaSourceChatbot
+
+# logging.basicConfig(level=logging.INFO)
+# log = logging.getLogger("uvicorn")
+
+# app = FastAPI(title="Shiksha Source Chatbot API", docs_url=None, redoc_url=None)
+
+# # Allow your frontend and local dev
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=[
+#         "https://shiksha-source-co.netlify.app",
+#         "http://localhost:3000",
+#         "http://localhost:5173",
+#     ],
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+# )
+
+
+# class Message(BaseModel):
+#     message: str
+
+
+# OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "").strip()
+# MODEL = os.getenv("OPENROUTER_MODEL", "openai/gpt-4o-mini")
+
+# bot = None
+# if not OPENROUTER_API_KEY:
+#     log.error("OPENROUTER_API_KEY not set in environment!")
+# else:
+#     try:
+#         bot = ShikshaSourceChatbot(openrouter_api_key=OPENROUTER_API_KEY, model=MODEL)
+#         log.info("✅ Chatbot initialized")
+#     except Exception as e:
+#         log.error(f"Failed to initialize chatbot: {e}")
+#         bot = None
+
+
+# @app.post("/chat")
+# async def chat_endpoint(msg: Message):
+#     if bot is None:
+#         return {
+#             "reply": "Chatbot is offline. Please contact +91 94823 084644 for project help."
+#         }
+#     reply = bot.chat(msg.message)
+#     return {"reply": reply}
+
+
+# @app.get("/health")
+# async def health():
+#     return {"status": "ok", "bot": "ready" if bot else "offline"}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import os
 import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-#from backend.chatbot import ShikshaSourceChatbot
 from chatbot import ShikshaSourceChatbot
+
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("uvicorn")
 
-app = FastAPI(title="Shiksha Source Chatbot API", docs_url=None, redoc_url=None)
+
+app = FastAPI(
+    title="Shiksha Source Chatbot API",
+    docs_url=None,
+    redoc_url=None
+)
+
 
 # Allow your frontend and local dev
 app.add_middleware(
@@ -236,7 +322,7 @@ app.add_middleware(
     allow_origins=[
         "https://shiksha-source-co.netlify.app",
         "http://localhost:3000",
-        "http://localhost:5173",
+        "http://localhost:5173"
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -250,6 +336,7 @@ class Message(BaseModel):
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "").strip()
 MODEL = os.getenv("OPENROUTER_MODEL", "openai/gpt-4o-mini")
+
 
 bot = None
 if not OPENROUTER_API_KEY:
