@@ -19,7 +19,7 @@ export default function ChatWidget() {
     setLoading(true);
 
     try {
-      const res = await axios.post("https://shiksha-chatbot.onrender.com", {
+      const res = await axios.post("https://shiksha-chatbot.onrender.com/chat", {
         message: userMsg.text,
       });
 
