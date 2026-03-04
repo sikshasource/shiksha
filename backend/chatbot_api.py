@@ -153,73 +153,50 @@
 
 
 
-
-
-
-
-
-
-# backend/chatbot_api.py
-
 import os
+import logging
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from backend.chatbot import ShikshaSourceChatbot
-import logging
 
-
+logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("uvicorn")
-log.setLevel(logging.INFO)
 
+app = FastAPI(title="Shiksha Chatbot", docs_url=None, redoc_url=None)
 
-app = FastAPI(
-    title="Shiksha Source Chatbot",
-    docs_url=None,  # Disable docs for speed
-    redoc_url=None,
+# CORS for your frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://shiksha-source-co.netlify.app", "http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
-
-# ------------------ Request model ------------------
 class Message(BaseModel):
     message: str
 
-
-# ------------------ OpenRouter API (env) ------------------
+# Get API key from environment
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "").strip()
-MODEL = os.getenv("OPENROUTER_MODEL", "openai/gpt-4o-mini").strip()
+MODEL = os.getenv("OPENROUTER_MODEL", "openai/gpt-4o-mini")
 
-
-# ------------------ Initialize bot (resilient) ------------------
 bot = None
-if not OPENROUTER_API_KEY:
-    log.warning("⚠️  OPENROUTER_API_KEY not set!")
-else:
+if OPENROUTER_API_KEY:
     try:
         bot = ShikshaSourceChatbot(openrouter_api_key=OPENROUTER_API_KEY, model=MODEL)
-        log.info("✅ Chatbot connected to OpenRouter")
+        log.info("✅ Chatbot ready")
     except Exception as e:
-        log.error(f"⚠️  OpenRouter init failed: {e}")
+        log.error(f"Init failed: {e}")
 
-
-# ------------------ Chat endpoint ------------------
 @app.post("/chat")
 async def chat_endpoint(msg: Message):
     if bot:
         reply = bot.chat(msg.message)
     else:
-        reply = (
-            "Chatbot is offline. "
-            "Please contact +91 94823 084644 for project help."
-        )
-
+        reply = "Service offline. Contact +91 94823 084644."
     return {"reply": reply}
 
-
-# ------------------ Health probe (for Render) ------------------
 @app.get("/health")
 async def health():
-    return {"status": "ok"}
-
-
-# No if __name__ blocks here!
-# Let Render run: uvicorn backend.chatbot_api:app --host 0.0.0.0 --port $PORT
+    return {"status": "ok", "bot": "ready" if bot else "offline"}

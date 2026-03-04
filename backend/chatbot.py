@@ -837,115 +837,158 @@
 
 
 
-
-
-
-
-# backend/chatbot.py
+"""
+Shiksha Source - PRODUCTION CHATBOT
+Ultra-fast, lightweight, no PyTorch
+"""
 
 import os
 import logging
 import requests
-from typing import List
-from dataclasses import dataclass
+from typing import List, Dict
+from dataclasses import dataclass, field
 from datetime import datetime
-
-
-from sentence_transformers import SentenceTransformer
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 
-
-log = logging.getLogger("uvicorn")
-log.setLevel(logging.INFO)
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 
 @dataclass
-class ChatMessage:
+class Message:
     role: str
     content: str
-    timestamp: datetime = None
+    timestamp: datetime = field(default_factory=datetime.now)
+
+
+class SimpleEmbedder:
+    """Lightweight embedder - no torch needed"""
+    
+    def __init__(self, dim: int = 256):
+        self.dim = dim
+    
+    def encode(self, texts: List[str], show_progress_bar: bool = False) -> np.ndarray:
+        embs = []
+        for t in texts:
+            vec = np.zeros(self.dim, dtype=np.float32)
+            for i, ch in enumerate(t.lower()):
+                vec[(i + ord(ch)) % self.dim] += 1.0
+            norm = np.linalg.norm(vec)
+            if norm > 0:
+                vec /= norm
+            embs.append(vec)
+        return np.vstack(embs) if len(embs) > 1 else np.array([embs[0]])
 
 
 class ShikshaSourceKnowledgeBase:
     def __init__(self):
-        ceos = ["Kishor MB", "Nachikath NR"]
-        contact = {
-            "phone": "+91 94823 084644",
-            "whatsapp": "https://wa.me/919482308464",
-        }
-        pages = {
-            "Home": "/",
-            "Projects": "/projects",
-            "Contact": "/contact",
-        }
         self.knowledge = {
-            "intro": f"Shiksha Source is a student project platform founded by {', '.join(ceos)}. We help students with academic projects across India.",
-            "contact": f"Contact: Phone {contact['phone']}, WhatsApp: {contact['whatsapp']}",
-            "pages": "\n".join(f"- {name}: {path}" for name, path in pages.items()),
+            "company_info": {
+                "name": "Shiksha Source",
+                "ceos": ["Kishor MB", "Nachikath NR"],
+                "tagline": "Academic project solutions for students across India",
+                "contact": {
+                    "phone": "+91 94823 084644",
+                    "whatsapp": "https://wa.me/919482308464"
+                }
+            },
+            "services": [
+                "Final Year Projects - Complete development with documentation",
+                "Mini Projects - Semester projects with testing support",
+                "IEEE Papers - Professional research documentation",
+                "Viva Preparation - Mock sessions and concept clarity",
+                "Bug Fixing - Code review and debugging",
+                "Deployment - Server setup and hosting"
+            ],
+            "domains": [
+                "Web Development", "Mobile Apps", "AI/ML", "Data Science", 
+                "IoT", "Blockchain", "Cloud Computing", "Cybersecurity"
+            ],
+            "technologies": [
+                "Python", "Java", "JavaScript/React", "Node.js", "Flutter",
+                "Android", "Django", "MERN Stack", "Machine Learning"
+            ]
         }
-
-    def get_all_text_chunks(self) -> List[str]:
-        return list(self.knowledge.values())
+    
+    def get_all_text_chunks(self) -> List[Dict[str, str]]:
+        chunks = []
+        company = self.knowledge["company_info"]
+        chunks.append({
+            "text": f"Shiksha Source: {company['tagline']}. Founded by {' and '.join(company['ceos'])}. Contact: {company['contact']['phone']}",
+            "type": "info"
+        })
+        for service in self.knowledge["services"]:
+            chunks.append({"text": service, "type": "service"})
+        chunks.append({
+            "text": f"Domains: {', '.join(self.knowledge['domains'])}",
+            "type": "domain"
+        })
+        chunks.append({
+            "text": f"Technologies: {', '.join(self.knowledge['technologies'])}",
+            "type": "tech"
+        })
+        return chunks
 
 
 class ShikshaSourceChatbot:
     def __init__(self, openrouter_api_key: str, model: str = "openai/gpt-4o-mini"):
-        self.key = openrouter_api_key
+        self.api_key = openrouter_api_key
         self.model = model
-        self.url = "https://openrouter.ai/api/v1/chat/completions"
-
-        log.info(f"🔧 Initializing OpenRouter with {model}")
-
-        self._init_db()
-
-    def _init_db(self):
+        self.api_url = "https://openrouter.ai/api/v1/chat/completions"
+        
+        logger.info(f"Initializing with {model}")
+        
         self.kb = ShikshaSourceKnowledgeBase()
-        self.embedder = SentenceTransformer("all-MiniLM-L6-v2")
-        text_chunks = self.kb.get_all_text_chunks()
-        self.embeddings = self.embedder.encode(text_chunks)
-        log.info(f"✅ Vector DB: {len(self.embeddings)} chunks")
-
-    def _search_context(self, query: str, top_k: int = 3) -> str:
-        q_embed = self.embedder.encode([query])
-        sim = cosine_similarity(q_embed, self.embeddings)[0]
-        top_idx = np.argsort(sim)[-top_k:][::-1]
-        return "\n\n".join([self.kb.get_all_text_chunks()[i] for i in top_idx])
-
-    def _call_openrouter(self, prompt: str) -> str:
+        self.embedder = SimpleEmbedder(dim=256)
+        
+        self.chunks = self.kb.get_all_text_chunks()
+        texts = [c["text"] for c in self.chunks]
+        self.embeddings = self.embedder.encode(texts)
+        
+        logger.info(f"Ready with {len(self.chunks)} knowledge chunks")
+    
+    def _search_context(self, query: str, top_k: int = 2) -> str:
+        q_emb = self.embedder.encode([query])
+        sims = cosine_similarity(q_emb, self.embeddings)[0]
+        top_idx = np.argsort(sims)[-top_k:][::-1]
+        return "\n".join([self.chunks[i]["text"] for i in top_idx])
+    
+    def _call_api(self, prompt: str) -> str:
         headers = {
-            "Authorization": f"Bearer {self.key}",
+            "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json",
-            "HTTP-Referer": "https://shikshasource.com",
+            "HTTP-Referer": "https://shiksha-source-co.netlify.app"
         }
+        
         data = {
             "model": self.model,
-            "messages": [
-                {"role": "user", "content": prompt}
-            ],
+            "messages": [{"role": "user", "content": prompt}],
             "temperature": 0.7,
-            "max_tokens": 120,  # Short responses
-            "top_p": 0.95,
+            "max_tokens": 100,
+            "top_p": 0.95
         }
+        
         try:
-            r = requests.post(self.url, headers=headers, json=data, timeout=10)
+            r = requests.post(self.api_url, headers=headers, json=data, timeout=10)
             if r.status_code == 200:
-                j = r.json()
-                return j["choices"][0]["message"]["content"]
+                return r.json()["choices"][0]["message"]["content"]
+            logger.error(f"API error: {r.status_code}")
         except Exception as e:
-            log.error(f"OpenRouter error: {e}")
-        return "Chatbot is offline. Contact +91 94823 084644."
-
+            logger.error(f"Request failed: {e}")
+        
+        return "Chatbot offline. Contact +91 94823 084644 for project help."
+    
     def chat(self, message: str) -> str:
         ctx = self._search_context(message)
-        prompt = f"""Context:
-{ctx}
+        prompt = f"""Context: {ctx}
 
 User: {message}
 
-Assistant: Give 2-3 short sentences max. Be direct."""
-        return self._call_openrouter(prompt)
+Answer in 2-3 SHORT sentences about Shiksha Source services. If off-topic, say you only help with academic projects. Include contact: +91 94823 084644."""
+        
+        return self._call_api(prompt)
 
 
-# Keep history in memory for now
-history: List[ChatMessage] = []
+
+
