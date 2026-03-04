@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShikshaSource AI Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #1e293b 0%, #334155 100%); }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased">
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-slate-950 text-gray-400 shadow-2xl transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+        <div class="flex items-center justify-center h-20 border-b border-slate-800">
+            <div class="flex items-center space-x-3">
+                <!-- Logo placeholder - replace src with your actual logo path -->
+                <img src="https://via.placeholder.com/40x40/1e293b/ffffff?text=SS" alt="ShikshaSource AI" class="w-10 h-10 rounded-lg">
+                <span class="text-white font-semibold text-lg">AI Dashboard</span>
+            </div>
+        </div>
+        
+        <nav class="mt-8 px-4">
+            <a href="#" onclick="showSection('chat')" class="nav-item flex items-center space-x-3 p-3 rounded-xl bg-slate-800/50 border border-slate-700/50 mb-3 text-white">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                <span>Live Chat Monitor</span>
+            </a>
+            
+            <a href="#" onclick="showSection('analytics')" class="nav-item flex items-center space-x-3 p-3 rounded-xl hover:bg-slate-800/50 border border-slate-700/50 mb-3 transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                <span>Analytics</span>
+            </a>
+            
+            <a href="#" onclick="showSection('conversations')" class="nav-item flex items-center space-x-3 p-3 rounded-xl hover:bg-slate-800/50 border border-slate-700/50 mb-3 transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                <span>All Conversations</span>
+            </a>
+            
+            <a href="#" onclick="showSection('settings')" class="nav-item flex items-center space-x-3 p-3 rounded-xl hover:bg-slate-800/50 border border-slate-700/50 mb-3 transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                <span>Settings</span>
+            </a>
+        </nav>
+        
+        <div class="absolute bottom-6 left-6 right-6">
+            <div class="bg-slate-800/50 border border-slate-700/50 rounded-xl p-4">
+                <div class="text-xs text-gray-400 mb-1">Status</div>
+                <div class="flex items-center space-x-2">
+                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span class="text-xs font-medium text-green-400">AI Online</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="lg:ml-64 transition-all duration-300">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-lg hover:bg-gray-100">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                    <h1 class="text-2xl font-bold text-slate-900">ShikshaSource AI</h1>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <span class="text-sm text-gray-500">Admin Panel</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main sections -->
+        <main class="p-6">
+            <!-- Chat Monitor Section -->
+            <div id="chat-section" class="section">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+                        <div class="flex items-center space-x-3 mb-6">
+                            <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                            <h2 class="text-xl font-semibold text-slate-900">Live Chat Monitor</h2>
+                        </div>
+                        <div id="live-chat-messages" class="space-y-3 max-h-80 overflow-y-auto">
+                            <div class="text-gray-500 text-sm italic text-center py-8">Monitoring active conversations...</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-blue-600/10 to-purple-600/10 backdrop-blur-sm border border-blue-100/50 rounded-2xl p-8">
+                        <h3 class="text-xl font-semibold mb-6">Quick Stats</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-white/50 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+                                <div class="text-2xl font-bold text-blue-600" id="total-chats">0</div>
+                                <div class="text-xs text-blue-400 uppercase tracking-wide">Total Chats</div>
+                            </div>
+                            <div class="bg-white/50 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+                                <div class="text-2xl font-bold text-green-600" id="active-chats">0</div>
+                                <div class="text-xs text-green-400 uppercase tracking-wide">Active Now</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Section -->
+            <div id="analytics-section" class="section hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+                        <h3 class="font-semibold mb-4">Today</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span>Chats</span>
+                                <span class="font-bold text-2xl text-slate-900">127</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span>Avg Response</span>
+                                <span class="font-bold text-green-600">2.1s</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span>Conversion</span>
+                                <span class="font-bold text-blue-600">18%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- More cards... -->
+                </div>
+            </div>
+
+            <!-- Other sections... (similar structure) -->
+        </main>
+    </div>
+
+    <script>
+        // Toggle sidebar
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+        }
+
+        // Show sections
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(sectionId + '-section').classList.remove('hidden');
+            
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('bg-slate-800/50', 'text-white', 'border-slate-700/50');
+                item.classList.add('hover:bg-slate-800/50', 'border-slate-700/50');
+            });
+            
+            event.target.classList.add('bg-slate-800/50', 'text-white', 'border-slate-700/50');
+            event.target.classList.remove('hover:bg-slate-800/50');
+        }
+
+        // WebSocket connection for live updates
+        const ws = new WebSocket('ws://' + location.host + '/ws');
+        ws.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            if (data.type === 'chat_message') {
+                addLiveMessage(data);
+            }
+        };
+
+        function addLiveMessage(msg) {
+            const container = document.getElementById('live-chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'p-3 rounded-xl bg-gradient-to-r from-slate-50 to-gray-50 border border-gray-100';
+            messageDiv.innerHTML = `
+                <div class="font-medium text-slate-900 mb-1">${msg.user || 'User'}</div>
+                <div class="text-sm text-gray-700">${msg.message}</div>
+                <div class="text-xs text-gray-400 mt-2">${new Date(msg.timestamp).toLocaleTimeString()}</div>
+            `;
+            container.insertBefore(messageDiv, container.firstChild);
+            
+            // Keep only last 10 messages
+            while (container.children.length > 10) {
+                container.removeChild(container.lastChild);
+            }
+        }
+    </script>
+</body>
+</html>

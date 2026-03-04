@@ -1,3 +1,40 @@
+// import React from "react";
+// import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+// import Homepage from "./pages/Homepage";
+// import AboutUs from "./pages/AboutUs";
+// import ByDomain from "./pages/ByDomain";
+// import ByDegree from "./pages/ByDegree";
+// import ByTechnology from "./pages/ByTechnology";
+// import LogIn from "./pages/LogIn";
+// import SignUp from "./pages/SignUp";
+
+// function App() {
+//   return (
+//     <BrowserRouter>
+//       <Routes>
+//         <Route path="/" element={<Homepage />} />
+//         <Route path="/aboutus" element={<AboutUs />} />
+//         <Route path="/LogIn" element={<LogIn />} />
+//         <Route path="/signup" element={<SignUp />} />
+//         <Route path="/by-domain" element={<ByDomain />} />
+//         <Route path="/by-degree" element={<ByDegree />} />
+//         <Route path="/by-technology" element={<ByTechnology />} />
+//       </Routes>
+//     </BrowserRouter>
+//   );
+// }
+
+// export default App;
+
+
+
+
+
+
+
+
+
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -8,6 +45,8 @@ import ByDegree from "./pages/ByDegree";
 import ByTechnology from "./pages/ByTechnology";
 import LogIn from "./pages/LogIn";
 import SignUp from "./pages/SignUp";
+
+import ChatWidget from "./components/ChatWidget"; // ADD THIS
 
 function App() {
   return (
@@ -21,6 +60,9 @@ function App() {
         <Route path="/by-degree" element={<ByDegree />} />
         <Route path="/by-technology" element={<ByTechnology />} />
       </Routes>
+
+      {/* Floating AI Widget (Global) */}
+      <ChatWidget />
     </BrowserRouter>
   );
 }
