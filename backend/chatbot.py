@@ -581,13 +581,273 @@
 
 
 
+# # backend/chatbot.py
+
+# import os
+# import logging
+# import requests
+# from typing import List, Dict, Optional
+# from dataclasses import dataclass, field
+# from datetime import datetime
+
+
+# from sentence_transformers import SentenceTransformer
+# import numpy as np
+# from sklearn.metrics.pairwise import cosine_similarity
+
+
+# logging.basicConfig(
+#     level=logging.INFO,
+#     format='%(asctime)s - %(levelname)s - %(message)s'
+# )
+# logger = logging.getLogger(__name__)
+
+
+# @dataclass
+# class Message:
+#     """Message structure for chat history"""
+#     role: str
+#     content: str
+#     timestamp: datetime = field(default_factory=datetime.now)
+
+
+
+# class ShikshaSourceKnowledgeBase:
+#     """Knowledge base for Shiksha Source"""
+    
+#     def __init__(self):
+#         self.knowledge = {
+#             "company_info": {
+#                 "name": "Shiksha Source",
+#                 "ceos": ["Kishor MB", "Nachikath NR"],
+#                 "tagline": "Structured academic project solutions with professional development",
+#                 "mission": "To empower students with practical learning experience through structured project development and guided explanation",
+#                 "focus": "Student-focused academic support platform",
+#                 "contact": {
+#                     "phone": "+91 94823 084644",
+#                     "whatsapp": "https://wa.me/919482308464",
+#                 }
+#             },
+#             "services": [
+#                 {
+#                     "name": "Final Year Projects",
+#                     "description": "Complete final year project development with industry‑aligned architecture",
+#                     "includes": ["Full development", "Documentation", "Viva preparation", "Demo sessions"]
+#                 },
+#                 {
+#                     "name": "Mini Projects",
+#                     "description": "Semester‑based mini projects for engineering and degree students",
+#                     "includes": ["Structured code", "Testing", "Presentation support"]
+#                 },
+#                 {
+#                     "name": "Documentation & IEEE Papers",
+#                     "description": "Professional documentation and IEEE standard papers",
+#                     "includes": ["Technical documentation", "Research papers", "IEEE format"]
+#                 },
+#                 {
+#                     "name": "Viva Preparation",
+#                     "description": "Comprehensive preparation for project defense and viva",
+#                     "includes": ["Mock vivas", "Question preparation", "Concept clarity"]
+#                 },
+#                 {
+#                     "name": "Bug Fixing",
+#                     "description": "Debugging and error resolution for existing projects",
+#                     "includes": ["Code review", "Bug identification", "Solution implementation"]
+#                 },
+#                 {
+#                     "name": "Deployment Assistance",
+#                     "description": "Help with project deployment and hosting",
+#                     "includes": ["Server setup", "Deployment", "Configuration"]
+#                 }
+#             ],
+#             "navigation": {
+#                 "Home": "/",
+#                 "About Us": "/aboutus",
+#                 "Final Year Projects": "/final-year-projects",
+#                 "Mini Projects": "/mini-projects",
+#                 "Contact": "/contact"
+#             }
+#         }
+    
+#     def get_all_text_chunks(self) -> List[Dict[str, str]]:
+#         chunks = []
+
+#         company = self.knowledge["company_info"]
+#         chunks.append({
+#             "text": f"Shiksha Source is {company['tagline']}. "
+#                     f"Founded by {' and '.join(company['ceos'])}. "
+#                     f"{company['mission']}",
+#             "type": "company_info"
+#         })
+        
+#         for service in self.knowledge["services"]:
+#             chunks.append({
+#                 "text": f"{service['name']}: {service['description']}. "
+#                         f"Includes: {', '.join(service['includes'])}",
+#                 "type": "service"
+#             })
+
+#         nav = self.knowledge["navigation"]
+#         nav_text = "Navigate to: "
+#         nav_text += ", ".join(f"{k} → {v}" for k, v in nav.items())
+#         chunks.append({"text": nav_text, "type": "navigation"})
+
+#         return chunks
+
+
+# class ShikshaSourceChatbot:
+#     """Main chatbot class using OpenRouter API"""
+    
+#     def __init__(self, openrouter_api_key: str, model: str = "openai/gpt-4o-mini"):
+#         self.api_key = openrouter_api_key
+#         self.model = model
+#         self.api_url = "https://openrouter.ai/api/v1/chat/completions"
+
+#         logger.info(f"🔍 Initializing OpenRouter with model: {self.model}")
+        
+#         # Allow service to start even if test fails
+#         try:
+#             if not self._test_connection():
+#                 logger.warning("OpenRouter health check failed. AI will be degraded.")
+#         except Exception as e:
+#             logger.warning(f"OpenRouter health check error: {e}. Will retry on each request.")
+
+#         self.kb = ShikshaSourceKnowledgeBase()
+#         self.embedder = SentenceTransformer('all-MiniLM-L6-v2')
+#         self._create_vector_db()
+#         self.chat_history: List[Message] = []
+
+#         self.system_prompt = """You are a friendly assistant for Shiksha Source - a student project help platform.
+
+# Answer questions about our services, projects, and contact info. Keep responses SHORT (2–3 sentences).
+
+# For project help call: +91 94823 084644."""
+
+#     def _test_connection(self) -> bool:
+#         headers = {
+#             "Authorization": f"Bearer {self.api_key}",
+#             "Content-Type": "application/json",
+#             "HTTP-Referer": "https://shikshasource.com",
+#             "X-Title": "Shiksha Source Chatbot"
+#         }
+#         data = {
+#             "model": self.model,
+#             "messages": [{"role": "user", "content": "Hi"}],
+#             "max_tokens": 10,
+#         }
+#         r = requests.post(self.api_url, headers=headers, json=data, timeout=10)
+#         if r.status_code == 200:
+#             logger.info("✅ OpenRouter health check OK")
+#         else:
+#             logger.error(f"❌ OpenRouter test failed: {r.status_code} - {r.text}")
+#         return r.status_code == 200
+
+#     def _create_vector_db(self):
+#         self.chunks = self.kb.get_all_text_chunks()
+#         texts = [c["text"] for c in self.chunks]
+#         self.embeddings = self.embedder.encode(texts, show_progress_bar=False)
+#         logger.info(f"✅ Vector DB with {len(self.chunks)} chunks")
+
+#     def _retrieve_relevant_context(self, query: str, top_k: int = 3) -> str:
+#         q_emb = self.embedder.encode([query])
+#         sims = cosine_similarity(q_emb, self.embeddings)[0]
+#         top_idx = np.argsort(sims)[-top_k:][::-1]
+#         return "\n\n".join(self.chunks[i]["text"] for i in top_idx)
+
+#     def _call_openrouter_api(self, prompt: str) -> str:
+#         headers = {
+#             "Authorization": f"Bearer {self.api_key}",
+#             "Content-Type": "application/json",
+#             "HTTP-Referer": "https://shikshasource.com",
+#             "X-Title": "Shiksha Source Chatbot"
+#         }
+#         data = {
+#             "model": self.model,
+#             "messages": [
+#                 {"role": "system", "content": self.system_prompt},
+#                 {"role": "user", "content": prompt}
+#             ],
+#             "temperature": 0.7,
+#             "max_tokens": 150,
+#             "top_p": 0.95,
+#         }
+#         try:
+#             r = requests.post(self.api_url, headers=headers, json=data, timeout=30)
+#             if r.status_code == 200:
+#                 j = r.json()
+#                 if j.get("choices") and j["choices"]:
+#                     return j["choices"][0]["message"]["content"]
+#             logger.error(f"OpenRouter API error: {r.status_code} {r.text[:150]}")
+#             return (
+#                 "I’m having trouble connecting to the AI service right now. "
+#                 "Please contact +91 94823 084644 for project help."
+#             )
+#         except Exception as e:
+#             logger.error(f"Network error: {str(e)}")
+#             return (
+#                 "I cannot connect to the AI service right now. "
+#                 "Please contact +91 94823 084644 for project help."
+#             )
+
+#     def chat(self, user_message: str) -> str:
+#         self.chat_history.append(Message(role="user", content=user_message))
+
+#         context = self._retrieve_relevant_context(user_message)
+
+#         prompt = f"""**Context:**
+# {context}
+
+# **User:**
+# {user_message}
+
+# **Assistant:**
+# Answer in 2–3 short sentences. If question is off-topic, answer: \"I'm here to help with academic projects.\""""
+
+#         reply = self._call_openrouter_api(prompt)
+
+#         self.chat_history.append(Message(role="assistant", content=reply))
+#         if len(self.chat_history) > 10:
+#             self.chat_history = self.chat_history[-10:]
+
+#         return reply
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # backend/chatbot.py
 
 import os
 import logging
 import requests
-from typing import List, Dict, Optional
-from dataclasses import dataclass, field
+from typing import List
+from dataclasses import dataclass
 from datetime import datetime
 
 
@@ -596,217 +856,96 @@ import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+log = logging.getLogger("uvicorn")
+log.setLevel(logging.INFO)
 
 
 @dataclass
-class Message:
-    """Message structure for chat history"""
+class ChatMessage:
     role: str
     content: str
-    timestamp: datetime = field(default_factory=datetime.now)
-
+    timestamp: datetime = None
 
 
 class ShikshaSourceKnowledgeBase:
-    """Knowledge base for Shiksha Source"""
-    
     def __init__(self):
-        self.knowledge = {
-            "company_info": {
-                "name": "Shiksha Source",
-                "ceos": ["Kishor MB", "Nachikath NR"],
-                "tagline": "Structured academic project solutions with professional development",
-                "mission": "To empower students with practical learning experience through structured project development and guided explanation",
-                "focus": "Student-focused academic support platform",
-                "contact": {
-                    "phone": "+91 94823 084644",
-                    "whatsapp": "https://wa.me/919482308464",
-                }
-            },
-            "services": [
-                {
-                    "name": "Final Year Projects",
-                    "description": "Complete final year project development with industry‑aligned architecture",
-                    "includes": ["Full development", "Documentation", "Viva preparation", "Demo sessions"]
-                },
-                {
-                    "name": "Mini Projects",
-                    "description": "Semester‑based mini projects for engineering and degree students",
-                    "includes": ["Structured code", "Testing", "Presentation support"]
-                },
-                {
-                    "name": "Documentation & IEEE Papers",
-                    "description": "Professional documentation and IEEE standard papers",
-                    "includes": ["Technical documentation", "Research papers", "IEEE format"]
-                },
-                {
-                    "name": "Viva Preparation",
-                    "description": "Comprehensive preparation for project defense and viva",
-                    "includes": ["Mock vivas", "Question preparation", "Concept clarity"]
-                },
-                {
-                    "name": "Bug Fixing",
-                    "description": "Debugging and error resolution for existing projects",
-                    "includes": ["Code review", "Bug identification", "Solution implementation"]
-                },
-                {
-                    "name": "Deployment Assistance",
-                    "description": "Help with project deployment and hosting",
-                    "includes": ["Server setup", "Deployment", "Configuration"]
-                }
-            ],
-            "navigation": {
-                "Home": "/",
-                "About Us": "/aboutus",
-                "Final Year Projects": "/final-year-projects",
-                "Mini Projects": "/mini-projects",
-                "Contact": "/contact"
-            }
+        ceos = ["Kishor MB", "Nachikath NR"]
+        contact = {
+            "phone": "+91 94823 084644",
+            "whatsapp": "https://wa.me/919482308464",
         }
-    
-    def get_all_text_chunks(self) -> List[Dict[str, str]]:
-        chunks = []
+        pages = {
+            "Home": "/",
+            "Projects": "/projects",
+            "Contact": "/contact",
+        }
+        self.knowledge = {
+            "intro": f"Shiksha Source is a student project platform founded by {', '.join(ceos)}. We help students with academic projects across India.",
+            "contact": f"Contact: Phone {contact['phone']}, WhatsApp: {contact['whatsapp']}",
+            "pages": "\n".join(f"- {name}: {path}" for name, path in pages.items()),
+        }
 
-        company = self.knowledge["company_info"]
-        chunks.append({
-            "text": f"Shiksha Source is {company['tagline']}. "
-                    f"Founded by {' and '.join(company['ceos'])}. "
-                    f"{company['mission']}",
-            "type": "company_info"
-        })
-        
-        for service in self.knowledge["services"]:
-            chunks.append({
-                "text": f"{service['name']}: {service['description']}. "
-                        f"Includes: {', '.join(service['includes'])}",
-                "type": "service"
-            })
-
-        nav = self.knowledge["navigation"]
-        nav_text = "Navigate to: "
-        nav_text += ", ".join(f"{k} → {v}" for k, v in nav.items())
-        chunks.append({"text": nav_text, "type": "navigation"})
-
-        return chunks
+    def get_all_text_chunks(self) -> List[str]:
+        return list(self.knowledge.values())
 
 
 class ShikshaSourceChatbot:
-    """Main chatbot class using OpenRouter API"""
-    
     def __init__(self, openrouter_api_key: str, model: str = "openai/gpt-4o-mini"):
-        self.api_key = openrouter_api_key
+        self.key = openrouter_api_key
         self.model = model
-        self.api_url = "https://openrouter.ai/api/v1/chat/completions"
+        self.url = "https://openrouter.ai/api/v1/chat/completions"
 
-        logger.info(f"🔍 Initializing OpenRouter with model: {self.model}")
-        
-        # Allow service to start even if test fails
-        try:
-            if not self._test_connection():
-                logger.warning("OpenRouter health check failed. AI will be degraded.")
-        except Exception as e:
-            logger.warning(f"OpenRouter health check error: {e}. Will retry on each request.")
+        log.info(f"🔧 Initializing OpenRouter with {model}")
 
+        self._init_db()
+
+    def _init_db(self):
         self.kb = ShikshaSourceKnowledgeBase()
-        self.embedder = SentenceTransformer('all-MiniLM-L6-v2')
-        self._create_vector_db()
-        self.chat_history: List[Message] = []
+        self.embedder = SentenceTransformer("all-MiniLM-L6-v2")
+        text_chunks = self.kb.get_all_text_chunks()
+        self.embeddings = self.embedder.encode(text_chunks)
+        log.info(f"✅ Vector DB: {len(self.embeddings)} chunks")
 
-        self.system_prompt = """You are a friendly assistant for Shiksha Source - a student project help platform.
+    def _search_context(self, query: str, top_k: int = 3) -> str:
+        q_embed = self.embedder.encode([query])
+        sim = cosine_similarity(q_embed, self.embeddings)[0]
+        top_idx = np.argsort(sim)[-top_k:][::-1]
+        return "\n\n".join([self.kb.get_all_text_chunks()[i] for i in top_idx])
 
-Answer questions about our services, projects, and contact info. Keep responses SHORT (2–3 sentences).
-
-For project help call: +91 94823 084644."""
-
-    def _test_connection(self) -> bool:
+    def _call_openrouter(self, prompt: str) -> str:
         headers = {
-            "Authorization": f"Bearer {self.api_key}",
+            "Authorization": f"Bearer {self.key}",
             "Content-Type": "application/json",
             "HTTP-Referer": "https://shikshasource.com",
-            "X-Title": "Shiksha Source Chatbot"
-        }
-        data = {
-            "model": self.model,
-            "messages": [{"role": "user", "content": "Hi"}],
-            "max_tokens": 10,
-        }
-        r = requests.post(self.api_url, headers=headers, json=data, timeout=10)
-        if r.status_code == 200:
-            logger.info("✅ OpenRouter health check OK")
-        else:
-            logger.error(f"❌ OpenRouter test failed: {r.status_code} - {r.text}")
-        return r.status_code == 200
-
-    def _create_vector_db(self):
-        self.chunks = self.kb.get_all_text_chunks()
-        texts = [c["text"] for c in self.chunks]
-        self.embeddings = self.embedder.encode(texts, show_progress_bar=False)
-        logger.info(f"✅ Vector DB with {len(self.chunks)} chunks")
-
-    def _retrieve_relevant_context(self, query: str, top_k: int = 3) -> str:
-        q_emb = self.embedder.encode([query])
-        sims = cosine_similarity(q_emb, self.embeddings)[0]
-        top_idx = np.argsort(sims)[-top_k:][::-1]
-        return "\n\n".join(self.chunks[i]["text"] for i in top_idx)
-
-    def _call_openrouter_api(self, prompt: str) -> str:
-        headers = {
-            "Authorization": f"Bearer {self.api_key}",
-            "Content-Type": "application/json",
-            "HTTP-Referer": "https://shikshasource.com",
-            "X-Title": "Shiksha Source Chatbot"
         }
         data = {
             "model": self.model,
             "messages": [
-                {"role": "system", "content": self.system_prompt},
                 {"role": "user", "content": prompt}
             ],
             "temperature": 0.7,
-            "max_tokens": 150,
+            "max_tokens": 120,  # Short responses
             "top_p": 0.95,
         }
         try:
-            r = requests.post(self.api_url, headers=headers, json=data, timeout=30)
+            r = requests.post(self.url, headers=headers, json=data, timeout=10)
             if r.status_code == 200:
                 j = r.json()
-                if j.get("choices") and j["choices"]:
-                    return j["choices"][0]["message"]["content"]
-            logger.error(f"OpenRouter API error: {r.status_code} {r.text[:150]}")
-            return (
-                "I’m having trouble connecting to the AI service right now. "
-                "Please contact +91 94823 084644 for project help."
-            )
+                return j["choices"][0]["message"]["content"]
         except Exception as e:
-            logger.error(f"Network error: {str(e)}")
-            return (
-                "I cannot connect to the AI service right now. "
-                "Please contact +91 94823 084644 for project help."
-            )
+            log.error(f"OpenRouter error: {e}")
+        return "Chatbot is offline. Contact +91 94823 084644."
 
-    def chat(self, user_message: str) -> str:
-        self.chat_history.append(Message(role="user", content=user_message))
+    def chat(self, message: str) -> str:
+        ctx = self._search_context(message)
+        prompt = f"""Context:
+{ctx}
 
-        context = self._retrieve_relevant_context(user_message)
+User: {message}
 
-        prompt = f"""**Context:**
-{context}
+Assistant: Give 2-3 short sentences max. Be direct."""
+        return self._call_openrouter(prompt)
 
-**User:**
-{user_message}
 
-**Assistant:**
-Answer in 2–3 short sentences. If question is off-topic, answer: \"I'm here to help with academic projects.\""""
-
-        reply = self._call_openrouter_api(prompt)
-
-        self.chat_history.append(Message(role="assistant", content=reply))
-        if len(self.chat_history) > 10:
-            self.chat_history = self.chat_history[-10:]
-
-        return reply
+# Keep history in memory for now
+history: List[ChatMessage] = []
