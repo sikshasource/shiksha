@@ -222,7 +222,8 @@ import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from backend.chatbot import ShikshaSourceChatbot
+#from backend.chatbot import ShikshaSourceChatbot
+from chatbot import ShikshaSourceChatbot
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("uvicorn")
