@@ -1632,6 +1632,34 @@ class ShikshaSourceChatbot:
             logger.error(f"OpenRouter error: {e}")
             return "I’m having trouble responding right now. Please contact +91 94823 084644."
 
+    # def chat(self, user_message: str) -> str:
+    #     try:
+    #         self.chat_history.append(Message(role="user", content=user_message))
+
+    #         context = self._retrieve_relevant_context(user_message)
+
+    #         prompt = (
+    #             f"Relevant context:\n{context}\n\n"
+    #             f"User question: {user_message}\n\n"
+    #             "Give a SHORT, DIRECT answer (2–3 sentences max). "
+    #             "Only answer what is asked. Mention contact number if helpful."
+    #         )
+
+    #         bot_response = self._call_openrouter_api(prompt)
+
+    #         self.chat_history.append(Message(role="assistant", content=bot_response))
+    #         if len(self.chat_history) > 10:
+    #             self.chat_history = self.chat_history[-10:]
+
+    #         return bot_response
+    #     except Exception as e:
+    #         logger.error(f"Error in chat: {e}")
+    #         return (
+    #             "I’m having trouble processing your request.\n\n"
+    #             "Please try again or contact our team at +91 94823 084644."
+    #         )
+
+
     def chat(self, user_message: str) -> str:
         try:
             self.chat_history.append(Message(role="user", content=user_message))
@@ -1639,25 +1667,27 @@ class ShikshaSourceChatbot:
             context = self._retrieve_relevant_context(user_message)
 
             prompt = (
-                f"Relevant context:\n{context}\n\n"
-                f"User question: {user_message}\n\n"
-                "Give a SHORT, DIRECT answer (2–3 sentences max). "
-                "Only answer what is asked. Mention contact number if helpful."
+            f"Relevant context:\n{context}\n\n"
+            f"User question: {user_message}\n\n"
+            "Give a SHORT, DIRECT answer (2–3 sentences max). "
+            "Always include this contact number exactly once in your answer: +91 94823 084644. "
+            "Only answer what is asked."
             )
 
             bot_response = self._call_openrouter_api(prompt)
 
             self.chat_history.append(Message(role="assistant", content=bot_response))
             if len(self.chat_history) > 10:
-                self.chat_history = self.chat_history[-10:]
+               self.chat_history = self.chat_history[-10:]
 
             return bot_response
         except Exception as e:
             logger.error(f"Error in chat: {e}")
             return (
-                "I’m having trouble processing your request.\n\n"
-                "Please try again or contact our team at +91 94823 084644."
+            "I’m having trouble processing your request.\n\n"
+            "Please contact us at +91 94823 084644."
             )
+
 
 
 
