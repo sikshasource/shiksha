@@ -595,11 +595,13 @@
 
 
 
-// // client/src/ChatWidget.jsx
+// client/src/ChatWidget.jsx
+
+// client/src/ChatWidget.jsx
 
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import axios from "axios";
-import FavIcon from "C:/Users/Win/OneDrive/Desktop/shiksha/client/public/Fav.png"; // from public/Fav.png
+import FavIcon from "/Fav.png"; // from public/Fav.png
 
 const API_URL = "https://shiksha-chatbot.onrender.com/chat";
 
@@ -767,7 +769,7 @@ export default function ChatWidget() {
             className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-3 rounded-full shadow-xl hover:scale-105 transition-transform"
           >
             <ShikshaIcon size={22} />
-            <span className="text-sm font-medium">AI Help</span>
+            <span className="text-sm font-medium">Chat with Shiksha AI</span>
           </button>
         </div>
       )}
@@ -783,7 +785,7 @@ export default function ChatWidget() {
             <div className="flex items-center gap-3">
               <ShikshaIcon size={28} />
               <div className="flex flex-col">
-                <span className="font-semibold text-sm">Shiksha AI</span>
+                <span className="font-semibold text-sm">Shiksha Source Assistant</span>
                 <span className="text-[11px] text-blue-100">
                   Smart help for colleges, courses & projects
                 </span>
@@ -837,7 +839,7 @@ export default function ChatWidget() {
               <div className="flex justify-start">
                 <div className="bg-white text-gray-700 border border-gray-200 rounded-2xl px-3 py-2 text-xs flex items-center gap-1 shadow-sm">
                   <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-                  <span>typing…</span>
+                  <span>Shiksha AI is typing…</span>
                 </div>
               </div>
             )}
@@ -890,10 +892,6 @@ export default function ChatWidget() {
     </>
   );
 }
-
-
-
-
 
 
 
