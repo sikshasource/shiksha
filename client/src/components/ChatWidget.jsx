@@ -357,183 +357,183 @@
 
 // client/src/ChatWidget.jsx this is the perfect code with simple ui
 
-// import React, { useState, useEffect, useRef } from "react";
-// import axios from "axios";
+import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
 
 
-// export default function ChatWidget() {
-//   const [open, setOpen] = useState(false);
-//   const [messages, setMessages] = useState([]);
-//   const [input, setInput] = useState("");
-//   const [loading, setLoading] = useState(false);
-//   const [position, setPosition] = useState({ x: 20, y: 20 });
+export default function ChatWidget() {
+  const [open, setOpen] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [position, setPosition] = useState({ x: 20, y: 20 });
 
-//   const messagesEndRef = useRef(null);
+  const messagesEndRef = useRef(null);
 
-//   // Auto‑scroll to bottom
-//   useEffect(() => {
-//     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-//   }, [messages]);
+  // Auto‑scroll to bottom
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
-//   const sendMessage = async () => {
-//     if (!input.trim() || loading) return;
+  const sendMessage = async () => {
+    if (!input.trim() || loading) return;
 
-//     const userMsg = {
-//       role: "user",
-//       text: input,
-//       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-//     };
-//     setMessages((m) => [...m, userMsg]);
-//     setInput("");
-//     setLoading(true);
+    const userMsg = {
+      role: "user",
+      text: input,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+    setMessages((m) => [...m, userMsg]);
+    setInput("");
+    setLoading(true);
 
-//     try {
-//       const res = await axios.post(
-//         "https://shiksha-chatbot.onrender.com/chat",
-//         { message: userMsg.text }, //  ❤️ this matches backend
-//         {
-//           headers: { "Content-Type": "application/json" },
-//         }
-//       );
+    try {
+      const res = await axios.post(
+        "https://shiksha-chatbot.onrender.com/chat",
+        { message: userMsg.text }, //  ❤️ this matches backend
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
-//       // ✅ Your backend returns { "reply": "..." }
-//       const replyText = res.data.reply || "No reply from server.";
-//       setMessages((m) => [
-//         ...m,
-//         {
-//           role: "assistant",
-//           text: replyText,
-//           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-//         }
-//       ]);
-//     } catch (err) {
-//       // ✅ Even if backend returns 500 body, show it in chat
-//       const errorReply =
-//         err.response?.data?.reply ||
-//         "Server error. Please try again or contact +91 94823 084644.";
-//       setMessages((m) => [
-//         ...m,
-//         { role: "assistant", text: errorReply }
-//       ]);
-//     }
+      // ✅ Your backend returns { "reply": "..." }
+      const replyText = res.data.reply || "No reply from server.";
+      setMessages((m) => [
+        ...m,
+        {
+          role: "assistant",
+          text: replyText,
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        }
+      ]);
+    } catch (err) {
+      // ✅ Even if backend returns 500 body, show it in chat
+      const errorReply =
+        err.response?.data?.reply ||
+        "Server error. Please try again or contact +91 94823 084644.";
+      setMessages((m) => [
+        ...m,
+        { role: "assistant", text: errorReply }
+      ]);
+    }
 
-//     setLoading(false);
-//   };
-
-
-//   const handleDrag = (e) => {
-//     setPosition({
-//       x: window.innerWidth - e.clientX,
-//       y: window.innerHeight - e.clientY,
-//     });
-//   };
+    setLoading(false);
+  };
 
 
-//   // Auto‑start welcome message
-//   useEffect(() => {
-//     if (open && messages.length === 0) {
-//       setMessages([
-//         {
-//           role: "assistant",
-//           text: "Hi! I'm Shiksha AI. Ask me about projects, services, or contact info.",
-//           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-//         }
-//       ]);
-//     }
-//   }, [open, messages.length]);
+  const handleDrag = (e) => {
+    setPosition({
+      x: window.innerWidth - e.clientX,
+      y: window.innerHeight - e.clientY,
+    });
+  };
 
 
-//   return (
-//     <>
-//       {/* Floating Button */}
-//       {!open && (
-//         <div
-//           draggable
-//           onDragEnd={handleDrag}
-//           className="fixed z-50 cursor-move"
-//           style={{ bottom: position.y, right: position.x }}
-//         >
-//           <button
-//             onClick={() => setOpen(true)}
-//             className="bg-blue-600 text-white p-4 rounded-full shadow-lg hover:scale-110 transition"
-//           >
-//             💬
-//           </button>
-//         </div>
-//       )}
+  // Auto‑start welcome message
+  useEffect(() => {
+    if (open && messages.length === 0) {
+      setMessages([
+        {
+          role: "assistant",
+          text: "Hi! I'm Shiksha AI. Ask me about projects, services, or contact info.",
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        }
+      ]);
+    }
+  }, [open, messages.length]);
 
-//       {/* Chat Window */}
-//       {open && (
-//         <div
-//           className="fixed z-50 w-80 h-[450px] bg-white shadow-2xl rounded-xl flex flex-col"
-//           style={{ bottom: "20px", right: "20px" }}
-//         >
-//           {/* Header */}
-//           <div className="bg-black text-white p-3 rounded-t-xl flex justify-between items-center">
-//             <span>Shiksha AI</span>
-//             <button
-//               onClick={() => setOpen(false)}
-//               className="text-white hover:bg-white/10 p-1 rounded"
-//             >
-//               ✕
-//             </button>
-//           </div>
 
-//           {/* Messages */}
-//           <div className="flex-1 overflow-y-auto p-3 space-y-1">
-//             {messages.map((m, i) => (
-//               <div
-//                 key={i}
-//                 className={`max-w-[80%] ${
-//                   m.role === "user" ? "ml-auto" : "ml-1"
-//                 }`}
-//               >
-//                 <div
-//                   className={`p-2 text-sm rounded-lg ${
-//                     m.role === "user"
-//                       ? "bg-blue-600 text-white"
-//                       : "bg-white shadow"
-//                   }`}
-//                 >
-//                   {m.text}
-//                 </div>
-//                 {m.time && (
-//                   <p className="text-xs text-gray-500 text-right mt-1">
-//                     {m.time}
-//                   </p>
-//                 )}
-//               </div>
-//             ))}
-//             {loading && (
-//               <p className="text-xs text-gray-500">AI typing...</p>
-//             )}
-//           </div>
+  return (
+    <>
+      {/* Floating Button */}
+      {!open && (
+        <div
+          draggable
+          onDragEnd={handleDrag}
+          className="fixed z-50 cursor-move"
+          style={{ bottom: position.y, right: position.x }}
+        >
+          <button
+            onClick={() => setOpen(true)}
+            className="bg-blue-600 text-white p-4 rounded-full shadow-lg hover:scale-110 transition"
+          >
+            💬
+          </button>
+        </div>
+      )}
 
-//           {/* Input */}
-//           <div className="p-2 border-t flex gap-2">
-//             <input
-//               className="flex-1 border rounded px-2 py-1 text-sm focus:outline-none focus:border-blue-400"
-//               value={input}
-//               placeholder="Ask about projects..."
-//               onChange={(e) => setInput(e.target.value)}
-//               onKeyDown={(e) =>
-//                 e.key === "Enter" && !e.shiftKey && sendMessage()
-//               }
-//               disabled={loading}
-//             />
-//             <button
-//               onClick={sendMessage}
-//               disabled={loading || !input.trim()}
-//               className="bg-blue-600 text-white px-3 rounded text-sm hover:bg-blue-700 disabled:opacity-50"
-//             >
-//               {loading ? "…" : "Send"}
-//             </button>
-//           </div>
-//         </div>
-//       )}
-//     </>
-//   );
-// }
+      {/* Chat Window */}
+      {open && (
+        <div
+          className="fixed z-50 w-80 h-[450px] bg-white shadow-2xl rounded-xl flex flex-col"
+          style={{ bottom: "20px", right: "20px" }}
+        >
+          {/* Header */}
+          <div className="bg-black text-white p-3 rounded-t-xl flex justify-between items-center">
+            <span>Shiksha AI</span>
+            <button
+              onClick={() => setOpen(false)}
+              className="text-white hover:bg-white/10 p-1 rounded"
+            >
+              ✕
+            </button>
+          </div>
+
+          {/* Messages */}
+          <div className="flex-1 overflow-y-auto p-3 space-y-1">
+            {messages.map((m, i) => (
+              <div
+                key={i}
+                className={`max-w-[80%] ${
+                  m.role === "user" ? "ml-auto" : "ml-1"
+                }`}
+              >
+                <div
+                  className={`p-2 text-sm rounded-lg ${
+                    m.role === "user"
+                      ? "bg-blue-600 text-white"
+                      : "bg-white shadow"
+                  }`}
+                >
+                  {m.text}
+                </div>
+                {m.time && (
+                  <p className="text-xs text-gray-500 text-right mt-1">
+                    {m.time}
+                  </p>
+                )}
+              </div>
+            ))}
+            {loading && (
+              <p className="text-xs text-gray-500">AI typing...</p>
+            )}
+          </div>
+
+          {/* Input */}
+          <div className="p-2 border-t flex gap-2">
+            <input
+              className="flex-1 border rounded px-2 py-1 text-sm focus:outline-none focus:border-blue-400"
+              value={input}
+              placeholder="Ask about projects..."
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) =>
+                e.key === "Enter" && !e.shiftKey && sendMessage()
+              }
+              disabled={loading}
+            />
+            <button
+              onClick={sendMessage}
+              disabled={loading || !input.trim()}
+              className="bg-blue-600 text-white px-3 rounded text-sm hover:bg-blue-700 disabled:opacity-50"
+            >
+              {loading ? "…" : "Send"}
+            </button>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
 
 
 
@@ -918,353 +918,353 @@
 
 
 
-// client/src/ChatWidget.jsx
-
-import React, { useState, useEffect, useRef, useMemo } from "react";
-import axios from "axios";
-import FavIcon from "client/public/Images/Left_logo.png";
-
-const API_URL = "https://shiksha-chatbot.onrender.com/chat";
-const CONTACT_NUMBER = "+91 94823 084644";
-const CONTACT_EMAIL = "shikshasource@gmail.com";
-
-
-// ---------------- ICON ----------------
-function ShikshaIcon({ size = 20 }) {
-  return (
-    <div
-      className="flex items-center justify-center rounded-full bg-white shadow border border-blue-100 overflow-hidden"
-      style={{ width: size, height: size }}
-    >
-      <img
-        src={FavIcon}
-        alt="Shiksha Source"
-        className="w-full h-full object-contain"
-      />
-    </div>
-  );
-}
-
-
-// ---------------- SUGGESTION BUTTON ----------------
-function SuggestionPill({ label, onClick }) {
-  return (
-    <button
-      onClick={() => onClick(label)}
-      className="px-3 py-1.5 text-xs rounded-full border border-blue-100 bg-blue-50 text-blue-700 hover:bg-blue-100 transition"
-    >
-      {label}
-    </button>
-  );
-}
-
-
-// ---------------- MAIN COMPONENT ----------------
-export default function ChatWidget() {
+// // client/src/ChatWidget.jsx
+
+// import React, { useState, useEffect, useRef, useMemo } from "react";
+// import axios from "axios";
+// import FavIcon from "client/public/Images/Left_logo.png";
+
+// const API_URL = "https://shiksha-chatbot.onrender.com/chat";
+// const CONTACT_NUMBER = "+91 94823 084644";
+// const CONTACT_EMAIL = "shikshasource@gmail.com";
+
+
+// // ---------------- ICON ----------------
+// function ShikshaIcon({ size = 20 }) {
+//   return (
+//     <div
+//       className="flex items-center justify-center rounded-full bg-white shadow border border-blue-100 overflow-hidden"
+//       style={{ width: size, height: size }}
+//     >
+//       <img
+//         src={FavIcon}
+//         alt="Shiksha Source"
+//         className="w-full h-full object-contain"
+//       />
+//     </div>
+//   );
+// }
+
+
+// // ---------------- SUGGESTION BUTTON ----------------
+// function SuggestionPill({ label, onClick }) {
+//   return (
+//     <button
+//       onClick={() => onClick(label)}
+//       className="px-3 py-1.5 text-xs rounded-full border border-blue-100 bg-blue-50 text-blue-700 hover:bg-blue-100 transition"
+//     >
+//       {label}
+//     </button>
+//   );
+// }
+
+
+// // ---------------- MAIN COMPONENT ----------------
+// export default function ChatWidget() {
 
-  const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [position, setPosition] = useState({ x: 20, y: 20 });
+//   const [open, setOpen] = useState(false);
+//   const [messages, setMessages] = useState([]);
+//   const [input, setInput] = useState("");
+//   const [loading, setLoading] = useState(false);
+//   const [position, setPosition] = useState({ x: 20, y: 20 });
 
-  const messagesEndRef = useRef(null);
+//   const messagesEndRef = useRef(null);
 
 
-  // ---------- AUTO SCROLL ----------
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+//   // ---------- AUTO SCROLL ----------
+//   useEffect(() => {
+//     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+//   }, [messages]);
 
 
-  // ---------- WELCOME MESSAGE ----------
-  useEffect(() => {
-    if (open && messages.length === 0) {
-      setMessages([
-        {
-          role: "assistant",
-          text: `Hi! I'm Shiksha AI 👋
+//   // ---------- WELCOME MESSAGE ----------
+//   useEffect(() => {
+//     if (open && messages.length === 0) {
+//       setMessages([
+//         {
+//           role: "assistant",
+//           text: `Hi! I'm Shiksha AI 👋
 
-Ask me about colleges, courses, fees, placements, or project help.
+// Ask me about colleges, courses, fees, placements, or project help.
 
-📞 Contact us: ${CONTACT_NUMBER}
-📧 Email: ${CONTACT_EMAIL}`,
-          time: new Date().toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit"
-          })
-        }
-      ]);
-    }
-  }, [open, messages.length]);
+// 📞 Contact us: ${CONTACT_NUMBER}
+// 📧 Email: ${CONTACT_EMAIL}`,
+//           time: new Date().toLocaleTimeString([], {
+//             hour: "2-digit",
+//             minute: "2-digit"
+//           })
+//         }
+//       ]);
+//     }
+//   }, [open, messages.length]);
 
 
-  // ---------- ADD MESSAGE ----------
-  const appendMessage = (role, text) => {
-    setMessages((prev) => [
-      ...prev,
-      {
-        role,
-        text,
-        time: new Date().toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit"
-        })
-      }
-    ]);
-  };
+//   // ---------- ADD MESSAGE ----------
+//   const appendMessage = (role, text) => {
+//     setMessages((prev) => [
+//       ...prev,
+//       {
+//         role,
+//         text,
+//         time: new Date().toLocaleTimeString([], {
+//           hour: "2-digit",
+//           minute: "2-digit"
+//         })
+//       }
+//     ]);
+//   };
 
 
-  // ---------- CLEAN AI RESPONSE ----------
-  const fixContactPlaceholders = (text) => {
+//   // ---------- CLEAN AI RESPONSE ----------
+//   const fixContactPlaceholders = (text) => {
 
-    let reply = text;
+//     let reply = text;
 
-    reply = reply
-      .replace(/\[your contact number\]/gi, CONTACT_NUMBER)
-      .replace(/\[insert contact number\]/gi, CONTACT_NUMBER)
-      .replace(/\[contact number\]/gi, CONTACT_NUMBER)
-      .replace(/contact number/gi, CONTACT_NUMBER)
-      .replace(/\[insert email address\]/gi, CONTACT_EMAIL);
+//     reply = reply
+//       .replace(/\[your contact number\]/gi, CONTACT_NUMBER)
+//       .replace(/\[insert contact number\]/gi, CONTACT_NUMBER)
+//       .replace(/\[contact number\]/gi, CONTACT_NUMBER)
+//       .replace(/contact number/gi, CONTACT_NUMBER)
+//       .replace(/\[insert email address\]/gi, CONTACT_EMAIL);
 
-    if (!reply.includes(CONTACT_NUMBER)) {
-      reply += `\n\n📞 Contact us: ${CONTACT_NUMBER}`;
-    }
+//     if (!reply.includes(CONTACT_NUMBER)) {
+//       reply += `\n\n📞 Contact us: ${CONTACT_NUMBER}`;
+//     }
 
-    return reply;
-  };
+//     return reply;
+//   };
 
 
-  // ---------- SEND MESSAGE ----------
-  const sendMessage = async (overrideText) => {
+//   // ---------- SEND MESSAGE ----------
+//   const sendMessage = async (overrideText) => {
 
-    const messageText = overrideText || input;
+//     const messageText = overrideText || input;
 
-    if (!messageText.trim() || loading) return;
+//     if (!messageText.trim() || loading) return;
 
-    appendMessage("user", messageText);
+//     appendMessage("user", messageText);
 
-    setInput("");
-    setLoading(true);
+//     setInput("");
+//     setLoading(true);
 
-    try {
+//     try {
 
-      const res = await axios.post(
-        API_URL,
-        { message: messageText },
-        { headers: { "Content-Type": "application/json" } }
-      );
+//       const res = await axios.post(
+//         API_URL,
+//         { message: messageText },
+//         { headers: { "Content-Type": "application/json" } }
+//       );
 
-      let replyText = res.data?.reply || "No reply from server.";
+//       let replyText = res.data?.reply || "No reply from server.";
 
-      replyText = fixContactPlaceholders(replyText);
+//       replyText = fixContactPlaceholders(replyText);
 
-      appendMessage("assistant", replyText);
+//       appendMessage("assistant", replyText);
 
-    } catch (err) {
+//     } catch (err) {
 
-      const errorReply =
-        err.response?.data?.reply ||
-        `Server error. Please try again.\n\n📞 Contact: ${CONTACT_NUMBER}`;
+//       const errorReply =
+//         err.response?.data?.reply ||
+//         `Server error. Please try again.\n\n📞 Contact: ${CONTACT_NUMBER}`;
 
-      appendMessage("assistant", errorReply);
-    }
+//       appendMessage("assistant", errorReply);
+//     }
 
-    setLoading(false);
-  };
+//     setLoading(false);
+//   };
 
 
-  // ---------- DRAG BUTTON ----------
-  const handleDrag = (e) => {
-    setPosition({
-      x: window.innerWidth - e.clientX,
-      y: window.innerHeight - e.clientY
-    });
-  };
+//   // ---------- DRAG BUTTON ----------
+//   const handleDrag = (e) => {
+//     setPosition({
+//       x: window.innerWidth - e.clientX,
+//       y: window.innerHeight - e.clientY
+//     });
+//   };
 
 
-  // ---------- AI SUGGESTIONS ----------
-  const suggestionLabels = useMemo(() => {
+//   // ---------- AI SUGGESTIONS ----------
+//   const suggestionLabels = useMemo(() => {
 
-    const lastUser = [...messages].reverse().find((m) => m.role === "user");
+//     const lastUser = [...messages].reverse().find((m) => m.role === "user");
 
-    const text = lastUser?.text?.toLowerCase() || "";
+//     const text = lastUser?.text?.toLowerCase() || "";
 
-    const suggestions = [];
+//     const suggestions = [];
 
-    if (/college|university|engineering|btech|mca|bca/.test(text)) {
-      suggestions.push("Show top colleges for my course");
-      suggestions.push("Which colleges have best placements?");
-    }
+//     if (/college|university|engineering|btech|mca|bca/.test(text)) {
+//       suggestions.push("Show top colleges for my course");
+//       suggestions.push("Which colleges have best placements?");
+//     }
 
-    if (/course|branch|stream|cse|ece|civil/.test(text)) {
-      suggestions.push("Suggest project ideas for my course");
-    }
+//     if (/course|branch|stream|cse|ece|civil/.test(text)) {
+//       suggestions.push("Suggest project ideas for my course");
+//     }
 
-    if (/placement|job|career/.test(text)) {
-      suggestions.push("Which projects help in placements?");
-    }
+//     if (/placement|job|career/.test(text)) {
+//       suggestions.push("Which projects help in placements?");
+//     }
 
-    if (/fee|fees|price|cost/.test(text)) {
-      suggestions.push("Do you offer installment payment?");
-    }
+//     if (/fee|fees|price|cost/.test(text)) {
+//       suggestions.push("Do you offer installment payment?");
+//     }
 
-    if (suggestions.length === 0) {
-      suggestions.push("Show services you provide");
-      suggestions.push("How can I contact Shiksha Source?");
-    }
+//     if (suggestions.length === 0) {
+//       suggestions.push("Show services you provide");
+//       suggestions.push("How can I contact Shiksha Source?");
+//     }
 
-    return suggestions.slice(0, 3);
+//     return suggestions.slice(0, 3);
 
-  }, [messages]);
+//   }, [messages]);
 
 
-  return (
-    <>
-      {/* FLOAT BUTTON */}
-      {!open && (
-        <div
-          draggable
-          onDragEnd={handleDrag}
-          className="fixed z-50 cursor-move"
-          style={{ bottom: position.y, right: position.x }}
-        >
-          <button
-            onClick={() => setOpen(true)}
-            className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-3 rounded-full shadow-lg hover:scale-105 transition"
-          >
-            <ShikshaIcon size={22} />
-            <span className="text-sm font-medium">AI Help</span>
-          </button>
-        </div>
-      )}
+//   return (
+//     <>
+//       {/* FLOAT BUTTON */}
+//       {!open && (
+//         <div
+//           draggable
+//           onDragEnd={handleDrag}
+//           className="fixed z-50 cursor-move"
+//           style={{ bottom: position.y, right: position.x }}
+//         >
+//           <button
+//             onClick={() => setOpen(true)}
+//             className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-3 rounded-full shadow-lg hover:scale-105 transition"
+//           >
+//             <ShikshaIcon size={22} />
+//             <span className="text-sm font-medium">AI Help</span>
+//           </button>
+//         </div>
+//       )}
 
 
-      {/* CHAT WINDOW */}
-      {open && (
-        <div className="fixed bottom-5 right-5 w-96 max-w-[95vw] h-[520px] bg-white shadow-2xl rounded-2xl flex flex-col border border-gray-200 z-50">
+//       {/* CHAT WINDOW */}
+//       {open && (
+//         <div className="fixed bottom-5 right-5 w-96 max-w-[95vw] h-[520px] bg-white shadow-2xl rounded-2xl flex flex-col border border-gray-200 z-50">
 
 
-          {/* HEADER */}
-          <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-t-2xl">
-            <div className="flex items-center gap-3">
-              <ShikshaIcon size={26} />
-              <div>
-                <p className="text-sm font-semibold">Shiksha AI</p>
-                <p className="text-[11px] text-blue-100">
-                  Smart help for colleges & projects
-                </p>
-              </div>
-            </div>
-
-            <button
-              onClick={() => setOpen(false)}
-              className="hover:bg-white/20 rounded-full px-2"
-            >
-              ✕
-            </button>
-          </div>
-
-
-          {/* MESSAGES */}
-          <div className="flex-1 overflow-y-auto px-3 py-2 space-y-2 bg-gray-50">
-
-            {messages.map((m, i) => (
-              <div
-                key={i}
-                className={`flex ${
-                  m.role === "user" ? "justify-end" : "justify-start"
-                }`}
-              >
-
-                <div className="max-w-[80%]">
-
-                  <div
-                    className={`rounded-2xl px-3 py-2 text-sm ${
-                      m.role === "user"
-                        ? "bg-blue-600 text-white"
-                        : "bg-white border border-gray-200 shadow"
-                    }`}
-                  >
-
-                    {m.role === "assistant" && (
-                      <div className="flex items-center gap-1 mb-1">
-                        <ShikshaIcon size={14} />
-                        <span className="text-[10px] text-gray-500 uppercase">
-                          Shiksha Source
-                        </span>
-                      </div>
-                    )}
-
-                    <p className="whitespace-pre-wrap">{m.text}</p>
-
-                  </div>
-
-                  <p className="text-[10px] text-gray-400 mt-1">
-                    {m.time}
-                  </p>
-
-                </div>
-
-              </div>
-            ))}
-
-            {loading && (
-              <p className="text-xs text-gray-500">AI typing...</p>
-            )}
-
-            <div ref={messagesEndRef} />
-          </div>
-
-
-          {/* SUGGESTIONS */}
-          <div className="px-3 pt-2 pb-1 border-t bg-gray-50">
-            <p className="text-[11px] text-gray-500 mb-1">
-              Quick suggestions
-            </p>
-
-            <div className="flex flex-wrap gap-1">
-              {suggestionLabels.map((s) => (
-                <SuggestionPill
-                  key={s}
-                  label={s}
-                  onClick={(text) => sendMessage(text)}
-                />
-              ))}
-            </div>
-          </div>
-
-
-          {/* INPUT */}
-          <div className="p-2 border-t flex gap-2">
-
-            <textarea
-              rows={1}
-              className="flex-1 resize-none border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Ask about colleges, courses, placements..."
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  sendMessage();
-                }
-              }}
-            />
-
-            <button
-              onClick={() => sendMessage()}
-              disabled={!input.trim() || loading}
-              className="bg-blue-600 text-white w-10 h-10 rounded-full"
-            >
-              ➤
-            </button>
-
-          </div>
-
-        </div>
-      )}
-    </>
-  );
-}
+//           {/* HEADER */}
+//           <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-t-2xl">
+//             <div className="flex items-center gap-3">
+//               <ShikshaIcon size={26} />
+//               <div>
+//                 <p className="text-sm font-semibold">Shiksha AI</p>
+//                 <p className="text-[11px] text-blue-100">
+//                   Smart help for colleges & projects
+//                 </p>
+//               </div>
+//             </div>
+
+//             <button
+//               onClick={() => setOpen(false)}
+//               className="hover:bg-white/20 rounded-full px-2"
+//             >
+//               ✕
+//             </button>
+//           </div>
+
+
+//           {/* MESSAGES */}
+//           <div className="flex-1 overflow-y-auto px-3 py-2 space-y-2 bg-gray-50">
+
+//             {messages.map((m, i) => (
+//               <div
+//                 key={i}
+//                 className={`flex ${
+//                   m.role === "user" ? "justify-end" : "justify-start"
+//                 }`}
+//               >
+
+//                 <div className="max-w-[80%]">
+
+//                   <div
+//                     className={`rounded-2xl px-3 py-2 text-sm ${
+//                       m.role === "user"
+//                         ? "bg-blue-600 text-white"
+//                         : "bg-white border border-gray-200 shadow"
+//                     }`}
+//                   >
+
+//                     {m.role === "assistant" && (
+//                       <div className="flex items-center gap-1 mb-1">
+//                         <ShikshaIcon size={14} />
+//                         <span className="text-[10px] text-gray-500 uppercase">
+//                           Shiksha Source
+//                         </span>
+//                       </div>
+//                     )}
+
+//                     <p className="whitespace-pre-wrap">{m.text}</p>
+
+//                   </div>
+
+//                   <p className="text-[10px] text-gray-400 mt-1">
+//                     {m.time}
+//                   </p>
+
+//                 </div>
+
+//               </div>
+//             ))}
+
+//             {loading && (
+//               <p className="text-xs text-gray-500">AI typing...</p>
+//             )}
+
+//             <div ref={messagesEndRef} />
+//           </div>
+
+
+//           {/* SUGGESTIONS */}
+//           <div className="px-3 pt-2 pb-1 border-t bg-gray-50">
+//             <p className="text-[11px] text-gray-500 mb-1">
+//               Quick suggestions
+//             </p>
+
+//             <div className="flex flex-wrap gap-1">
+//               {suggestionLabels.map((s) => (
+//                 <SuggestionPill
+//                   key={s}
+//                   label={s}
+//                   onClick={(text) => sendMessage(text)}
+//                 />
+//               ))}
+//             </div>
+//           </div>
+
+
+//           {/* INPUT */}
+//           <div className="p-2 border-t flex gap-2">
+
+//             <textarea
+//               rows={1}
+//               className="flex-1 resize-none border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+//               placeholder="Ask about colleges, courses, placements..."
+//               value={input}
+//               onChange={(e) => setInput(e.target.value)}
+//               onKeyDown={(e) => {
+//                 if (e.key === "Enter" && !e.shiftKey) {
+//                   e.preventDefault();
+//                   sendMessage();
+//                 }
+//               }}
+//             />
+
+//             <button
+//               onClick={() => sendMessage()}
+//               disabled={!input.trim() || loading}
+//               className="bg-blue-600 text-white w-10 h-10 rounded-full"
+//             >
+//               ➤
+//             </button>
+
+//           </div>
+
+//         </div>
+//       )}
+//     </>
+//   );
+// }
 
