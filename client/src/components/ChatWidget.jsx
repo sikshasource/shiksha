@@ -917,14 +917,16 @@
 
 
 
+
 // client/src/ChatWidget.jsx
 
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import axios from "axios";
-import FavIcon from "/Fav.png"; // correct public path
+import FavIcon from "client/public/Images/Left_logo.png";
 
 const API_URL = "https://shiksha-chatbot.onrender.com/chat";
 const CONTACT_NUMBER = "+91 94823 084644";
+const CONTACT_EMAIL = "shikshasource@gmail.com";
 
 
 // ---------------- ICON ----------------
@@ -944,7 +946,7 @@ function ShikshaIcon({ size = 20 }) {
 }
 
 
-// ---------------- SUGGESTION ----------------
+// ---------------- SUGGESTION BUTTON ----------------
 function SuggestionPill({ label, onClick }) {
   return (
     <button
@@ -969,22 +971,24 @@ export default function ChatWidget() {
   const messagesEndRef = useRef(null);
 
 
-  // -------- AUTO SCROLL --------
+  // ---------- AUTO SCROLL ----------
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
 
-  // -------- WELCOME MESSAGE --------
+  // ---------- WELCOME MESSAGE ----------
   useEffect(() => {
     if (open && messages.length === 0) {
       setMessages([
         {
           role: "assistant",
-          text: `Hi! I'm Shiksha AI 👋  
+          text: `Hi! I'm Shiksha AI 👋
+
 Ask me about colleges, courses, fees, placements, or project help.
 
-You can also contact us at ${CONTACT_NUMBER}`,
+📞 Contact us: ${CONTACT_NUMBER}
+📧 Email: ${CONTACT_EMAIL}`,
           time: new Date().toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit"
@@ -995,7 +999,7 @@ You can also contact us at ${CONTACT_NUMBER}`,
   }, [open, messages.length]);
 
 
-  // -------- ADD MESSAGE --------
+  // ---------- ADD MESSAGE ----------
   const appendMessage = (role, text) => {
     setMessages((prev) => [
       ...prev,
@@ -1011,7 +1015,27 @@ You can also contact us at ${CONTACT_NUMBER}`,
   };
 
 
-  // -------- SEND MESSAGE --------
+  // ---------- CLEAN AI RESPONSE ----------
+  const fixContactPlaceholders = (text) => {
+
+    let reply = text;
+
+    reply = reply
+      .replace(/\[your contact number\]/gi, CONTACT_NUMBER)
+      .replace(/\[insert contact number\]/gi, CONTACT_NUMBER)
+      .replace(/\[contact number\]/gi, CONTACT_NUMBER)
+      .replace(/contact number/gi, CONTACT_NUMBER)
+      .replace(/\[insert email address\]/gi, CONTACT_EMAIL);
+
+    if (!reply.includes(CONTACT_NUMBER)) {
+      reply += `\n\n📞 Contact us: ${CONTACT_NUMBER}`;
+    }
+
+    return reply;
+  };
+
+
+  // ---------- SEND MESSAGE ----------
   const sendMessage = async (overrideText) => {
 
     const messageText = overrideText || input;
@@ -1033,11 +1057,7 @@ You can also contact us at ${CONTACT_NUMBER}`,
 
       let replyText = res.data?.reply || "No reply from server.";
 
-      // 🔥 Replace placeholder contact number if exists
-      replyText = replyText.replace(
-        "[your contact number]",
-        CONTACT_NUMBER
-      );
+      replyText = fixContactPlaceholders(replyText);
 
       appendMessage("assistant", replyText);
 
@@ -1045,7 +1065,7 @@ You can also contact us at ${CONTACT_NUMBER}`,
 
       const errorReply =
         err.response?.data?.reply ||
-        `Server error. Please try again or contact ${CONTACT_NUMBER}`;
+        `Server error. Please try again.\n\n📞 Contact: ${CONTACT_NUMBER}`;
 
       appendMessage("assistant", errorReply);
     }
@@ -1054,7 +1074,7 @@ You can also contact us at ${CONTACT_NUMBER}`,
   };
 
 
-  // -------- DRAG BUTTON --------
+  // ---------- DRAG BUTTON ----------
   const handleDrag = (e) => {
     setPosition({
       x: window.innerWidth - e.clientX,
@@ -1063,7 +1083,7 @@ You can also contact us at ${CONTACT_NUMBER}`,
   };
 
 
-  // -------- AI SUGGESTIONS --------
+  // ---------- AI SUGGESTIONS ----------
   const suggestionLabels = useMemo(() => {
 
     const lastUser = [...messages].reverse().find((m) => m.role === "user");
@@ -1101,7 +1121,7 @@ You can also contact us at ${CONTACT_NUMBER}`,
 
   return (
     <>
-      {/* ---------------- FLOAT BUTTON ---------------- */}
+      {/* FLOAT BUTTON */}
       {!open && (
         <div
           draggable
@@ -1120,7 +1140,7 @@ You can also contact us at ${CONTACT_NUMBER}`,
       )}
 
 
-      {/* ---------------- CHAT WINDOW ---------------- */}
+      {/* CHAT WINDOW */}
       {open && (
         <div className="fixed bottom-5 right-5 w-96 max-w-[95vw] h-[520px] bg-white shadow-2xl rounded-2xl flex flex-col border border-gray-200 z-50">
 
@@ -1152,10 +1172,9 @@ You can also contact us at ${CONTACT_NUMBER}`,
             {messages.map((m, i) => (
               <div
                 key={i}
-                className={`flex ${m.role === "user"
-                    ? "justify-end"
-                    : "justify-start"
-                  }`}
+                className={`flex ${
+                  m.role === "user" ? "justify-end" : "justify-start"
+                }`}
               >
 
                 <div className="max-w-[80%]">
@@ -1189,7 +1208,6 @@ You can also contact us at ${CONTACT_NUMBER}`,
 
               </div>
             ))}
-
 
             {loading && (
               <p className="text-xs text-gray-500">AI typing...</p>
@@ -1249,3 +1267,4 @@ You can also contact us at ${CONTACT_NUMBER}`,
     </>
   );
 }
+
