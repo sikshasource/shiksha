@@ -89,13 +89,12 @@
 
 
 
-
-
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
+
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import customProjectRoute from "./routes/customProject.js";
@@ -110,31 +109,36 @@ connectDB();
 // ================= INITIALIZE APP =================
 const app = express();
 
-// ================= SECURITY MIDDLEWARE =================
+// ================= SECURITY =================
 app.use(helmet());
 
+// ================= RATE LIMIT =================
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
 });
 app.use(limiter);
 
-// ================= CORS =================
-const allowedOrigins =
-  process.env.NODE_ENV === "production"
-    ? [process.env.CLIENT_URL]
-    : ["http://localhost:5173"];
+// ================= CORS CONFIG =================
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://shiksha-source-co.netlify.app",
+];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        console.log("Blocked by CORS:", origin);
-        callback(new Error("Not allowed by CORS"));
+      // allow requests with no origin (mobile apps, postman etc)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
       }
+
+      console.log("Blocked by CORS:", origin);
+      return callback(new Error("Not allowed by CORS"));
     },
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
@@ -147,18 +151,22 @@ app.use("/api/auth", authRoutes);
 app.use("/api/custom-project", customProjectRoute);
 app.use("/api/chat", chatRoutes);
 
+// ================= HEALTH CHECK =================
 app.get("/", (req, res) => {
-  res.send("API Running 🚀");
+  res.send("ShikshaSource API Running 🚀");
 });
 
 // ================= 404 HANDLER =================
 app.use((req, res) => {
-  res.status(404).json({ message: "Route Not Found" });
+  res.status(404).json({
+    success: false,
+    message: "Route Not Found",
+  });
 });
 
 // ================= START SERVER =================
 const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
