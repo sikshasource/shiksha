@@ -1093,7 +1093,7 @@ export default function ChatWidget() {
             className="flex items-center gap-2 bg-gray-900 text-white px-4 py-3 rounded-full shadow-xl hover:scale-105 transition-transform"
           >
             <ShikshaIcon size={22} />
-            <span className="text-sm font-medium">Chat with Shiksha AI</span>
+            <span className="text-sm font-medium">Chat with AI</span>
           </button>
         </div>
       )}
