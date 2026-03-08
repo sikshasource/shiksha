@@ -1452,7 +1452,11 @@ class ShikshaSourceKnowledgeBase:
                 "focus": "Student-focused academic support platform",
                 "contact": {
                     "phone": "+91 94823 84644",
-                    "whatsapp": "https://wa.me/919482308464",
+<<<<<<< HEAD
+                    "whatsapp": "https://wa.me/9194823 84644",
+=======
+                    "whatsapp": "https://wa.me/919482384644",
+>>>>>>> 1abb50b (contact info problem ui)
                     "service_area": "Serving Students Across India"
                 }
             },

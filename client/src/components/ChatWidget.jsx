@@ -768,8 +768,13 @@ export default function ChatWidget() {
             onClick={() => setOpen(true)}
             className="flex items-center gap-2 bg-gray-900   text-white px-4 py-3 rounded-full shadow-xl hover:scale-105 transition-transform"
           >
+<<<<<<< HEAD
             <ShikshaIcon size={22} />
             <span className="text-sm ">Chat with Shiksha AI</span>
+=======
+            <ShikshaIcon size={24} />
+            <span className="text-sm font-medium"> </span>
+>>>>>>> 1abb50b (contact info problem ui)
           </button>
         </div>
       )}
@@ -785,7 +790,7 @@ export default function ChatWidget() {
             <div className="flex items-center gap-3">
               <ShikshaIcon size={28} />
               <div className="flex flex-col">
-                <span className="font-semibold text-sm">Shiksha Source Assistant</span>
+                <span className="font-semibold text-sm">Ask Shiksha</span>
                 <span className="text-[11px] text-blue-100">
                   Smart help for colleges, courses & projects
                 </span>
