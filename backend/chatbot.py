@@ -1392,6 +1392,326 @@
 
 
 
+# """
+# Shiksha Source - OPENROUTER POWERED CHATBOT
+# Ultra-fast, no PyTorch / sentence-transformers.
+# """
+
+# import logging
+# import requests
+# from typing import List, Dict
+# from dataclasses import dataclass, field
+# from datetime import datetime
+
+# import numpy as np
+# from sklearn.metrics.pairwise import cosine_similarity
+
+# logging.basicConfig(
+#     level=logging.INFO,
+#     format="%(asctime)s - %(levelname)s - %(message)s"
+# )
+# logger = logging.getLogger(__name__)
+
+
+# @dataclass
+# class Message:
+#     role: str
+#     content: str
+#     timestamp: datetime = field(default_factory=datetime.now)
+
+
+# class SimpleEmbedder:
+#     """Very lightweight embedder using hashing. No torch, no transformers."""
+
+#     def __init__(self, dim: int = 256):
+#         self.dim = dim
+
+#     def encode(self, texts: List[str], show_progress_bar: bool = False) -> np.ndarray:
+#         embs = []
+#         for t in texts:
+#             vec = np.zeros(self.dim, dtype=np.float32)
+#             for i, ch in enumerate(t.lower()):
+#                 vec[(i + ord(ch)) % self.dim] += 1.0
+#             norm = np.linalg.norm(vec)
+#             if norm > 0:
+#                 vec /= norm
+#             embs.append(vec)
+#         return np.vstack(embs) if len(embs) > 1 else np.array([embs[0]])
+
+
+# class ShikshaSourceKnowledgeBase:
+#     """Knowledge base containing all information about Shiksha Source"""
+
+#     def __init__(self):
+#         self.knowledge = {
+#             "company_info": {
+#                 "name": "Shiksha Source",
+#                 "ceos": ["Kishor MB", "Nachikath NR"],
+#                 "tagline": "Structured academic project solutions with professional development",
+#                 "mission": "To empower students with practical learning experience through structured project development and guided explanation",
+#                 "focus": "Student-focused academic support platform",
+#                 "contact": {
+#                     "phone": "+91 94823 84644",
+# <<<<<<< HEAD
+#                     "whatsapp": "https://wa.me/9194823 84644",
+# =======
+#                     "whatsapp": "https://wa.me/9194823 84644",
+# >>>>>>> 1abb50b (contact info problem ui)
+#                     "service_area": "Serving Students Across India"
+#                 }
+#             },
+#             "services": [
+#                 {
+#                     "name": "Final Year Projects",
+#                     "description": "Complete final year project development with industry-aligned architecture",
+#                     "includes": ["Full development", "Documentation", "Viva preparation", "Demo sessions"]
+#                 },
+#                 {
+#                     "name": "Mini Projects",
+#                     "description": "Semester-based mini projects for engineering and degree students",
+#                     "includes": ["Structured code", "Testing", "Presentation support"]
+#                 },
+#                 {
+#                     "name": "Documentation & IEEE Papers",
+#                     "description": "Professional documentation and IEEE standard papers",
+#                     "includes": ["Technical documentation", "Research papers", "IEEE format"]
+#                 },
+#                 {
+#                     "name": "Viva Preparation",
+#                     "description": "Comprehensive preparation for project defense and viva",
+#                     "includes": ["Mock vivas", "Question preparation", "Concept clarity"]
+#                 },
+#                 {
+#                     "name": "Bug Fixing",
+#                     "description": "Debugging and error resolution for existing projects",
+#                     "includes": ["Code review", "Bug identification", "Solution implementation"]
+#                 },
+#                 {
+#                     "name": "Deployment Assistance",
+#                     "description": "Help with project deployment and hosting",
+#                     "includes": ["Server setup", "Deployment", "Configuration"]
+#                 }
+#             ],
+#             "project_categories": {
+#                 "by_domain": [
+#                     "Web Development", "Mobile App Development", "AI/ML",
+#                     "Data Science", "IoT", "Blockchain", "Cloud Computing",
+#                     "Cybersecurity", "AR/VR", "Game Development"
+#                 ],
+#                 "by_degree": [
+#                     "B.Tech/BE (Engineering)", "MCA", "BCA", "M.Tech",
+#                     "BSc Computer Science", "MSc Computer Science"
+#                 ],
+#                 "by_technology": [
+#                     "Python", "Java", "JavaScript/React", "Node.js",
+#                     "Flutter", "Android", "PHP", "Django", "MERN Stack",
+#                     "Machine Learning", "Deep Learning", "TensorFlow"
+#                 ]
+#             },
+#             "core_values": [
+#                 "Academic Excellence - Maintaining integrity with technically sound solutions",
+#                 "Student-Centric Support - Continuous guidance from start to finish",
+#                 "Professional Standards - Ethical and structured approach",
+#                 "Explanation-Driven - Students gain complete understanding"
+#             ],
+#             "navigation": {
+#                 "Home": "/",
+#                 "Browse by Domain": "/by-domain",
+#                 "Browse by Degree": "/by-degree",
+#                 "Browse by Technology": "/by-technology",
+#                 "About Us": "/aboutus",
+#                 "Sign In": "/LogIn",
+#                 "Sign Up": "/signup"
+#             }
+#         }
+
+#     def get_all_text_chunks(self) -> List[Dict[str, str]]:
+#         chunks = []
+
+#         company = self.knowledge["company_info"]
+#         chunks.append({
+#             "text": f"Shiksha Source is {company['tagline']}. "
+#                     f"Founded by {' and '.join(company['ceos'])}. "
+#                     f"{company['mission']}. "
+#                     f"Contact: {company['contact']['phone']} ({company['contact']['whatsapp']})",
+#             "type": "company_info"
+#         })
+
+#         for service in self.knowledge["services"]:
+#             chunks.append({
+#                 "text": f"{service['name']}: {service['description']}. "
+#                         f"Includes: {', '.join(service['includes'])}",
+#                 "type": "service"
+#             })
+
+#         for category, items in self.knowledge["project_categories"].items():
+#             chunks.append({
+#                 "text": f"We offer projects {category}: {', '.join(items)}",
+#                 "type": "projects"
+#             })
+
+#         for value in self.knowledge["core_values"]:
+#             chunks.append({
+#                 "text": value,
+#                 "type": "values"
+#             })
+
+#         return chunks
+
+
+# class ShikshaSourceChatbot:
+#     """Main chatbot class using OpenRouter API"""
+
+#     def __init__(self, openrouter_api_key: str, model: str = "openai/gpt-4o-mini"):
+#         self.api_key = openrouter_api_key
+#         self.model = model
+#         self.api_url = "https://openrouter.ai/api/v1/chat/completions"
+
+#         logger.info(f"🔍 Initializing OpenRouter with model: {self.model}")
+
+#         # Initialize knowledge base
+#         self.kb = ShikshaSourceKnowledgeBase()
+
+#         # Lightweight embedder (no torch)
+#         self.embedder = SimpleEmbedder(dim=256)
+
+#         # Create vector database
+#         self._create_vector_db()
+
+#         # Chat history
+#         self.chat_history: List[Message] = []
+
+#         # System prompt
+#         self.system_prompt = (
+#             "You are a friendly assistant for Shiksha Source, a student project help platform. "
+#             "Answer questions about services, projects, and contact info. "
+#             "Use simple, direct language and respond in 2–3 short sentences."
+#         )
+
+#         logger.info("✅ Chatbot initialized successfully!")
+
+#     def _create_vector_db(self):
+#         logger.info("Creating vector database...")
+#         self.chunks = self.kb.get_all_text_chunks()
+#         texts = [chunk["text"] for chunk in self.chunks]
+#         self.embeddings = self.embedder.encode(texts)
+#         logger.info(f"✅ Vector database created with {len(self.chunks)} chunks")
+
+#     def _retrieve_relevant_context(self, query: str, top_k: int = 3) -> str:
+#         query_embedding = self.embedder.encode([query])
+#         similarities = cosine_similarity(query_embedding, self.embeddings)[0]
+#         top_indices = np.argsort(similarities)[-top_k:][::-1]
+#         relevant_chunks = [self.chunks[i]["text"] for i in top_indices]
+#         return "\n\n".join(relevant_chunks)
+
+#     def _call_openrouter_api(self, prompt: str) -> str:
+#         headers = {
+#             "Authorization": f"Bearer {self.api_key}",
+#             "Content-Type": "application/json",
+#             "HTTP-Referer": "https://shiksha-source-co.netlify.app",
+#             "X-Title": "Shiksha Source Chatbot"
+#         }
+
+#         data = {
+#             "model": self.model,
+#             "messages": [
+#                 {"role": "system", "content": self.system_prompt},
+#                 {"role": "user", "content": prompt}
+#             ],
+#             "temperature": 0.7,
+#             "max_tokens": 100,
+#             "top_p": 0.95,
+#         }
+
+#         try:
+#             response = requests.post(self.api_url, headers=headers, json=data, timeout=15)
+#             if response.status_code == 200:
+#                 result = response.json()
+#                 if "choices" in result and result["choices"]:
+#                     return result["choices"][0]["message"]["content"]
+#                 raise Exception("No response generated")
+#             logger.error(f"API Error: {response.status_code} - {response.text}")
+#             return "Chatbot offline. Contact +91 94823 84644 for help."
+#         except Exception as e:
+#             logger.error(f"OpenRouter error: {e}")
+#             return "I’m having trouble responding right now. Please contact +91 94823 84644."
+
+#     # def chat(self, user_message: str) -> str:
+#     #     try:
+#     #         self.chat_history.append(Message(role="user", content=user_message))
+
+#     #         context = self._retrieve_relevant_context(user_message)
+
+#     #         prompt = (
+#     #             f"Relevant context:\n{context}\n\n"
+#     #             f"User question: {user_message}\n\n"
+#     #             "Give a SHORT, DIRECT answer (2–3 sentences max). "
+#     #             "Only answer what is asked. Mention contact number if helpful."
+#     #         )
+
+#     #         bot_response = self._call_openrouter_api(prompt)
+
+#     #         self.chat_history.append(Message(role="assistant", content=bot_response))
+#     #         if len(self.chat_history) > 10:
+#     #             self.chat_history = self.chat_history[-10:]
+
+#     #         return bot_response
+#     #     except Exception as e:
+#     #         logger.error(f"Error in chat: {e}")
+#     #         return (
+#     #             "I’m having trouble processing your request.\n\n"
+#     #             "Please try again or contact our team at +91 94823 84644."
+#     #         )
+
+
+#     def chat(self, user_message: str) -> str:
+#         try:
+#             self.chat_history.append(Message(role="user", content=user_message))
+
+#             context = self._retrieve_relevant_context(user_message)
+
+#             prompt = (
+#             f"Relevant context:\n{context}\n\n"
+#             f"User question: {user_message}\n\n"
+#             "Give a SHORT, DIRECT answer (2–3 sentences max). "
+#             "Always include this contact number exactly once in your answer: +91 94823 84644. "
+#             "Only answer what is asked."
+#             )
+
+#             bot_response = self._call_openrouter_api(prompt)
+
+#             self.chat_history.append(Message(role="assistant", content=bot_response))
+#             if len(self.chat_history) > 10:
+#                self.chat_history = self.chat_history[-10:]
+
+#             return bot_response
+#         except Exception as e:
+#             logger.error(f"Error in chat: {e}")
+#             return (
+#             "I’m having trouble processing your request.\n\n"
+#             "Please contact us at +91 94823 84644."
+#             )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 """
 Shiksha Source - OPENROUTER POWERED CHATBOT
 Ultra-fast, no PyTorch / sentence-transformers.
@@ -1406,10 +1726,12 @@ from datetime import datetime
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
+
 logger = logging.getLogger(__name__)
 
 
@@ -1428,14 +1750,20 @@ class SimpleEmbedder:
 
     def encode(self, texts: List[str], show_progress_bar: bool = False) -> np.ndarray:
         embs = []
+
         for t in texts:
             vec = np.zeros(self.dim, dtype=np.float32)
+
             for i, ch in enumerate(t.lower()):
                 vec[(i + ord(ch)) % self.dim] += 1.0
+
             norm = np.linalg.norm(vec)
+
             if norm > 0:
                 vec /= norm
+
             embs.append(vec)
+
         return np.vstack(embs) if len(embs) > 1 else np.array([embs[0]])
 
 
@@ -1443,78 +1771,140 @@ class ShikshaSourceKnowledgeBase:
     """Knowledge base containing all information about Shiksha Source"""
 
     def __init__(self):
+
         self.knowledge = {
+
             "company_info": {
                 "name": "Shiksha Source",
                 "ceos": ["Kishor MB", "Nachikath NR"],
                 "tagline": "Structured academic project solutions with professional development",
                 "mission": "To empower students with practical learning experience through structured project development and guided explanation",
                 "focus": "Student-focused academic support platform",
+
                 "contact": {
                     "phone": "+91 94823 84644",
-<<<<<<< HEAD
-                    "whatsapp": "https://wa.me/9194823 84644",
-=======
                     "whatsapp": "https://wa.me/919482384644",
->>>>>>> 1abb50b (contact info problem ui)
                     "service_area": "Serving Students Across India"
                 }
             },
+
             "services": [
+
                 {
                     "name": "Final Year Projects",
                     "description": "Complete final year project development with industry-aligned architecture",
-                    "includes": ["Full development", "Documentation", "Viva preparation", "Demo sessions"]
+                    "includes": [
+                        "Full development",
+                        "Documentation",
+                        "Viva preparation",
+                        "Demo sessions"
+                    ]
                 },
+
                 {
                     "name": "Mini Projects",
                     "description": "Semester-based mini projects for engineering and degree students",
-                    "includes": ["Structured code", "Testing", "Presentation support"]
+                    "includes": [
+                        "Structured code",
+                        "Testing",
+                        "Presentation support"
+                    ]
                 },
+
                 {
                     "name": "Documentation & IEEE Papers",
                     "description": "Professional documentation and IEEE standard papers",
-                    "includes": ["Technical documentation", "Research papers", "IEEE format"]
+                    "includes": [
+                        "Technical documentation",
+                        "Research papers",
+                        "IEEE format"
+                    ]
                 },
+
                 {
                     "name": "Viva Preparation",
                     "description": "Comprehensive preparation for project defense and viva",
-                    "includes": ["Mock vivas", "Question preparation", "Concept clarity"]
+                    "includes": [
+                        "Mock vivas",
+                        "Question preparation",
+                        "Concept clarity"
+                    ]
                 },
+
                 {
                     "name": "Bug Fixing",
                     "description": "Debugging and error resolution for existing projects",
-                    "includes": ["Code review", "Bug identification", "Solution implementation"]
+                    "includes": [
+                        "Code review",
+                        "Bug identification",
+                        "Solution implementation"
+                    ]
                 },
+
                 {
                     "name": "Deployment Assistance",
                     "description": "Help with project deployment and hosting",
-                    "includes": ["Server setup", "Deployment", "Configuration"]
+                    "includes": [
+                        "Server setup",
+                        "Deployment",
+                        "Configuration"
+                    ]
                 }
             ],
+
             "project_categories": {
+
                 "by_domain": [
-                    "Web Development", "Mobile App Development", "AI/ML",
-                    "Data Science", "IoT", "Blockchain", "Cloud Computing",
-                    "Cybersecurity", "AR/VR", "Game Development"
+                    "Web Development",
+                    "Mobile App Development",
+                    "AI/ML",
+                    "Data Science",
+                    "IoT",
+                    "Blockchain",
+                    "Cloud Computing",
+                    "Cybersecurity",
+                    "AR/VR",
+                    "Game Development"
                 ],
+
                 "by_degree": [
-                    "B.Tech/BE (Engineering)", "MCA", "BCA", "M.Tech",
-                    "BSc Computer Science", "MSc Computer Science"
+                    "B.Tech/BE (Engineering)",
+                    "MCA",
+                    "BCA",
+                    "M.Tech",
+                    "BSc Computer Science",
+                    "MSc Computer Science"
                 ],
+
                 "by_technology": [
-                    "Python", "Java", "JavaScript/React", "Node.js",
-                    "Flutter", "Android", "PHP", "Django", "MERN Stack",
-                    "Machine Learning", "Deep Learning", "TensorFlow"
+                    "Python",
+                    "Java",
+                    "JavaScript/React",
+                    "Node.js",
+                    "Flutter",
+                    "Android",
+                    "PHP",
+                    "Django",
+                    "MERN Stack",
+                    "Machine Learning",
+                    "Deep Learning",
+                    "TensorFlow"
                 ]
             },
+
             "core_values": [
+
                 "Academic Excellence - Maintaining integrity with technically sound solutions",
+
                 "Student-Centric Support - Continuous guidance from start to finish",
+
                 "Professional Standards - Ethical and structured approach",
+
                 "Explanation-Driven - Students gain complete understanding"
             ],
+
             "navigation": {
+
                 "Home": "/",
                 "Browse by Domain": "/by-domain",
                 "Browse by Degree": "/by-degree",
@@ -1526,31 +1916,40 @@ class ShikshaSourceKnowledgeBase:
         }
 
     def get_all_text_chunks(self) -> List[Dict[str, str]]:
+
         chunks = []
 
         company = self.knowledge["company_info"]
+
         chunks.append({
-            "text": f"Shiksha Source is {company['tagline']}. "
-                    f"Founded by {' and '.join(company['ceos'])}. "
-                    f"{company['mission']}. "
-                    f"Contact: {company['contact']['phone']} ({company['contact']['whatsapp']})",
+            "text": (
+                f"Shiksha Source is {company['tagline']}. "
+                f"Founded by {' and '.join(company['ceos'])}. "
+                f"{company['mission']}. "
+                f"Contact: {company['contact']['phone']} ({company['contact']['whatsapp']})"
+            ),
             "type": "company_info"
         })
 
         for service in self.knowledge["services"]:
+
             chunks.append({
-                "text": f"{service['name']}: {service['description']}. "
-                        f"Includes: {', '.join(service['includes'])}",
+                "text": (
+                    f"{service['name']}: {service['description']}. "
+                    f"Includes: {', '.join(service['includes'])}"
+                ),
                 "type": "service"
             })
 
         for category, items in self.knowledge["project_categories"].items():
+
             chunks.append({
                 "text": f"We offer projects {category}: {', '.join(items)}",
                 "type": "projects"
             })
 
         for value in self.knowledge["core_values"]:
+
             chunks.append({
                 "text": value,
                 "type": "values"
@@ -1563,25 +1962,20 @@ class ShikshaSourceChatbot:
     """Main chatbot class using OpenRouter API"""
 
     def __init__(self, openrouter_api_key: str, model: str = "openai/gpt-4o-mini"):
+
         self.api_key = openrouter_api_key
         self.model = model
         self.api_url = "https://openrouter.ai/api/v1/chat/completions"
 
         logger.info(f"🔍 Initializing OpenRouter with model: {self.model}")
 
-        # Initialize knowledge base
         self.kb = ShikshaSourceKnowledgeBase()
-
-        # Lightweight embedder (no torch)
         self.embedder = SimpleEmbedder(dim=256)
 
-        # Create vector database
         self._create_vector_db()
 
-        # Chat history
         self.chat_history: List[Message] = []
 
-        # System prompt
         self.system_prompt = (
             "You are a friendly assistant for Shiksha Source, a student project help platform. "
             "Answer questions about services, projects, and contact info. "
@@ -1591,20 +1985,30 @@ class ShikshaSourceChatbot:
         logger.info("✅ Chatbot initialized successfully!")
 
     def _create_vector_db(self):
+
         logger.info("Creating vector database...")
+
         self.chunks = self.kb.get_all_text_chunks()
         texts = [chunk["text"] for chunk in self.chunks]
+
         self.embeddings = self.embedder.encode(texts)
+
         logger.info(f"✅ Vector database created with {len(self.chunks)} chunks")
 
     def _retrieve_relevant_context(self, query: str, top_k: int = 3) -> str:
+
         query_embedding = self.embedder.encode([query])
+
         similarities = cosine_similarity(query_embedding, self.embeddings)[0]
+
         top_indices = np.argsort(similarities)[-top_k:][::-1]
+
         relevant_chunks = [self.chunks[i]["text"] for i in top_indices]
+
         return "\n\n".join(relevant_chunks)
 
     def _call_openrouter_api(self, prompt: str) -> str:
+
         headers = {
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json",
@@ -1620,80 +2024,67 @@ class ShikshaSourceChatbot:
             ],
             "temperature": 0.7,
             "max_tokens": 100,
-            "top_p": 0.95,
+            "top_p": 0.95
         }
 
         try:
-            response = requests.post(self.api_url, headers=headers, json=data, timeout=15)
+
+            response = requests.post(
+                self.api_url,
+                headers=headers,
+                json=data,
+                timeout=15
+            )
+
             if response.status_code == 200:
+
                 result = response.json()
+
                 if "choices" in result and result["choices"]:
                     return result["choices"][0]["message"]["content"]
+
                 raise Exception("No response generated")
+
             logger.error(f"API Error: {response.status_code} - {response.text}")
+
             return "Chatbot offline. Contact +91 94823 84644 for help."
+
         except Exception as e:
+
             logger.error(f"OpenRouter error: {e}")
+
             return "I’m having trouble responding right now. Please contact +91 94823 84644."
 
-    # def chat(self, user_message: str) -> str:
-    #     try:
-    #         self.chat_history.append(Message(role="user", content=user_message))
-
-    #         context = self._retrieve_relevant_context(user_message)
-
-    #         prompt = (
-    #             f"Relevant context:\n{context}\n\n"
-    #             f"User question: {user_message}\n\n"
-    #             "Give a SHORT, DIRECT answer (2–3 sentences max). "
-    #             "Only answer what is asked. Mention contact number if helpful."
-    #         )
-
-    #         bot_response = self._call_openrouter_api(prompt)
-
-    #         self.chat_history.append(Message(role="assistant", content=bot_response))
-    #         if len(self.chat_history) > 10:
-    #             self.chat_history = self.chat_history[-10:]
-
-    #         return bot_response
-    #     except Exception as e:
-    #         logger.error(f"Error in chat: {e}")
-    #         return (
-    #             "I’m having trouble processing your request.\n\n"
-    #             "Please try again or contact our team at +91 94823 84644."
-    #         )
-
-
     def chat(self, user_message: str) -> str:
+
         try:
+
             self.chat_history.append(Message(role="user", content=user_message))
 
             context = self._retrieve_relevant_context(user_message)
 
             prompt = (
-            f"Relevant context:\n{context}\n\n"
-            f"User question: {user_message}\n\n"
-            "Give a SHORT, DIRECT answer (2–3 sentences max). "
-            "Always include this contact number exactly once in your answer: +91 94823 84644. "
-            "Only answer what is asked."
+                f"Relevant context:\n{context}\n\n"
+                f"User question: {user_message}\n\n"
+                "Give a SHORT, DIRECT answer (2–3 sentences max). "
+                "Always include this contact number exactly once in your answer: +91 94823 84644. "
+                "Only answer what is asked."
             )
 
             bot_response = self._call_openrouter_api(prompt)
 
             self.chat_history.append(Message(role="assistant", content=bot_response))
+
             if len(self.chat_history) > 10:
-               self.chat_history = self.chat_history[-10:]
+                self.chat_history = self.chat_history[-10:]
 
             return bot_response
+
         except Exception as e:
+
             logger.error(f"Error in chat: {e}")
+
             return (
-            "I’m having trouble processing your request.\n\n"
-            "Please contact us at +91 94823 84644."
+                "I’m having trouble processing your request.\n\n"
+                "Please contact us at +91 94823 84644."
             )
-
-
-
-
-
-

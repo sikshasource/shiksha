@@ -595,7 +595,331 @@
 
 
 
-// client/src/ChatWidget.jsx
+// // client/src/ChatWidget.jsx
+
+// // client/src/ChatWidget.jsx
+
+// import React, { useState, useEffect, useRef, useMemo } from "react";
+// import axios from "axios";
+// import FavIcon from "/ChatBot-Ico.png"; // from public/Fav.png
+
+// const API_URL = "https://shiksha-chatbot.onrender.com/chat";
+
+// // Shiksha icon using your favicon image
+// function ShikshaIcon({ size = 20 }) {
+//   return (
+//     <div
+//       className="flex items-center justify-center rounded-full bg-white shadow-md border border-blue-100 overflow-hidden"
+//       style={{ width: size, height: size }}
+//     >
+//       <img
+//         src={FavIcon}
+//         alt="Shiksha Source"
+//         className="w-full h-full object-contain"
+//       />
+//     </div>
+//   );
+// }
+
+// function SuggestionPill({ label, onClick }) {
+//   return (
+//     <button
+//       onClick={() => onClick(label)}
+//       className="inline-flex items-center px-3 py-1.5 rounded-full border border-blue-100 bg-blue-50 text-xs text-blue-700 hover:bg-blue-100 transition-colors whitespace-nowrap"
+//     >
+//       {label}
+//     </button>
+//   );
+// }
+
+// export default function ChatWidget() {
+//   const [open, setOpen] = useState(false);
+//   const [messages, setMessages] = useState([]); // {role,text,time}
+//   const [input, setInput] = useState("");
+//   const [loading, setLoading] = useState(false);
+//   const [position, setPosition] = useState({ x: 20, y: 20 });
+
+//   const messagesEndRef = useRef(null);
+
+//   // Auto-scroll
+//   useEffect(() => {
+//     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+//   }, [messages]);
+
+//   // Welcome message
+//   useEffect(() => {
+//     if (open && messages.length === 0) {
+//       setMessages([
+//         {
+//           role: "assistant",
+//           text: "Hi! I'm Shiksha AI. Ask me about colleges, courses, fees, placements, or project help.",
+//           time: new Date().toLocaleTimeString([], {
+//             hour: "2-digit",
+//             minute: "2-digit",
+//           }),
+//         },
+//       ]);
+//     }
+//   }, [open, messages.length]);
+
+//   const handleDrag = (e) => {
+//     setPosition({
+//       x: window.innerWidth - e.clientX,
+//       y: window.innerHeight - e.clientY,
+//     });
+//   };
+
+//   const appendMessage = (role, text) => {
+//     setMessages((m) => [
+//       ...m,
+//       {
+//         role,
+//         text,
+//         time: new Date().toLocaleTimeString([], {
+//           hour: "2-digit",
+//           minute: "2-digit",
+//         }),
+//       },
+//     ]);
+//   };
+
+//   const sendMessage = async (overrideText) => {
+//     const finalText = typeof overrideText === "string" ? overrideText : input;
+//     if (!finalText.trim() || loading) return;
+
+//     appendMessage("user", finalText);
+//     setInput("");
+//     setLoading(true);
+
+//     try {
+//       const res = await axios.post(
+//         API_URL,
+//         { message: finalText },
+//         { headers: { "Content-Type": "application/json" } }
+//       );
+
+//       const replyText = res.data?.reply || "No reply from server.";
+//       appendMessage("assistant", replyText);
+//     } catch (err) {
+//       const errorReply =
+//         err.response?.data?.reply ||
+//         "Server error. Please try again or contact +91 94823 84644.";
+//       appendMessage("assistant", errorReply);
+//     }
+
+//     setLoading(false);
+//   };
+
+//   // Intent-based suggestions (2–3 max), based on last user message
+//   const suggestionLabels = useMemo(() => {
+//     const lastUser = [...messages].reverse().find((m) => m.role === "user");
+//     const text = lastUser?.text?.toLowerCase() || "";
+
+//     const suggestions = [];
+
+//     if (/college|university|engineering|btech|mca|bca|degree/.test(text)) {
+//       suggestions.push("Show me project domains for my degree");
+//       suggestions.push("What are the best final year projects for my branch?");
+//     }
+
+//     if (/course|branch|stream|cse|ece|civil|mechanical/.test(text)) {
+//       suggestions.push("Suggest project ideas for my course");
+//       suggestions.push("Do you support mini projects for my course?");
+//     }
+
+//     if (/bangalore|tumakuru|mysore|location|near me|city|state/.test(text)) {
+//       suggestions.push("Can you help students outside my city?");
+//     }
+
+//     if (/exam|viva|internal|external|review/.test(text)) {
+//       suggestions.push("How do you help with viva preparation?");
+//       suggestions.push("Do you conduct mock project reviews?");
+//     }
+
+//     if (/fee|fees|cost|price|charge|payment/.test(text)) {
+//       suggestions.push("How much do you charge for a full project?");
+//       suggestions.push("Is payment in installments available?");
+//     }
+
+//     if (/placement|job|internship|career/.test(text)) {
+//       suggestions.push("Will this project help in placements?");
+//       suggestions.push("Do you provide guidance for interviews?");
+//     }
+
+//     if (suggestions.length === 0) {
+//       suggestions.push("Show services you provide");
+//       suggestions.push("How can I contact Shiksha Source?");
+//     }
+
+//     return suggestions.slice(0, 3);
+//   }, [messages]);
+
+//   return (
+//     <>
+//       {/* Floating Button */}
+//       {!open && (
+//         <div
+//           draggable
+//           onDragEnd={handleDrag}
+//           className="fixed z-50 cursor-move"
+//           style={{ bottom: position.y, right: position.x }}
+//         >
+//           <button
+//             onClick={() => setOpen(true)}
+//             className="flex items-center gap-2 bg-gray-900   text-white px-4 py-3 rounded-full shadow-xl hover:scale-105 transition-transform"
+//           >
+// <<<<<<< HEAD
+//             <ShikshaIcon size={22} />
+//             <span className="text-sm ">Chat with Shiksha AI</span>
+// =======
+//             <ShikshaIcon size={24} />
+//             <span className="text-sm font-medium"> </span>
+// >>>>>>> 1abb50b (contact info problem ui)
+//           </button>
+//         </div>
+//       )}
+
+//       {/* Chat Window */}
+//       {open && (
+//         <div
+//           className="fixed z-50 w-96 max-w-[95vw] h-[520px] bg-white shadow-2xl rounded-2xl flex flex-col border border-gray-200"
+//           style={{ bottom: "20px", right: "20px" }}
+//         >
+//           {/* Header */}
+//           <div className="flex items-center justify-between px-4 py-3 bg-gray-900  text-white rounded-t-2xl">
+//             <div className="flex items-center gap-3">
+//               <ShikshaIcon size={28} />
+//               <div className="flex flex-col">
+//                 <span className="font-semibold text-sm">Ask Shiksha</span>
+//                 <span className="text-[11px] text-blue-100">
+//                   Smart help for colleges, courses & projects
+//                 </span>
+//               </div>
+//             </div>
+//             <button
+//               onClick={() => setOpen(false)}
+//               className="p-1 rounded-full hover:bg-white/15"
+//             >
+//               ✕
+//             </button>
+//           </div>
+
+//           {/* Messages */}
+//           <div className="flex-1 overflow-y-auto px-3 py-2 space-y-2 bg-gray-50">
+//             {messages.map((m, i) => (
+//               <div
+//                 key={i}
+//                 className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
+//               >
+//                 <div className="max-w-[80%]">
+//                   <div
+//                     className={`rounded-2xl px-3 py-2 text-sm leading-relaxed ${
+//                       m.role === "user"
+//                         ? "bg-blue-600 text-white rounded-br-sm"
+//                         : "bg-white text-gray-900 rounded-bl-sm border border-gray-200 shadow-sm"
+//                     }`}
+//                   >
+//                     {m.role === "assistant" && (
+//                       <div className="flex items-center gap-1 mb-1">
+//                         <ShikshaIcon size={16} />
+//                         <span className="text-[10px] uppercase tracking-wide text-gray-500">
+//                           Shiksha Source
+//                         </span>
+//                       </div>
+//                     )}
+//                     <p className="whitespace-pre-wrap">{m.text}</p>
+//                   </div>
+//                   <p
+//                     className={`text-[10px] text-gray-400 mt-1 ${
+//                       m.role === "user" ? "text-right" : "text-left"
+//                     }`}
+//                   >
+//                     {m.time}
+//                   </p>
+//                 </div>
+//               </div>
+//             ))}
+
+//             {loading && (
+//               <div className="flex justify-start">
+//                 <div className="bg-white text-gray-700 border border-gray-200 rounded-2xl px-3 py-2 text-xs flex items-center gap-1 shadow-sm">
+//                   <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+//                   <span>Shiksha AI is typing…</span>
+//                 </div>
+//               </div>
+//             )}
+
+//             <div ref={messagesEndRef} />
+//           </div>
+
+//           {/* Suggestions */}
+//           {suggestionLabels.length > 0 && (
+//             <div className="px-3 pt-2 pb-1 bg-gray-50 border-t border-gray-100">
+//               <p className="text-[11px] text-gray-500 mb-1">Quick suggestions</p>
+//               <div className="flex flex-wrap gap-1.5">
+//                 {suggestionLabels.map((label) => (
+//                   <SuggestionPill
+//                     key={label}
+//                     label={label}
+//                     onClick={(text) => sendMessage(text)}
+//                   />
+//                 ))}
+//               </div>
+//             </div>
+//           )}
+
+//           {/* Input */}
+//           <div className="px-3 py-2 bg-white border-t border-gray-200 flex items-center gap-2">
+//             <textarea
+//               rows={1}
+//               className="flex-1 resize-none border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+//               placeholder="Ask about colleges, courses, fees or placements…"
+//               value={input}
+//               onChange={(e) => setInput(e.target.value)}
+//               onKeyDown={(e) => {
+//                 if (e.key === "Enter" && !e.shiftKey) {
+//                   e.preventDefault();
+//                   sendMessage();
+//                 }
+//               }}
+//               disabled={loading}
+//             />
+//             <button
+//               onClick={() => sendMessage()}
+//               disabled={loading || !input.trim()}
+//               className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-600   text-white shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+//             >
+//               {loading ? "…" : "➤"}
+//             </button>
+//           </div>
+//         </div>
+//       )}
+//     </>
+//   );
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // client/src/ChatWidget.jsx
 
@@ -710,7 +1034,7 @@ export default function ChatWidget() {
     setLoading(false);
   };
 
-  // Intent-based suggestions (2–3 max), based on last user message
+  // Intent-based suggestions
   const suggestionLabels = useMemo(() => {
     const lastUser = [...messages].reverse().find((m) => m.role === "user");
     const text = lastUser?.text?.toLowerCase() || "";
@@ -766,15 +1090,10 @@ export default function ChatWidget() {
         >
           <button
             onClick={() => setOpen(true)}
-            className="flex items-center gap-2 bg-gray-900   text-white px-4 py-3 rounded-full shadow-xl hover:scale-105 transition-transform"
+            className="flex items-center gap-2 bg-gray-900 text-white px-4 py-3 rounded-full shadow-xl hover:scale-105 transition-transform"
           >
-<<<<<<< HEAD
             <ShikshaIcon size={22} />
-            <span className="text-sm ">Chat with Shiksha AI</span>
-=======
-            <ShikshaIcon size={24} />
-            <span className="text-sm font-medium"> </span>
->>>>>>> 1abb50b (contact info problem ui)
+            <span className="text-sm font-medium">Chat with Shiksha AI</span>
           </button>
         </div>
       )}
@@ -786,7 +1105,7 @@ export default function ChatWidget() {
           style={{ bottom: "20px", right: "20px" }}
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 bg-gray-900  text-white rounded-t-2xl">
+          <div className="flex items-center justify-between px-4 py-3 bg-gray-900 text-white rounded-t-2xl">
             <div className="flex items-center gap-3">
               <ShikshaIcon size={28} />
               <div className="flex flex-col">
@@ -796,6 +1115,7 @@ export default function ChatWidget() {
                 </span>
               </div>
             </div>
+
             <button
               onClick={() => setOpen(false)}
               className="p-1 rounded-full hover:bg-white/15"
@@ -809,7 +1129,9 @@ export default function ChatWidget() {
             {messages.map((m, i) => (
               <div
                 key={i}
-                className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
+                className={`flex ${
+                  m.role === "user" ? "justify-end" : "justify-start"
+                }`}
               >
                 <div className="max-w-[80%]">
                   <div
@@ -827,8 +1149,10 @@ export default function ChatWidget() {
                         </span>
                       </div>
                     )}
+
                     <p className="whitespace-pre-wrap">{m.text}</p>
                   </div>
+
                   <p
                     className={`text-[10px] text-gray-400 mt-1 ${
                       m.role === "user" ? "text-right" : "text-left"
@@ -855,7 +1179,10 @@ export default function ChatWidget() {
           {/* Suggestions */}
           {suggestionLabels.length > 0 && (
             <div className="px-3 pt-2 pb-1 bg-gray-50 border-t border-gray-100">
-              <p className="text-[11px] text-gray-500 mb-1">Quick suggestions</p>
+              <p className="text-[11px] text-gray-500 mb-1">
+                Quick suggestions
+              </p>
+
               <div className="flex flex-wrap gap-1.5">
                 {suggestionLabels.map((label) => (
                   <SuggestionPill
@@ -884,10 +1211,11 @@ export default function ChatWidget() {
               }}
               disabled={loading}
             />
+
             <button
               onClick={() => sendMessage()}
               disabled={loading || !input.trim()}
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-600   text-white shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-600 text-white shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "…" : "➤"}
             </button>
@@ -918,356 +1246,4 @@ export default function ChatWidget() {
 
 
 
-
-
-
-// // client/src/ChatWidget.jsx
-
-// import React, { useState, useEffect, useRef, useMemo } from "react";
-// import axios from "axios";
-// import FavIcon from "client/public/Images/Left_logo.png";
-
-// const API_URL = "https://shiksha-chatbot.onrender.com/chat";
-// const CONTACT_NUMBER = "+91 94823 84644";
-// const CONTACT_EMAIL = "shikshasource@gmail.com";
-
-
-// // ---------------- ICON ----------------
-// function ShikshaIcon({ size = 20 }) {
-//   return (
-//     <div
-//       className="flex items-center justify-center rounded-full bg-white shadow border border-blue-100 overflow-hidden"
-//       style={{ width: size, height: size }}
-//     >
-//       <img
-//         src={FavIcon}
-//         alt="Shiksha Source"
-//         className="w-full h-full object-contain"
-//       />
-//     </div>
-//   );
-// }
-
-
-// // ---------------- SUGGESTION BUTTON ----------------
-// function SuggestionPill({ label, onClick }) {
-//   return (
-//     <button
-//       onClick={() => onClick(label)}
-//       className="px-3 py-1.5 text-xs rounded-full border border-blue-100 bg-blue-50 text-blue-700 hover:bg-blue-100 transition"
-//     >
-//       {label}
-//     </button>
-//   );
-// }
-
-
-// // ---------------- MAIN COMPONENT ----------------
-// export default function ChatWidget() {
-
-//   const [open, setOpen] = useState(false);
-//   const [messages, setMessages] = useState([]);
-//   const [input, setInput] = useState("");
-//   const [loading, setLoading] = useState(false);
-//   const [position, setPosition] = useState({ x: 20, y: 20 });
-
-//   const messagesEndRef = useRef(null);
-
-
-//   // ---------- AUTO SCROLL ----------
-//   useEffect(() => {
-//     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-//   }, [messages]);
-
-
-//   // ---------- WELCOME MESSAGE ----------
-//   useEffect(() => {
-//     if (open && messages.length === 0) {
-//       setMessages([
-//         {
-//           role: "assistant",
-//           text: `Hi! I'm Shiksha AI 👋
-
-// Ask me about colleges, courses, fees, placements, or project help.
-
-// 📞 Contact us: ${CONTACT_NUMBER}
-// 📧 Email: ${CONTACT_EMAIL}`,
-//           time: new Date().toLocaleTimeString([], {
-//             hour: "2-digit",
-//             minute: "2-digit"
-//           })
-//         }
-//       ]);
-//     }
-//   }, [open, messages.length]);
-
-
-//   // ---------- ADD MESSAGE ----------
-//   const appendMessage = (role, text) => {
-//     setMessages((prev) => [
-//       ...prev,
-//       {
-//         role,
-//         text,
-//         time: new Date().toLocaleTimeString([], {
-//           hour: "2-digit",
-//           minute: "2-digit"
-//         })
-//       }
-//     ]);
-//   };
-
-
-//   // ---------- CLEAN AI RESPONSE ----------
-//   const fixContactPlaceholders = (text) => {
-
-//     let reply = text;
-
-//     reply = reply
-//       .replace(/\[your contact number\]/gi, CONTACT_NUMBER)
-//       .replace(/\[insert contact number\]/gi, CONTACT_NUMBER)
-//       .replace(/\[contact number\]/gi, CONTACT_NUMBER)
-//       .replace(/contact number/gi, CONTACT_NUMBER)
-//       .replace(/\[insert email address\]/gi, CONTACT_EMAIL);
-
-//     if (!reply.includes(CONTACT_NUMBER)) {
-//       reply += `\n\n📞 Contact us: ${CONTACT_NUMBER}`;
-//     }
-
-//     return reply;
-//   };
-
-
-//   // ---------- SEND MESSAGE ----------
-//   const sendMessage = async (overrideText) => {
-
-//     const messageText = overrideText || input;
-
-//     if (!messageText.trim() || loading) return;
-
-//     appendMessage("user", messageText);
-
-//     setInput("");
-//     setLoading(true);
-
-//     try {
-
-//       const res = await axios.post(
-//         API_URL,
-//         { message: messageText },
-//         { headers: { "Content-Type": "application/json" } }
-//       );
-
-//       let replyText = res.data?.reply || "No reply from server.";
-
-//       replyText = fixContactPlaceholders(replyText);
-
-//       appendMessage("assistant", replyText);
-
-//     } catch (err) {
-
-//       const errorReply =
-//         err.response?.data?.reply ||
-//         `Server error. Please try again.\n\n📞 Contact: ${CONTACT_NUMBER}`;
-
-//       appendMessage("assistant", errorReply);
-//     }
-
-//     setLoading(false);
-//   };
-
-
-//   // ---------- DRAG BUTTON ----------
-//   const handleDrag = (e) => {
-//     setPosition({
-//       x: window.innerWidth - e.clientX,
-//       y: window.innerHeight - e.clientY
-//     });
-//   };
-
-
-//   // ---------- AI SUGGESTIONS ----------
-//   const suggestionLabels = useMemo(() => {
-
-//     const lastUser = [...messages].reverse().find((m) => m.role === "user");
-
-//     const text = lastUser?.text?.toLowerCase() || "";
-
-//     const suggestions = [];
-
-//     if (/college|university|engineering|btech|mca|bca/.test(text)) {
-//       suggestions.push("Show top colleges for my course");
-//       suggestions.push("Which colleges have best placements?");
-//     }
-
-//     if (/course|branch|stream|cse|ece|civil/.test(text)) {
-//       suggestions.push("Suggest project ideas for my course");
-//     }
-
-//     if (/placement|job|career/.test(text)) {
-//       suggestions.push("Which projects help in placements?");
-//     }
-
-//     if (/fee|fees|price|cost/.test(text)) {
-//       suggestions.push("Do you offer installment payment?");
-//     }
-
-//     if (suggestions.length === 0) {
-//       suggestions.push("Show services you provide");
-//       suggestions.push("How can I contact Shiksha Source?");
-//     }
-
-//     return suggestions.slice(0, 3);
-
-//   }, [messages]);
-
-
-//   return (
-//     <>
-//       {/* FLOAT BUTTON */}
-//       {!open && (
-//         <div
-//           draggable
-//           onDragEnd={handleDrag}
-//           className="fixed z-50 cursor-move"
-//           style={{ bottom: position.y, right: position.x }}
-//         >
-//           <button
-//             onClick={() => setOpen(true)}
-//             className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-3 rounded-full shadow-lg hover:scale-105 transition"
-//           >
-//             <ShikshaIcon size={22} />
-//             <span className="text-sm font-medium">AI Help</span>
-//           </button>
-//         </div>
-//       )}
-
-
-//       {/* CHAT WINDOW */}
-//       {open && (
-//         <div className="fixed bottom-5 right-5 w-96 max-w-[95vw] h-[520px] bg-white shadow-2xl rounded-2xl flex flex-col border border-gray-200 z-50">
-
-
-//           {/* HEADER */}
-//           <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-t-2xl">
-//             <div className="flex items-center gap-3">
-//               <ShikshaIcon size={26} />
-//               <div>
-//                 <p className="text-sm font-semibold">Shiksha AI</p>
-//                 <p className="text-[11px] text-blue-100">
-//                   Smart help for colleges & projects
-//                 </p>
-//               </div>
-//             </div>
-
-//             <button
-//               onClick={() => setOpen(false)}
-//               className="hover:bg-white/20 rounded-full px-2"
-//             >
-//               ✕
-//             </button>
-//           </div>
-
-
-//           {/* MESSAGES */}
-//           <div className="flex-1 overflow-y-auto px-3 py-2 space-y-2 bg-gray-50">
-
-//             {messages.map((m, i) => (
-//               <div
-//                 key={i}
-//                 className={`flex ${
-//                   m.role === "user" ? "justify-end" : "justify-start"
-//                 }`}
-//               >
-
-//                 <div className="max-w-[80%]">
-
-//                   <div
-//                     className={`rounded-2xl px-3 py-2 text-sm ${
-//                       m.role === "user"
-//                         ? "bg-blue-600 text-white"
-//                         : "bg-white border border-gray-200 shadow"
-//                     }`}
-//                   >
-
-//                     {m.role === "assistant" && (
-//                       <div className="flex items-center gap-1 mb-1">
-//                         <ShikshaIcon size={14} />
-//                         <span className="text-[10px] text-gray-500 uppercase">
-//                           Shiksha Source
-//                         </span>
-//                       </div>
-//                     )}
-
-//                     <p className="whitespace-pre-wrap">{m.text}</p>
-
-//                   </div>
-
-//                   <p className="text-[10px] text-gray-400 mt-1">
-//                     {m.time}
-//                   </p>
-
-//                 </div>
-
-//               </div>
-//             ))}
-
-//             {loading && (
-//               <p className="text-xs text-gray-500">AI typing...</p>
-//             )}
-
-//             <div ref={messagesEndRef} />
-//           </div>
-
-
-//           {/* SUGGESTIONS */}
-//           <div className="px-3 pt-2 pb-1 border-t bg-gray-50">
-//             <p className="text-[11px] text-gray-500 mb-1">
-//               Quick suggestions
-//             </p>
-
-//             <div className="flex flex-wrap gap-1">
-//               {suggestionLabels.map((s) => (
-//                 <SuggestionPill
-//                   key={s}
-//                   label={s}
-//                   onClick={(text) => sendMessage(text)}
-//                 />
-//               ))}
-//             </div>
-//           </div>
-
-
-//           {/* INPUT */}
-//           <div className="p-2 border-t flex gap-2">
-
-//             <textarea
-//               rows={1}
-//               className="flex-1 resize-none border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-//               placeholder="Ask about colleges, courses, placements..."
-//               value={input}
-//               onChange={(e) => setInput(e.target.value)}
-//               onKeyDown={(e) => {
-//                 if (e.key === "Enter" && !e.shiftKey) {
-//                   e.preventDefault();
-//                   sendMessage();
-//                 }
-//               }}
-//             />
-
-//             <button
-//               onClick={() => sendMessage()}
-//               disabled={!input.trim() || loading}
-//               className="bg-blue-600 text-white w-10 h-10 rounded-full"
-//             >
-//               ➤
-//             </button>
-
-//           </div>
-
-//         </div>
-//       )}
-//     </>
-//   );
-// }
 
