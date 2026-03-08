@@ -197,7 +197,7 @@
 //     } catch (err) {
 //       setMessages(m => [...m, {
 //         role: "assistant",
-//         text: "⚠️ Connection issue. Contact +91 94823 084644.",
+//         text: "⚠️ Connection issue. Contact +91 94823 84644.",
 //         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 //       }]);
 //     }
@@ -410,7 +410,7 @@
 //       // ✅ Even if backend returns 500 body, show it in chat
 //       const errorReply =
 //         err.response?.data?.reply ||
-//         "Server error. Please try again or contact +91 94823 084644.";
+//         "Server error. Please try again or contact +91 94823 84644.";
 //       setMessages((m) => [
 //         ...m,
 //         { role: "assistant", text: errorReply }
@@ -601,7 +601,7 @@
 
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import axios from "axios";
-import FavIcon from "/Fav.png"; // from public/Fav.png
+import FavIcon from "/ChatBot-Ico.png"; // from public/Fav.png
 
 const API_URL = "https://shiksha-chatbot.onrender.com/chat";
 
@@ -703,7 +703,7 @@ export default function ChatWidget() {
     } catch (err) {
       const errorReply =
         err.response?.data?.reply ||
-        "Server error. Please try again or contact +91 94823 084644.";
+        "Server error. Please try again or contact +91 94823 84644.";
       appendMessage("assistant", errorReply);
     }
 
@@ -766,10 +766,10 @@ export default function ChatWidget() {
         >
           <button
             onClick={() => setOpen(true)}
-            className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-3 rounded-full shadow-xl hover:scale-105 transition-transform"
+            className="flex items-center gap-2 bg-gray-900   text-white px-4 py-3 rounded-full shadow-xl hover:scale-105 transition-transform"
           >
             <ShikshaIcon size={22} />
-            <span className="text-sm font-medium">Chat with Shiksha AI</span>
+            <span className="text-sm ">Chat with Shiksha AI</span>
           </button>
         </div>
       )}
@@ -781,7 +781,7 @@ export default function ChatWidget() {
           style={{ bottom: "20px", right: "20px" }}
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-t-2xl">
+          <div className="flex items-center justify-between px-4 py-3 bg-gray-900  text-white rounded-t-2xl">
             <div className="flex items-center gap-3">
               <ShikshaIcon size={28} />
               <div className="flex flex-col">
@@ -882,7 +882,7 @@ export default function ChatWidget() {
             <button
               onClick={() => sendMessage()}
               disabled={loading || !input.trim()}
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-600   text-white shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "…" : "➤"}
             </button>
@@ -923,7 +923,7 @@ export default function ChatWidget() {
 // import FavIcon from "client/public/Images/Left_logo.png";
 
 // const API_URL = "https://shiksha-chatbot.onrender.com/chat";
-// const CONTACT_NUMBER = "+91 94823 084644";
+// const CONTACT_NUMBER = "+91 94823 84644";
 // const CONTACT_EMAIL = "shikshasource@gmail.com";
 
 

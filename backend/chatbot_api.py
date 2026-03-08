@@ -106,10 +106,10 @@
 #     # Fallback chatbot function
 #     def fallback_bot(message: str) -> str:
 #         if "contact" in message.lower() or "phone" in message.lower():
-#             return "You can contact us at +91 94823 084644 for project help."
+#             return "You can contact us at +91 94823 84644 for project help."
 #         return (
 #             "I cannot connect to the AI backend right now. "
-#             "Please contact +91 94823 084644 for project help."
+#             "Please contact +91 94823 84644 for project help."
 #         )
 
 
@@ -194,7 +194,7 @@
 #     if bot:
 #         reply = bot.chat(msg.message)
 #     else:
-#         reply = "Service offline. Contact +91 94823 084644."
+#         reply = "Service offline. Contact +91 94823 84644."
 #     return {"reply": reply}
 
 # @app.get("/health")
@@ -267,7 +267,7 @@
 # async def chat_endpoint(msg: Message):
 #     if bot is None:
 #         return {
-#             "reply": "Chatbot is offline. Please contact +91 94823 084644 for project help."
+#             "reply": "Chatbot is offline. Please contact +91 94823 84644 for project help."
 #         }
 #     reply = bot.chat(msg.message)
 #     return {"reply": reply}
@@ -354,7 +354,7 @@ else:
 async def chat_endpoint(msg: Message):
     if bot is None:
         return {
-            "reply": "Chatbot is offline. Please contact +91 94823 084644 for project help."
+            "reply": "Chatbot is offline. Please contact +91 94823 84644 for project help."
         }
     reply = bot.chat(msg.message)
     return {"reply": reply}

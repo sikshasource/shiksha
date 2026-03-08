@@ -44,7 +44,7 @@
 #                 "mission": "To empower students with practical learning experience through structured project development and guided explanation",
 #                 "focus": "Student-focused academic support platform",
 #                 "contact": {
-#                     "phone": "+91 94823 084644",
+#                     "phone": "+91 94823 84644",
 #                     "whatsapp": "https://wa.me/919482308464",
 #                     "service_area": "Serving Students Across India"
 #                 }
@@ -209,16 +209,16 @@
 # 2. Use simple, direct language
 # 3. Only answer what's asked - don't add extra information
 # 4. For complex questions, give main point + contact number
-# 5. If question is off-topic (health, personal issues), politely redirect: "I'm here to help with academic projects. For project help, contact +91 94823 084644."
+# 5. If question is off-topic (health, personal issues), politely redirect: "I'm here to help with academic projects. For project help, contact +91 94823 84644."
 
 # **Tone:** Friendly, brief, helpful
 
 # **Examples:**
 # Q: "What is Shiksha Source?"
-# A: "We help students with final year projects, mini projects, documentation, and viva preparation across India. Contact +91 94823 084644 for details."
+# A: "We help students with final year projects, mini projects, documentation, and viva preparation across India. Contact +91 94823 84644 for details."
 
 # Q: "Services?"
-# A: "Final year projects, mini projects, IEEE papers, viva prep, bug fixing, and deployment help. Call +91 94823 084644."
+# A: "Final year projects, mini projects, IEEE papers, viva prep, bug fixing, and deployment help. Call +91 94823 84644."
 
 # Q: "Founders?"
 # A: "Founded by Kishor MB and Nachikath NR."
@@ -405,7 +405,7 @@
             
 #         except Exception as e:
 #             logger.error(f"Error in chat: {str(e)}")
-#             return f"I apologize, but I'm having trouble processing your request.\n\nPlease try again or contact our support team at +91 94823 084644."
+#             return f"I apologize, but I'm having trouble processing your request.\n\nPlease try again or contact our support team at +91 94823 84644."
     
 #     def _format_chat_history(self, last_n: int = 4) -> str:
 #         """Format recent chat history"""
@@ -624,7 +624,7 @@
 #                 "mission": "To empower students with practical learning experience through structured project development and guided explanation",
 #                 "focus": "Student-focused academic support platform",
 #                 "contact": {
-#                     "phone": "+91 94823 084644",
+#                     "phone": "+91 94823 84644",
 #                     "whatsapp": "https://wa.me/919482308464",
 #                 }
 #             },
@@ -721,7 +721,7 @@
 
 # Answer questions about our services, projects, and contact info. Keep responses SHORT (2–3 sentences).
 
-# For project help call: +91 94823 084644."""
+# For project help call: +91 94823 84644."""
 
 #     def _test_connection(self) -> bool:
 #         headers = {
@@ -780,13 +780,13 @@
 #             logger.error(f"OpenRouter API error: {r.status_code} {r.text[:150]}")
 #             return (
 #                 "I’m having trouble connecting to the AI service right now. "
-#                 "Please contact +91 94823 084644 for project help."
+#                 "Please contact +91 94823 84644 for project help."
 #             )
 #         except Exception as e:
 #             logger.error(f"Network error: {str(e)}")
 #             return (
 #                 "I cannot connect to the AI service right now. "
-#                 "Please contact +91 94823 084644 for project help."
+#                 "Please contact +91 94823 84644 for project help."
 #             )
 
 #     def chat(self, user_message: str) -> str:
@@ -883,7 +883,7 @@
 #                 "mission": "To empower students with practical learning experience through structured project development and guided explanation",
 #                 "focus": "Student-focused academic support platform",
 #                 "contact": {
-#                     "phone": "+91 94823 084644",
+#                     "phone": "+91 94823 84644",
 #                     "whatsapp": "https://wa.me/919482308464",
 #                     "service_area": "Serving Students Across India"
 #                 }
@@ -1048,16 +1048,16 @@
 # 2. Use simple, direct language
 # 3. Only answer what's asked - don't add extra information
 # 4. For complex questions, give main point + contact number
-# 5. If question is off-topic (health, personal issues), politely redirect: "I'm here to help with academic projects. For project help, contact +91 94823 084644."
+# 5. If question is off-topic (health, personal issues), politely redirect: "I'm here to help with academic projects. For project help, contact +91 94823 84644."
 
 # **Tone:** Friendly, brief, helpful
 
 # **Examples:**
 # Q: "What is Shiksha Source?"
-# A: "We help students with final year projects, mini projects, documentation, and viva preparation across India. Contact +91 94823 084644 for details."
+# A: "We help students with final year projects, mini projects, documentation, and viva preparation across India. Contact +91 94823 84644 for details."
 
 # Q: "Services?"
-# A: "Final year projects, mini projects, IEEE papers, viva prep, bug fixing, and deployment help. Call +91 94823 084644."
+# A: "Final year projects, mini projects, IEEE papers, viva prep, bug fixing, and deployment help. Call +91 94823 84644."
 
 # Q: "Founders?"
 # A: "Founded by Kishor MB and Nachikath NR."
@@ -1244,7 +1244,7 @@
             
 #         except Exception as e:
 #             logger.error(f"Error in chat: {str(e)}")
-#             return f"I apologize, but I'm having trouble processing your request.\n\nPlease try again or contact our support team at +91 94823 084644."
+#             return f"I apologize, but I'm having trouble processing your request.\n\nPlease try again or contact our support team at +91 94823 84644."
     
 #     def _format_chat_history(self, last_n: int = 4) -> str:
 #         """Format recent chat history"""
@@ -1451,7 +1451,7 @@ class ShikshaSourceKnowledgeBase:
                 "mission": "To empower students with practical learning experience through structured project development and guided explanation",
                 "focus": "Student-focused academic support platform",
                 "contact": {
-                    "phone": "+91 94823 084644",
+                    "phone": "+91 94823 84644",
                     "whatsapp": "https://wa.me/919482308464",
                     "service_area": "Serving Students Across India"
                 }
@@ -1627,10 +1627,10 @@ class ShikshaSourceChatbot:
                     return result["choices"][0]["message"]["content"]
                 raise Exception("No response generated")
             logger.error(f"API Error: {response.status_code} - {response.text}")
-            return "Chatbot offline. Contact +91 94823 084644 for help."
+            return "Chatbot offline. Contact +91 94823 84644 for help."
         except Exception as e:
             logger.error(f"OpenRouter error: {e}")
-            return "I’m having trouble responding right now. Please contact +91 94823 084644."
+            return "I’m having trouble responding right now. Please contact +91 94823 84644."
 
     # def chat(self, user_message: str) -> str:
     #     try:
@@ -1656,7 +1656,7 @@ class ShikshaSourceChatbot:
     #         logger.error(f"Error in chat: {e}")
     #         return (
     #             "I’m having trouble processing your request.\n\n"
-    #             "Please try again or contact our team at +91 94823 084644."
+    #             "Please try again or contact our team at +91 94823 84644."
     #         )
 
 
@@ -1670,7 +1670,7 @@ class ShikshaSourceChatbot:
             f"Relevant context:\n{context}\n\n"
             f"User question: {user_message}\n\n"
             "Give a SHORT, DIRECT answer (2–3 sentences max). "
-            "Always include this contact number exactly once in your answer: +91 94823 084644. "
+            "Always include this contact number exactly once in your answer: +91 94823 84644. "
             "Only answer what is asked."
             )
 
@@ -1685,7 +1685,7 @@ class ShikshaSourceChatbot:
             logger.error(f"Error in chat: {e}")
             return (
             "I’m having trouble processing your request.\n\n"
-            "Please contact us at +91 94823 084644."
+            "Please contact us at +91 94823 84644."
             )
 
 
