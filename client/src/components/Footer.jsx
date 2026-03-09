@@ -113,7 +113,7 @@ const Footer = () => {
           </ul>
 
           <a
-            href="https://wa.me/91+ 94823 84644"
+            href="https://wa.me/919482384644"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block mt-6 bg-green-600 text-white px-5 py-2.5 rounded-lg text-sm hover:bg-green-700 transition"

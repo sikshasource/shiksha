@@ -176,7 +176,7 @@ const AboutUs = () => {
           </p>
 
           <a
-            href="https://wa.me/91+ 9482384644"
+            href="https://wa.me/919482384644"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block bg-white text-slate-900 px-6 py-3 rounded-md font-semibold hover:bg-gray-100 transition"
